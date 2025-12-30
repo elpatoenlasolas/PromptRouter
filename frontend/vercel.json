@@ -1,0 +1,21 @@
+# Vercel Configuration for PromptRouter Frontend
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "outputDirectory": ".next",
+  "regions": ["fra1"],
+  "env": {
+    "NEXT_PUBLIC_API_URL": {
+      "description": "Backend API URL (Railway)",
+      "value": "https://promptrouter-backend.up.railway.app"
+    },
+    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": {
+      "description": "Clerk publishable key for authentication"
+    },
+    "CLERK_SECRET_KEY": {
+      "description": "Clerk secret key (keep secure)"
+    }
+  }
+}
