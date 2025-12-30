@@ -62,6 +62,7 @@ export default function OnboardingPage() {
         })
         
         const result = await response.json()
+        console.log('Test result:', result) // Debug
         setTestResult(result)
         setStep(3)
       } catch (error) {
@@ -193,37 +194,37 @@ export default function OnboardingPage() {
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <p className="text-sm text-gray-600 mb-1">Selected Model</p>
-                  <p className="text-xl font-bold">{testResult.routing.model}</p>
-                  <p className="text-sm text-gray-500">{testResult.routing.provider}</p>
+                  <p className="text-xl font-bold">{testResult?.routing?.model || 'N/A'}</p>
+                  <p className="text-sm text-gray-500">{testResult?.routing?.provider || 'N/A'}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600 mb-1">Amount Saved</p>
                   <p className="text-3xl font-bold text-green-600">
-                    €{testResult.savings.amount_saved.toFixed(4)}
+                    €{testResult?.savings?.amount_saved?.toFixed(4) || '0.0000'}
                   </p>
                   <p className="text-sm text-gray-500">
-                    {testResult.savings.savings_percentage}% cheaper
+                    {testResult?.savings?.savings_percentage || 0}% cheaper
                   </p>
                 </div>
               </div>
 
               <div className="border-t border-gray-200 pt-4">
                 <p className="text-sm text-gray-600 mb-2">Why this model?</p>
-                <p className="text-sm text-gray-700">{testResult.routing.reason}</p>
+                <p className="text-sm text-gray-700">{testResult?.routing?.reason || 'No reason provided'}</p>
               </div>
 
               <div className="border-t border-gray-200 mt-4 pt-4">
                 <p className="text-sm text-gray-600 mb-2">Response:</p>
-                <p className="text-gray-900 italic">"{testResult.content}"</p>
+                <p className="text-gray-900 italic">"{testResult?.content || 'No response'}"</p>
               </div>
             </div>
 
             <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
               <p className="text-green-900 font-medium">
-                💰 If you had used GPT-4, this would have cost €{testResult.savings.alternative_cost.toFixed(4)}
+                💰 If you had used GPT-4, this would have cost €{testResult?.savings?.alternative_cost?.toFixed(4) || '0.0000'}
               </p>
               <p className="text-green-700 text-sm mt-1">
-                With PromptRouter, you paid only €{testResult.savings.actual_cost.toFixed(4)}
+                With PromptRouter, you paid only €{testResult?.savings?.actual_cost?.toFixed(4) || '0.0000'}
               </p>
             </div>
 

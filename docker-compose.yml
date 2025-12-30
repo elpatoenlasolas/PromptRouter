@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: Enlasolas10!
       POSTGRES_DB: promptrouter
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -36,9 +36,12 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgresql://promptrouter:dev_password_change_in_production@postgres:5432/promptrouter
+      DATABASE_URL: postgresql://elpatoenlasolas:Enlasolas10!@postgres:5432/promptrouter
       REDIS_URL: redis://redis:6379/0
       ENVIRONMENT: development
+      DEBUG: "True"
+      API_SECRET_KEY: dev-secret-key-change-in-production
+      ENCRYPTION_KEY: dev-encryption-key-32-characters-min
     depends_on:
       postgres:
         condition: service_healthy

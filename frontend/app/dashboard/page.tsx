@@ -8,7 +8,6 @@ import {
   Zap, 
   DollarSign, 
   Clock,
-  AlertCircle,
   Settings,
   BarChart3
 } from 'lucide-react'

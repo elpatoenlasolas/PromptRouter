@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Settings as SettingsIcon, Key, Trash2, Plus } from 'lucide-react'
+import { Key, Trash2, Plus } from 'lucide-react'
 import type { UserConfig, APIKey } from '@/types'
 
 export default function SettingsPage() {
