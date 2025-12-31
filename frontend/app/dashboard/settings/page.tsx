@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { Key, Trash2, Plus } from 'lucide-react'
 import type { UserConfig, APIKey } from '@/types'
 
+export const dynamic = 'force-dynamic'
+
 export default function SettingsPage() {
   const [config, setConfig] = useState<UserConfig | null>(null)
   const [loading, setLoading] = useState(true)

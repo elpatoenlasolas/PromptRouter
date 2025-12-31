@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Key, Zap, CheckCircle } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default function OnboardingPage() {
   const router = useRouter()
   const [step, setStep] = useState(1)

@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { ArrowRight, Zap, DollarSign, Target } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default function HomePage() {
   return (
     <div className="min-h-screen">

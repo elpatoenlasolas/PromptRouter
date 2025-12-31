@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { CheckCircle, XCircle, Clock, Search, Filter } from 'lucide-react'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 interface Request {
   id: number
   model: string

@@ -13,6 +13,8 @@ import {
 import SavingsChart from '@/components/dashboard/SavingsChart'
 import RecentRequests from '@/components/dashboard/RecentRequests'
 
+export const dynamic = 'force-dynamic'
+
 interface Metrics {
   total_requests: number
   total_tokens: number

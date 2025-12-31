@@ -81,6 +81,8 @@ Your backend will be available at: `https://your-project.up.railway.app`
 
 ### 2. Set Environment Variables
 
+**IMPORTANT:** These environment variables are required for the build to succeed.
+
 In your Vercel project settings, add:
 
 ```
@@ -88,6 +90,8 @@ NEXT_PUBLIC_API_URL=https://your-backend.up.railway.app
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_xxxxx
 CLERK_SECRET_KEY=sk_live_xxxxx
 ```
+
+**Note:** The `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` is required during build time. Make sure it's set before deploying, otherwise the build will fail with a "Missing publishableKey" error.
 
 ### 3. Deploy to Vercel
 
