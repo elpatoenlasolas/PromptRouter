@@ -81,9 +81,9 @@ Your backend will be available at: `https://your-project.up.railway.app`
 
 ### 2. Set Environment Variables
 
-**IMPORTANT:** These environment variables are required for the build to succeed.
+**⚠️ CRITICAL:** These environment variables are **REQUIRED** for the build to succeed. The build will fail if `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` is not set.
 
-In your Vercel project settings, add:
+In your Vercel project settings → Settings → Environment Variables, add:
 
 ```
 NEXT_PUBLIC_API_URL=https://your-backend.up.railway.app
@@ -91,7 +91,18 @@ NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_xxxxx
 CLERK_SECRET_KEY=sk_live_xxxxx
 ```
 
-**Note:** The `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` is required during build time. Make sure it's set before deploying, otherwise the build will fail with a "Missing publishableKey" error.
+**How to get your Clerk keys:**
+1. Go to [Clerk Dashboard](https://dashboard.clerk.com/last-active?path=api-keys)
+2. Select your application
+3. Copy the **Publishable Key** (starts with `pk_live_...` or `pk_test_...`)
+4. Copy the **Secret Key** (starts with `sk_live_...` or `sk_test_...`)
+
+**Important Notes:**
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` is required **during build time** - the build will fail without it
+- Make sure to set these variables **before** your first deployment
+- For production, use `pk_live_...` keys
+- For testing, you can use `pk_test_...` keys
+- After adding variables, you may need to trigger a new deployment
 
 ### 3. Deploy to Vercel
 

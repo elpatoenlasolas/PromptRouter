@@ -10,15 +10,30 @@ export const metadata: Metadata = {
   description: 'Intelligent AI API cost optimizer and prompt router',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  // Clerk requires publishableKey during build
+  // This must be set in Vercel environment variables
+  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+
+  if (!publishableKey) {
+    // In development, show a helpful error
+    if (process.env.NODE_ENV === 'development') {
+      console.error(
+        '❌ NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is missing!\n' +
+        'Get your key from: https://dashboard.clerk.com/last-active?path=api-keys\n' +
+        'Add it to your .env.local file or Vercel environment variables.'
+      )
+    }
+  }
+
   return (
-    <ClerkProvider
-      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-    >
+    <ClerkProvider publishableKey={publishableKey || ''}>
       <html lang="en">
         <body className={inter.className}>{children}</body>
       </html>
