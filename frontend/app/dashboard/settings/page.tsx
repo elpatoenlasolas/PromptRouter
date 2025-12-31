@@ -17,10 +17,20 @@ export default function SettingsPage() {
   const fetchConfig = async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/config`)
+      if (!response.ok) {
+        throw new Error(`Failed to fetch config: ${response.statusText}`)
+      }
       const data = await response.json()
       setConfig(data)
     } catch (error) {
       console.error('Failed to fetch config:', error)
+      // Set default config on error to prevent crashes
+      setConfig({
+        tier: 'free',
+        monthly_token_limit: 10000,
+        tokens_used_this_month: 0,
+        api_keys: []
+      })
     } finally {
       setLoading(false)
     }
@@ -66,7 +76,27 @@ export default function SettingsPage() {
   }
 
   if (loading) {
-    return <div className="text-center py-12">Loading...</div>
+    return (
+      <div className="text-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+        <p className="mt-4 text-gray-600">Loading settings...</p>
+      </div>
+    )
+  }
+
+  if (!config) {
+    return (
+      <div className="max-w-4xl">
+        <div className="card">
+          <div className="text-center py-12">
+            <p className="text-red-600 mb-4">Failed to load settings</p>
+            <button onClick={fetchConfig} className="btn-primary">
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -78,12 +108,12 @@ export default function SettingsPage() {
         <h2 className="text-xl font-semibold mb-4">Account Tier</h2>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-2xl font-bold capitalize">{config?.tier}</p>
+            <p className="text-2xl font-bold capitalize">{config?.tier || 'free'}</p>
             <p className="text-gray-600">
-              {config?.tokens_used_this_month.toLocaleString()} / {config?.monthly_token_limit.toLocaleString()} tokens used this month
+              {config?.tokens_used_this_month?.toLocaleString() || '0'} / {config?.monthly_token_limit?.toLocaleString() || '0'} tokens used this month
             </p>
           </div>
-          {config?.tier === 'free' && (
+          {(!config || config.tier === 'free') && (
             <button className="btn-primary">
               Upgrade to Starter
             </button>

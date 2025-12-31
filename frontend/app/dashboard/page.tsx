@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
 import { 
   TrendingDown, 
@@ -49,34 +48,7 @@ export default function DashboardPage() {
     : '0'
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-8">
-              <Link href="/dashboard" className="text-2xl font-bold text-primary-600">
-                PromptRouter
-              </Link>
-              <nav className="hidden md:flex space-x-6">
-                <Link href="/dashboard" className="text-gray-900 font-medium">
-                  Dashboard
-                </Link>
-                <Link href="/dashboard/requests" className="text-gray-600 hover:text-gray-900">
-                  Requests
-                </Link>
-                <Link href="/dashboard/settings" className="text-gray-600 hover:text-gray-900">
-                  Settings
-                </Link>
-              </nav>
-            </div>
-            <UserButton afterSignOutUrl="/" />
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <>
         {loading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
@@ -194,7 +166,6 @@ export default function DashboardPage() {
             </div>
           </>
         )}
-      </main>
-    </div>
+    </>
   )
 }

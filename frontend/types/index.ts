@@ -41,6 +41,8 @@ export interface APIKey {
 }
 
 export interface UserConfig {
+  user_id?: number
+  email?: string
   tier: 'free' | 'starter' | 'pro'
   monthly_token_limit: number
   tokens_used_this_month: number
