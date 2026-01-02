@@ -32,13 +32,22 @@ export default function RequestsPage() {
 
   const fetchRequests = async () => {
     try {
-      // TODO: Replace with real API endpoint when available
-      // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/requests`)
-      // const data = await response.json()
-      // setRequests(data)
-      
-      // Mock data for now
-      const mockRequests: Request[] = [
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/requests?limit=100`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch requests')
+      }
+      const data = await response.json()
+      setRequests(data.requests || [])
+    } catch (error) {
+      console.error('Failed to fetch requests:', error)
+      setRequests([]) // Show empty state on error
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Mock data fallback (removed - using real data now)
+  const mockRequests: Request[] = [
         {
           id: 1,
           model: 'claude-3-haiku',
@@ -105,13 +114,6 @@ export default function RequestsPage() {
           routing_reason: 'Selected for balanced performance',
         },
       ]
-      setRequests(mockRequests)
-    } catch (error) {
-      console.error('Failed to fetch requests:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp)

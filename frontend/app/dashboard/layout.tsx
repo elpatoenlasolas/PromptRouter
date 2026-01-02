@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import DashboardHeader from '@/components/dashboard/DashboardHeader'
+import DashboardSidebar from '@/components/dashboard/DashboardSidebar'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,10 +17,13 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#ede7e3]">
       <DashboardHeader />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {children}
+      <DashboardSidebar />
+      <main className="md:ml-64 pt-16 min-h-screen">
+        <div className="p-4 md:p-6">
+          {children}
+        </div>
       </main>
     </div>
   )

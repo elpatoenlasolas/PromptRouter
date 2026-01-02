@@ -31,8 +31,13 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
 
 async def general_exception_handler(request: Request, exc: Exception):
     """Handle unexpected exceptions"""
-    logger.error(f"Unexpected error: {str(exc)}", exc_info=True)
+    import traceback
+    error_trace = traceback.format_exc()
+    logger.error(f"Unexpected error: {str(exc)}\n{error_trace}", exc_info=True)
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={"detail": "An unexpected error occurred"},
+        content={
+            "detail": f"An unexpected error occurred: {str(exc)}",
+            "error_type": type(exc).__name__,
+        },
     )

@@ -50,32 +50,65 @@ class PromptExecutionService:
         
         # Get available providers
         available_providers = [key.provider.value for key in api_keys]
+        print(f"DEBUG: Available providers: {available_providers}")
         
         # Select optimal model
-        selected_model, routing_reason = self.routing_engine.select_model(
-            available_providers=available_providers,
-            constraints=request.constraints,
-        )
+        try:
+            selected_model, routing_reason = self.routing_engine.select_model(
+                available_providers=available_providers,
+                constraints=request.constraints,
+            )
+            print(f"DEBUG: Selected model: {selected_model.name} from {selected_model.provider}")
+        except ValueError as e:
+            raise ValueError(f"Model selection failed: {str(e)}")
         
         # Get the appropriate adapter and API key
-        provider_key = next(
-            key for key in api_keys 
-            if key.provider.value == selected_model.provider
-        )
-        decrypted_key = decrypt_api_key(provider_key.encrypted_key)
+        try:
+            provider_key = next(
+                key for key in api_keys 
+                if key.provider.value == selected_model.provider
+            )
+        except StopIteration:
+            raise ValueError(
+                f"No API key found for provider {selected_model.provider}. "
+                f"Available providers: {available_providers}"
+            )
+        
+        try:
+            if not provider_key.encrypted_key:
+                raise ValueError(f"API key for {selected_model.provider} is empty")
+            decrypted_key = decrypt_api_key(provider_key.encrypted_key)
+            if not decrypted_key:
+                raise ValueError(f"Decrypted API key for {selected_model.provider} is empty")
+            print(f"DEBUG: Successfully decrypted API key for {selected_model.provider}")
+        except ValueError as e:
+            raise ValueError(f"Failed to decrypt API key for {selected_model.provider}: {str(e)}")
+        except Exception as e:
+            raise ValueError(f"Unexpected error decrypting API key for {selected_model.provider}: {str(e)}")
         
         # Initialize adapter
-        adapter = self._get_adapter(selected_model.provider, decrypted_key)
-        await adapter.initialize()
+        try:
+            adapter = self._get_adapter(selected_model.provider, decrypted_key)
+            await adapter.initialize()
+            print(f"DEBUG: Adapter initialized for {selected_model.provider}")
+        except Exception as e:
+            raise ValueError(f"Failed to initialize adapter for {selected_model.provider}: {str(e)}")
         
-        # Execute prompt
-        result = await adapter.execute_prompt(
-            prompt=request.prompt,
-            model=selected_model.name,
-            system_message=request.system_message,
-            max_tokens=request.max_tokens,
-            temperature=request.temperature,
-        )
+        # Execute prompt with error handling
+        try:
+            result = await adapter.execute_prompt(
+                prompt=request.prompt,
+                model=selected_model.name,
+                system_message=request.system_message,
+                max_tokens=request.max_tokens or 4000,
+                temperature=request.temperature or 0.7,
+            )
+        except ValueError as e:
+            # Re-raise ValueError with more context
+            raise ValueError(f"Failed to execute prompt: {str(e)}")
+        except Exception as e:
+            # Wrap other exceptions
+            raise ValueError(f"Unexpected error during prompt execution: {str(e)}")
         
         # Calculate savings
         alternative_cost = self.routing_engine.get_cheapest_alternative_cost(

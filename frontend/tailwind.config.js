@@ -9,14 +9,24 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
+          50: '#ede7e3',   // Alabaster Grey (lightest)
+          100: '#e8e0db',
+          200: '#d4c7be',
+          300: '#82c0cc',  // Sky Blue (Light)
+          400: '#65b3c4',
+          500: '#489fb5',  // Pacific Blue
+          600: '#16697a',  // Stormy Teal (main)
+          700: '#125a68',
+          800: '#0e4b56',
+          900: '#0a3c44',
+        },
+        accent: {
+          DEFAULT: '#ffa62b', // Amber Glow
+          light: '#ffb84d',
+          dark: '#e6951a',
         },
         success: '#10b981',
-        warning: '#f59e0b',
+        warning: '#ffa62b', // Amber Glow
         danger: '#ef4444',
       },
       fontFamily: {

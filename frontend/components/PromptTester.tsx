@@ -75,39 +75,39 @@ export default function PromptTester() {
         <div className="card bg-gray-50 border border-gray-200">
           <div className="mb-4">
             <h3 className="font-semibold mb-2">Response</h3>
-            <p className="text-gray-700 whitespace-pre-wrap">{result.response}</p>
+            <p className="text-gray-700 whitespace-pre-wrap">{result.content}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
             <div>
               <p className="text-sm text-gray-600">Model</p>
-              <p className="font-semibold">{result.model}</p>
+              <p className="font-semibold">{result.routing.model}</p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Provider</p>
-              <p className="font-semibold capitalize">{result.provider}</p>
+              <p className="font-semibold capitalize">{result.routing.provider}</p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Cost</p>
-              <p className="font-semibold">€{result.cost.toFixed(4)}</p>
+              <p className="font-semibold">€{result.savings.actual_cost.toFixed(4)}</p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Saved</p>
-              <p className="font-semibold text-green-600">€{result.saved.toFixed(4)}</p>
+              <p className="font-semibold text-green-600">€{result.savings.amount_saved.toFixed(4)}</p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Latency</p>
-              <p className="font-semibold">{result.latency_ms}ms</p>
+              <p className="font-semibold">{result.metrics.latency_ms}ms</p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Tokens</p>
-              <p className="font-semibold">{result.input_tokens + result.output_tokens}</p>
+              <p className="font-semibold">{result.metrics.total_tokens}</p>
             </div>
           </div>
 
           <div className="mt-4 pt-4 border-t border-gray-200">
             <p className="text-sm text-gray-600 mb-1">Routing Decision</p>
-            <p className="text-sm text-gray-700">{result.routing_reason}</p>
+            <p className="text-sm text-gray-700">{result.routing.reason}</p>
           </div>
         </div>
       )}

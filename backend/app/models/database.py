@@ -36,6 +36,7 @@ class User(Base):
     
     # Relationships
     api_keys = relationship("UserAPIKey", back_populates="user", cascade="all, delete-orphan")
+    api_tokens = relationship("APIToken", back_populates="user", cascade="all, delete-orphan")
     executions = relationship("PromptExecution", back_populates="user", cascade="all, delete-orphan")
 
 
@@ -52,6 +53,22 @@ class UserAPIKey(Base):
     
     # Relationships
     user = relationship("User", back_populates="api_keys")
+
+
+class APIToken(Base):
+    """PromptRouter API tokens for users to authenticate API requests"""
+    __tablename__ = "api_tokens"
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    token: Mapped[str] = mapped_column(String(128), unique=True, index=True)  # pr_live_xxxxx (72 chars total)
+    name: Mapped[str] = mapped_column(String(255))  # User-defined name for the token
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    last_used_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    user = relationship("User", back_populates="api_tokens")
 
 
 class PromptExecution(Base):

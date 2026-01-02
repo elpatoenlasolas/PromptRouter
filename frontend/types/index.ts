@@ -11,16 +11,26 @@ export interface PromptRequest {
 }
 
 export interface PromptResponse {
-  response: string
-  model: string
-  provider: string
-  latency_ms: number
-  cost: number
-  saved: number
-  routing_reason: string
-  input_tokens: number
-  output_tokens: number
-  timestamp: string
+  content: string
+  routing: {
+    provider: string
+    model: string
+    reason: string
+    estimated_cost: number
+    estimated_latency_ms: number
+  }
+  metrics: {
+    input_tokens: number
+    output_tokens: number
+    total_tokens: number
+    latency_ms: number
+  }
+  savings: {
+    actual_cost: number
+    alternative_cost: number
+    amount_saved: number
+    savings_percentage: number
+  }
 }
 
 export interface Metrics {

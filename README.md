@@ -202,15 +202,18 @@ This aligns our success with customer value.
 
 ### Via Dashboard
 1. Sign up at https://promptrouter.vercel.app
-2. Add your API keys (OpenAI, Anthropic, etc.)
-3. Run a test prompt
-4. See immediate savings!
+2. Add your LLM provider API keys (OpenAI, Anthropic, etc.) in Settings
+3. Create a PromptRouter API token in Settings → API Tokens
+4. Run a test prompt
+5. See immediate savings!
 
 ### Via API
 
+First, create an API token in your dashboard (Settings → API Tokens). Then:
+
 ```bash
 curl -X POST https://api.promptrouter.com/v1/prompt \
-  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Authorization: Bearer pr_live_YOUR_TOKEN_HERE" \
   -H "Content-Type: application/json" \
   -d '{
     "prompt": "Write a short poem about AI",
@@ -234,6 +237,8 @@ Response:
   "latency_ms": 650
 }
 ```
+
+📚 **Full Documentation**: See [API_TOKENS.md](API_TOKENS.md) for complete API token documentation.
 
 ---
 

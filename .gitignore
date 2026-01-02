@@ -38,6 +38,7 @@ out/
 .coverage
 .pytest_cache/
 coverage/
+test-keys.txt
 
 # Logs
 *.log

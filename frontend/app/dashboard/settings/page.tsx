@@ -1,19 +1,40 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Key, Trash2, Plus } from 'lucide-react'
+import { Key, Trash2, Plus, Copy, Check, Eye, EyeOff } from 'lucide-react'
 import type { UserConfig, APIKey } from '@/types'
+import { useRouter } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
+
+interface APIToken {
+  id: number
+  name: string
+  token?: string // Only available when first created
+  token_preview: string
+  is_active: boolean
+  created_at: string
+  last_used_at: string | null
+}
 
 export default function SettingsPage() {
   const [config, setConfig] = useState<UserConfig | null>(null)
   const [loading, setLoading] = useState(true)
   const [showAddKey, setShowAddKey] = useState(false)
   const [newKey, setNewKey] = useState({ provider: 'openai', key: '' })
+  
+  // API Tokens state
+  const [tokens, setTokens] = useState<APIToken[]>([])
+  const [showCreateToken, setShowCreateToken] = useState(false)
+  const [newTokenName, setNewTokenName] = useState('')
+  const [createdToken, setCreatedToken] = useState<string | null>(null)
+  const [copiedToken, setCopiedToken] = useState(false)
+
+  const router = useRouter()
 
   useEffect(() => {
     fetchConfig()
+    fetchTokens()
   }, [])
 
   const fetchConfig = async () => {
@@ -36,6 +57,60 @@ export default function SettingsPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const fetchTokens = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/tokens`)
+      if (!response.ok) throw new Error('Failed to fetch tokens')
+      const data = await response.json()
+      setTokens(data.tokens || [])
+    } catch (error) {
+      console.error('Failed to fetch tokens:', error)
+      setTokens([])
+    }
+  }
+
+  const handleCreateToken = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/tokens`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: newTokenName }),
+      })
+
+      if (!response.ok) throw new Error('Failed to create token')
+      const data = await response.json()
+      setCreatedToken(data.token)
+      setNewTokenName('')
+      await fetchTokens()
+    } catch (error) {
+      console.error('Error creating token:', error)
+      alert('Failed to create API token')
+    }
+  }
+
+  const handleRevokeToken = async (tokenId: number) => {
+    if (!confirm('Are you sure you want to revoke this token? This cannot be undone.')) return
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/tokens/${tokenId}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) throw new Error('Failed to revoke token')
+      await fetchTokens()
+    } catch (error) {
+      console.error('Error revoking token:', error)
+      alert('Failed to revoke token')
+    }
+  }
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+    setCopiedToken(true)
+    setTimeout(() => setCopiedToken(false), 2000)
   }
 
   const handleAddKey = async (e: React.FormEvent) => {
@@ -116,17 +191,168 @@ export default function SettingsPage() {
             </p>
           </div>
           {(!config || config.tier === 'free') && (
-            <button className="btn-primary">
+            <button className="btn-primary" onClick={() => router.push('/pricing')}>
               Upgrade to Starter
             </button>
           )}
         </div>
       </div>
 
-      {/* API Keys */}
+      {/* PromptRouter API Tokens */}
       <div className="card">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">API Keys</h2>
+          <div>
+            <h2 className="text-xl font-semibold">API Tokens</h2>
+            <p className="text-sm text-gray-600 mt-1">
+              Use these tokens to authenticate requests to PromptRouter's API
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              setShowCreateToken(true)
+              setCreatedToken(null)
+            }}
+            className="btn-secondary flex items-center"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Create Token
+          </button>
+        </div>
+
+        {/* Create Token Form */}
+        {showCreateToken && !createdToken && (
+          <form onSubmit={handleCreateToken} className="mb-6 p-4 bg-gray-50 rounded-lg">
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-2">Token Name</label>
+              <input
+                type="text"
+                value={newTokenName}
+                onChange={(e) => setNewTokenName(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                placeholder="e.g., Production API, Development, My App"
+                required
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Give your token a descriptive name to remember where it's used
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button type="submit" className="btn-primary">
+                Create Token
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowCreateToken(false)
+                  setNewTokenName('')
+                }}
+                className="btn-secondary"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Newly Created Token - Show Once */}
+        {createdToken && (
+          <div className="mb-6 p-4 bg-green-50 border-2 border-green-500 rounded-lg">
+            <div className="flex items-start mb-3">
+              <Check className="w-5 h-5 text-green-600 mr-2 mt-0.5" />
+              <div className="flex-1">
+                <h3 className="font-semibold text-green-900 mb-1">Token Created Successfully!</h3>
+                <p className="text-sm text-green-800 mb-3">
+                  Make sure to copy your token now. You won't be able to see it again!
+                </p>
+                <div className="flex items-center gap-2 bg-white p-3 rounded border border-green-300">
+                  <code className="flex-1 text-sm font-mono break-all">{createdToken}</code>
+                  <button
+                    onClick={() => copyToClipboard(createdToken)}
+                    className="btn-secondary flex items-center whitespace-nowrap"
+                  >
+                    {copiedToken ? (
+                      <>
+                        <Check className="w-4 h-4 mr-1" />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4 mr-1" />
+                        Copy
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                setCreatedToken(null)
+                setShowCreateToken(false)
+              }}
+              className="btn-primary w-full"
+            >
+              I've saved my token
+            </button>
+          </div>
+        )}
+
+        {/* Token List */}
+        <div className="space-y-3">
+          {tokens.length > 0 ? (
+            tokens.map((token) => (
+              <div
+                key={token.id}
+                className={`flex items-center justify-between p-4 rounded-lg ${
+                  token.is_active ? 'bg-gray-50' : 'bg-red-50 opacity-60'
+                }`}
+              >
+                <div className="flex items-center flex-1">
+                  <Key className="w-5 h-5 text-gray-400 mr-3" />
+                  <div className="flex-1">
+                    <p className="font-medium">{token.name}</p>
+                    <code className="text-xs text-gray-500 font-mono">{token.token_preview}</code>
+                    <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                      <span>Created {new Date(token.created_at).toLocaleDateString()}</span>
+                      {token.last_used_at && (
+                        <span>Last used {new Date(token.last_used_at).toLocaleDateString()}</span>
+                      )}
+                      {!token.is_active && (
+                        <span className="text-red-600 font-medium">Revoked</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {token.is_active && (
+                  <button
+                    onClick={() => handleRevokeToken(token.id)}
+                    className="btn-danger flex items-center ml-3"
+                  >
+                    <Trash2 className="w-4 h-4 mr-1" />
+                    Revoke
+                  </button>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              <Key className="w-12 h-12 mx-auto mb-3 opacity-30" />
+              <p>No API tokens yet</p>
+              <p className="text-sm mt-1">Create a token to start using the API</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* LLM Provider API Keys */}
+      <div className="card">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-xl font-semibold">LLM Provider Keys</h2>
+            <p className="text-sm text-gray-600 mt-1">
+              Add your OpenAI, Anthropic, Google, and Grok API keys
+            </p>
+          </div>
           <button
             onClick={() => setShowAddKey(true)}
             className="btn-secondary flex items-center"

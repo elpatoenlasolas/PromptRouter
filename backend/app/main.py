@@ -36,12 +36,25 @@ app = FastAPI(
 )
 
 # CORS middleware
+# In development, allow all origins for easier testing
+import os
+allowed_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:3001",
+]
+
+# Add production origins if specified
+if os.getenv("ALLOWED_ORIGINS"):
+    allowed_origins.extend(os.getenv("ALLOWED_ORIGINS").split(","))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://*.vercel.app"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # Exception handlers
@@ -54,6 +67,14 @@ app.include_router(prompt.router, prefix="/v1", tags=["Prompt Execution"])
 app.include_router(metrics.router, prefix="/v1", tags=["Metrics"])
 app.include_router(config_router.router, prefix="/v1", tags=["Configuration"])
 app.include_router(usage.router, prefix="/v1", tags=["Usage"])
+
+# Import requests router, tokens router, and api_keys router
+from app.api.v1 import requests as requests_router
+from app.api.v1 import tokens as tokens_router
+from app.api.v1 import api_keys as api_keys_router
+app.include_router(requests_router.router, prefix="/v1", tags=["Requests"])
+app.include_router(tokens_router.router, prefix="/v1", tags=["API Tokens"])
+app.include_router(api_keys_router.router, prefix="/v1", tags=["LLM API Keys"])
 
 
 @app.get("/")

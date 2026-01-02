@@ -12,6 +12,8 @@ interface Request {
   saved: number
   timestamp: string
   success: boolean
+  input_tokens?: number
+  output_tokens?: number
 }
 
 export default function RecentRequests() {
@@ -19,44 +21,51 @@ export default function RecentRequests() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Mock data - replace with real API call
-    setRequests([
-      {
-        id: 1,
-        model: 'claude-3-haiku',
-        provider: 'anthropic',
-        latency_ms: 650,
-        cost: 0.0023,
-        saved: 0.0177,
-        timestamp: '2 minutes ago',
-        success: true,
-      },
-      {
-        id: 2,
-        model: 'gpt-3.5-turbo',
-        provider: 'openai',
-        latency_ms: 820,
-        cost: 0.0015,
-        saved: 0.0285,
-        timestamp: '8 minutes ago',
-        success: true,
-      },
-      {
-        id: 3,
-        model: 'gemini-pro',
-        provider: 'google',
-        latency_ms: 920,
-        cost: 0.0008,
-        saved: 0.0292,
-        timestamp: '14 minutes ago',
-        success: true,
-      },
-    ])
-    setLoading(false)
+    fetchRequests()
   }, [])
+
+  const fetchRequests = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/requests?limit=5`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch requests')
+      }
+      const data = await response.json()
+      setRequests(data.requests || [])
+    } catch (error) {
+      console.error('Failed to fetch requests:', error)
+      setRequests([]) // Show empty state on error
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const formatTimestamp = (timestamp: string) => {
+    const date = new Date(timestamp)
+    const now = new Date()
+    const diffMs = now.getTime() - date.getTime()
+    const diffMins = Math.floor(diffMs / 60000)
+    const diffHours = Math.floor(diffMs / 3600000)
+    const diffDays = Math.floor(diffMs / 86400000)
+
+    if (diffMins < 1) return 'Just now'
+    if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`
+    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`
+    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`
+    return date.toLocaleDateString()
+  }
 
   if (loading) {
     return <div className="text-center py-8 text-gray-500">Loading...</div>
+  }
+
+  if (requests.length === 0) {
+    return (
+      <div className="text-center py-12 text-gray-500">
+        <p>No requests yet</p>
+        <p className="text-sm mt-2">Execute prompts in the Playground to see them here</p>
+      </div>
+    )
   }
 
   return (
@@ -97,7 +106,7 @@ export default function RecentRequests() {
                   <XCircle className="w-5 h-5 text-red-500" />
                 )}
               </td>
-              <td className="py-3 text-gray-500">{req.timestamp}</td>
+              <td className="py-3 text-gray-500">{formatTimestamp(req.timestamp)}</td>
             </tr>
           ))}
         </tbody>

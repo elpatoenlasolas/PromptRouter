@@ -7,15 +7,18 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <header className="bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+      <header className="bg-gradient-to-br from-primary-600 via-primary-500 to-primary-600 text-white">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div className="text-2xl font-bold">PromptRouter</div>
             <div className="space-x-4">
+              <Link href="/pricing" className="hover:underline">
+                Pricing
+              </Link>
               <Link href="/sign-in" className="hover:underline">
                 Sign In
               </Link>
-              <Link href="/sign-up" className="btn-primary bg-white text-primary-700 hover:bg-gray-100">
+              <Link href="/sign-up" className="btn-primary bg-white text-primary-600 hover:bg-primary-50">
                 Get Started
               </Link>
             </div>
@@ -26,12 +29,12 @@ export default function HomePage() {
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Stop Overpaying for AI
           </h1>
-          <p className="text-xl md:text-2xl mb-8 text-primary-100 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl mb-8 text-primary-300 max-w-3xl mx-auto">
             Automatically route every prompt to the cheapest model that meets your quality and speed requirements.
             <span className="block mt-2 font-semibold">Save hundreds of euros monthly.</span>
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/sign-up" className="btn-primary bg-white text-primary-700 hover:bg-gray-100 text-lg px-8 py-4 flex items-center justify-center">
+            <Link href="/sign-up" className="btn-primary bg-white text-primary-600 hover:bg-primary-50 text-lg px-8 py-4 flex items-center justify-center">
               Start Saving Now
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
@@ -39,7 +42,7 @@ export default function HomePage() {
               View Demo
             </Link>
           </div>
-          <p className="mt-6 text-primary-100">
+          <p className="mt-6 text-primary-300">
             Free tier: 10,000 tokens/month • No credit card required
           </p>
         </div>
@@ -83,7 +86,20 @@ export default function HomePage() {
       {/* How It Works */}
       <section className="bg-gray-100 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12">How It Works</h2>
+          <h2 className="text-4xl font-bold text-center mb-6">How It Works</h2>
+          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto text-lg">
+            Simple integration. Immediate savings. No code changes required.
+          </p>
+          
+          {/* Flowchart */}
+          <div className="bg-white rounded-2xl shadow-xl p-8 mb-12 max-w-5xl mx-auto">
+            <img 
+              src="/flowchart-promptrouter.png" 
+              alt="PromptRouter Implementation Flow - 5 steps from API key setup to cost savings tracking"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
+
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="bg-primary-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
@@ -213,10 +229,10 @@ export default function HomePage() {
           <h2 className="text-4xl font-bold mb-4">
             Start Saving on AI Costs Today
           </h2>
-          <p className="text-xl mb-8 text-primary-100">
+          <p className="text-xl mb-8 text-primary-300">
             Join hundreds of developers saving money with intelligent prompt routing
           </p>
-          <Link href="/sign-up" className="btn-primary bg-white text-primary-700 hover:bg-gray-100 text-lg px-8 py-4 inline-flex items-center">
+          <Link href="/sign-up" className="btn-primary bg-white text-primary-600 hover:bg-primary-50 text-lg px-8 py-4 inline-flex items-center">
             Get Started Free
             <ArrowRight className="ml-2 w-5 h-5" />
           </Link>

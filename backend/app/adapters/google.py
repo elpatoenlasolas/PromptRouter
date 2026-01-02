@@ -11,20 +11,38 @@ class GoogleAdapter(BaseLLMAdapter):
     """Adapter for Google Gemini API"""
     
     MODELS = {
-        "gemini-pro": ModelInfo(
-            name="gemini-pro",
+        "gemini-2.5-flash": ModelInfo(
+            name="models/gemini-2.5-flash",  # Full model name with prefix
             provider="google",
-            input_price_per_1k=0.00025,
-            output_price_per_1k=0.0005,
-            avg_latency_ms=900,
+            input_price_per_1k=0.000075,  # Updated pricing for 2.5-flash
+            output_price_per_1k=0.0003,
+            avg_latency_ms=600,
             quality_tier="standard",
             max_tokens=8192,
         ),
-        "gemini-1.5-pro": ModelInfo(
-            name="gemini-1.5-pro",
+        "gemini-2.0-flash": ModelInfo(
+            name="models/gemini-2.0-flash",  # Full model name with prefix
             provider="google",
-            input_price_per_1k=0.0035,
-            output_price_per_1k=0.0105,
+            input_price_per_1k=0.000075,
+            output_price_per_1k=0.0003,
+            avg_latency_ms=700,
+            quality_tier="standard",
+            max_tokens=8192,
+        ),
+        "gemini-2.5-pro": ModelInfo(
+            name="models/gemini-2.5-pro",  # Full model name with prefix
+            provider="google",
+            input_price_per_1k=0.00125,   # $1.25 per 1M input tokens
+            output_price_per_1k=0.005,    # $5.00 per 1M output tokens
+            avg_latency_ms=1500,
+            quality_tier="premium",
+            max_tokens=32768,
+        ),
+        "gemini-pro-latest": ModelInfo(
+            name="models/gemini-pro-latest",  # Full model name with prefix
+            provider="google",
+            input_price_per_1k=0.00125,
+            output_price_per_1k=0.005,
             avg_latency_ms=1500,
             quality_tier="premium",
             max_tokens=32768,
@@ -48,43 +66,97 @@ class GoogleAdapter(BaseLLMAdapter):
         if not self._client:
             await self.initialize()
         
-        # Combine system message with prompt if provided
-        full_prompt = f"{system_message}\n\n{prompt}" if system_message else prompt
+        # Normalize model name - remove 'models/' prefix if present for lookup
+        model_key = model.replace('models/', '') if model.startswith('models/') else model
         
-        model_instance = genai.GenerativeModel(model)
+        # Verify model exists in our MODELS dict
+        if model_key not in self.MODELS:
+            raise ValueError(f"Model {model} is not available. Available models: {list(self.MODELS.keys())}")
         
-        start_time = time.time()
+        # Get the full model name with prefix for API call
+        model_info = self.MODELS[model_key]
+        api_model_name = model_info.name  # This already has 'models/' prefix
         
-        response = await model_instance.generate_content_async(
-            full_prompt,
-            generation_config=genai.types.GenerationConfig(
-                max_output_tokens=max_tokens,
-                temperature=temperature,
-            ),
-        )
-        
-        latency_ms = int((time.time() - start_time) * 1000)
-        
-        content = response.text
-        
-        # Estimate tokens (Google doesn't always provide exact counts)
-        # Rough estimation: 1 token ≈ 4 characters
-        input_tokens = len(full_prompt) // 4
-        output_tokens = len(content) // 4
-        total_tokens = input_tokens + output_tokens
-        
-        # Calculate cost
-        cost = self.calculate_cost(input_tokens, output_tokens, model)
-        
-        return PromptResult(
-            content=content,
-            input_tokens=input_tokens,
-            output_tokens=output_tokens,
-            total_tokens=total_tokens,
-            latency_ms=latency_ms,
-            model_used=model,
-            cost=cost,
-        )
+        try:
+            # List available models to see what's actually available
+            try:
+                available_models = [m.name for m in genai.list_models()]
+                print(f"DEBUG: Available Google models: {available_models[:5]}...")  # Show first 5
+            except Exception as list_error:
+                print(f"DEBUG: Could not list models: {list_error}")
+            
+            # Combine system message with prompt if provided
+            # Google Gemini handles system messages differently - we'll prepend it
+            full_prompt = f"{system_message}\n\n{prompt}" if system_message else prompt
+            
+            # Create model instance with full API name
+            print(f"DEBUG: Using model: {api_model_name}")
+            model_instance = genai.GenerativeModel(api_model_name)
+            
+            start_time = time.time()
+            
+            # Execute with proper error handling
+            try:
+                response = await model_instance.generate_content_async(
+                    full_prompt,
+                    generation_config=genai.types.GenerationConfig(
+                        max_output_tokens=max_tokens,
+                        temperature=temperature,
+                    ),
+                )
+            except Exception as api_error:
+                error_msg = str(api_error)
+                # Try to list available models for better error message
+                try:
+                    available_models = [m.name for m in genai.list_models()]
+                    available_str = ", ".join(available_models)
+                except:
+                    available_str = "Unable to list models"
+                
+                # Provide more helpful error messages
+                if "not found" in error_msg.lower() or "not supported" in error_msg.lower():
+                    raise ValueError(
+                        f"Model '{model}' is not available in Google's API. "
+                        f"Available models: {available_str}. "
+                        f"Original error: {error_msg}"
+                    )
+                elif "API key" in error_msg or "authentication" in error_msg.lower():
+                    raise ValueError(f"Invalid Google API key: {error_msg}")
+                else:
+                    raise ValueError(f"Google API error: {error_msg}")
+            
+            latency_ms = int((time.time() - start_time) * 1000)
+            
+            # Extract content - handle different response formats
+            if hasattr(response, 'text') and response.text:
+                content = response.text
+            elif hasattr(response, 'candidates') and response.candidates:
+                content = response.candidates[0].content.parts[0].text
+            else:
+                raise ValueError("Unexpected response format from Google API")
+            
+            # Estimate tokens (Google doesn't always provide exact counts)
+            # Rough estimation: 1 token ≈ 4 characters
+            input_tokens = len(full_prompt) // 4
+            output_tokens = len(content) // 4
+            total_tokens = input_tokens + output_tokens
+            
+            # Calculate cost using the model key (without prefix)
+            cost = self.calculate_cost(input_tokens, output_tokens, model_key)
+            
+            return PromptResult(
+                content=content,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                total_tokens=total_tokens,
+                latency_ms=latency_ms,
+                model_used=model_key,  # Return without prefix for consistency
+                cost=cost,
+            )
+        except ValueError:
+            raise  # Re-raise ValueError as-is
+        except Exception as e:
+            raise ValueError(f"Failed to execute prompt with Google Gemini: {str(e)}")
     
     def get_available_models(self) -> list[ModelInfo]:
         """Get list of available Google models"""

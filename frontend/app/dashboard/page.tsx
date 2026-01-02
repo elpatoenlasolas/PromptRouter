@@ -8,7 +8,8 @@ import {
   DollarSign, 
   Clock,
   Settings,
-  BarChart3
+  BarChart3,
+  Info
 } from 'lucide-react'
 import SavingsChart from '@/components/dashboard/SavingsChart'
 import RecentRequests from '@/components/dashboard/RecentRequests'
@@ -36,10 +37,23 @@ export default function DashboardPage() {
   const fetchMetrics = async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/metrics`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch metrics')
+      }
       const data = await response.json()
       setMetrics(data)
     } catch (error) {
       console.error('Failed to fetch metrics:', error)
+      // Set empty metrics on error
+      setMetrics({
+        total_requests: 0,
+        total_tokens: 0,
+        total_spend: 0,
+        estimated_spend_without_routing: 0,
+        total_saved: 0,
+        average_latency_ms: 0,
+        error_rate: 0,
+      })
     } finally {
       setLoading(false)
     }
@@ -77,7 +91,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Total Spend */}
-                <div className="card">
+                <Link href="/dashboard/usage" className="card hover:shadow-lg transition-shadow cursor-pointer">
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-gray-600 text-sm mb-1">Your Spend</p>
@@ -88,10 +102,10 @@ export default function DashboardPage() {
                     </div>
                     <DollarSign className="w-8 h-8 text-primary-600" />
                   </div>
-                </div>
+                </Link>
 
                 {/* Total Requests */}
-                <div className="card">
+                <Link href="/dashboard/requests" className="card hover:shadow-lg transition-shadow cursor-pointer">
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-gray-600 text-sm mb-1">Total Requests</p>
@@ -104,7 +118,7 @@ export default function DashboardPage() {
                     </div>
                     <Zap className="w-8 h-8 text-primary-600" />
                   </div>
-                </div>
+                </Link>
 
                 {/* Average Latency */}
                 <div className="card">
@@ -127,10 +141,18 @@ export default function DashboardPage() {
             {/* Charts Row */}
             <div className="grid md:grid-cols-2 gap-6 mb-8">
               <div className="card">
-                <h2 className="text-xl font-bold mb-4 flex items-center">
-                  <BarChart3 className="w-5 h-5 mr-2 text-primary-600" />
-                  Savings Over Time
-                </h2>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold flex items-center">
+                    <BarChart3 className="w-5 h-5 mr-2 text-primary-600" />
+                    Savings Over Time
+                  </h2>
+                  <div className="group relative">
+                    <Info className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-help" />
+                    <div className="absolute right-0 top-6 hidden group-hover:block z-10 w-64 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg">
+                      Shows cumulative savings from your actual requests vs. if you had always used GPT-4
+                    </div>
+                  </div>
+                </div>
                 <SavingsChart />
               </div>
 

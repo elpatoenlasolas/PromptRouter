@@ -23,7 +23,7 @@ class PromptRequest(BaseModel):
     prompt: str = Field(..., min_length=1, max_length=50000, description="The prompt to execute")
     constraints: Optional[PromptConstraints] = None
     system_message: Optional[str] = Field(None, description="Optional system message")
-    max_tokens: Optional[int] = Field(1000, description="Maximum tokens to generate")
+    max_tokens: Optional[int] = Field(4000, description="Maximum tokens to generate")
     temperature: Optional[float] = Field(0.7, ge=0.0, le=2.0, description="Sampling temperature")
 
 
