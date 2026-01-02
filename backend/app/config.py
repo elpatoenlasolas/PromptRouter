@@ -29,6 +29,14 @@ class Settings(BaseSettings):
     GOOGLE_API_KEY: str | None = None
     GROK_API_KEY: str | None = None
     
+    # Stripe Payment Configuration
+    STRIPE_SECRET_KEY: str | None = None
+    STRIPE_PUBLISHABLE_KEY: str | None = None
+    STRIPE_WEBHOOK_SECRET: str | None = None
+    STRIPE_STARTER_PRICE_ID: str | None = None
+    STRIPE_PRO_PRICE_ID: str | None = None
+    FRONTEND_URL: str = "http://localhost:3000"
+    
     # Pricing (tokens per euro)
     OPENAI_GPT35_INPUT_PRICE: float = 0.0005  # per 1K tokens
     OPENAI_GPT4_INPUT_PRICE: float = 0.03

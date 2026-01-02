@@ -17,7 +17,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#ede7e3]">
+      <div className="min-h-screen bg-gray-50">
       <DashboardHeader />
       <DashboardSidebar />
       <main className="md:ml-64 pt-16 min-h-screen">

@@ -3,9 +3,12 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Key, Zap, CheckCircle } from 'lucide-react'
+import { useToast } from '@/lib/toast'
+import { api } from '@/lib/api'
 
 export default function OnboardingPage() {
   const router = useRouter()
+  const { showToast } = useToast()
   const [step, setStep] = useState(1)
   const [apiKeys, setApiKeys] = useState({
     openai: '',
@@ -19,26 +22,19 @@ export default function OnboardingPage() {
 
   const handleAddKey = async (provider: string, key: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/api-keys`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ provider, api_key: key }),
-      })
-      
-      if (!response.ok) throw new Error('Failed to add API key')
+      await api.post('/v1/api-keys', { provider, api_key: key })
       return true
     } catch (error) {
-      console.error('Error adding API key:', error)
+      showToast(error instanceof Error ? error.message : 'Failed to add API key', 'error')
       return false
     }
   }
 
   const handleNextStep = async () => {
     if (step === 1) {
-      // Save at least one API key
       const entries = Object.entries(apiKeys).filter(([_, value]) => value)
       if (entries.length === 0) {
-        alert('Please add at least one API key')
+        showToast('Please add at least one API key', 'warning')
         return
       }
       
@@ -49,29 +45,21 @@ export default function OnboardingPage() {
       setLoading(false)
       setStep(2)
     } else if (step === 2) {
-      // Test routing
       setLoading(true)
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/prompt`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            prompt: testPrompt,
-            max_tokens: 100,
-          }),
+        const result = await api.post('/v1/prompt', {
+          prompt: testPrompt,
+          max_tokens: 100,
         })
-        
-        const result = await response.json()
-        console.log('Test result:', result) // Debug
         setTestResult(result)
+        showToast('Test prompt executed successfully!', 'success')
         setStep(3)
       } catch (error) {
-        alert('Failed to execute test prompt')
+        showToast(error instanceof Error ? error.message : 'Failed to execute test prompt', 'error')
       } finally {
         setLoading(false)
       }
     } else if (step === 3) {
-      // Complete onboarding
       router.push('/dashboard')
     }
   }

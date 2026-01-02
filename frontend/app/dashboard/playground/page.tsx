@@ -94,7 +94,7 @@ export default function PlaygroundPage() {
       </div>
 
       {/* Savings Calculator - Always Visible */}
-      <div className="card bg-gradient-to-br from-green-50 to-white border-2 border-green-300">
+      <div className="card bg-gradient-to-br from-green-50 to-white border border-green-300">
         <div className="flex items-center mb-4">
           <TrendingDown className="w-6 h-6 mr-2 text-green-600" />
           <h2 className="text-2xl font-bold">Savings Calculator</h2>
@@ -108,7 +108,7 @@ export default function PlaygroundPage() {
           <div className="space-y-4">
             {/* Workload Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Workload Type
               </label>
               <div className="space-y-2">
@@ -116,8 +116,8 @@ export default function PlaygroundPage() {
                   onClick={() => setWorkloadMix('current')}
                   className={`w-full px-4 py-3 rounded-lg text-left transition-all ${
                     workloadMix === 'current'
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                      ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 shadow-md'
+                      : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
                   <div className="font-semibold">📝 Simple Tasks</div>
@@ -129,8 +129,8 @@ export default function PlaygroundPage() {
                   onClick={() => setWorkloadMix('balanced')}
                   className={`w-full px-4 py-3 rounded-lg text-left transition-all ${
                     workloadMix === 'balanced'
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                      ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 shadow-md'
+                      : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
                   <div className="font-semibold">🎯 Balanced Mix</div>
@@ -142,8 +142,8 @@ export default function PlaygroundPage() {
                   onClick={() => setWorkloadMix('heavy')}
                   className={`w-full px-4 py-3 rounded-lg text-left transition-all ${
                     workloadMix === 'heavy'
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                      ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 shadow-md'
+                      : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
                   <div className="font-semibold">🚀 Complex Tasks</div>
@@ -156,7 +156,7 @@ export default function PlaygroundPage() {
 
             {/* Volume Selector */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Prompts per day
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -172,8 +172,8 @@ export default function PlaygroundPage() {
                     onClick={() => setVolumeMultiplier(vol.monthly)}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                       volumeMultiplier === vol.monthly
-                        ? 'bg-green-600 text-white shadow-md'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-green-600 dark:bg-green-700 text-white shadow-md'
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                     }`}
                   >
                     {vol.label}
@@ -183,7 +183,7 @@ export default function PlaygroundPage() {
               
               {/* Custom input */}
               <div className="mt-3">
-                <label className="block text-xs text-gray-600 mb-1">
+                <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
                   Or enter custom daily volume:
                 </label>
                 <div className="flex items-center gap-2">
@@ -192,7 +192,7 @@ export default function PlaygroundPage() {
                     min="1"
                     max="10000"
                     placeholder="e.g., 500"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     onChange={(e) => {
                       const daily = parseInt(e.target.value)
                       if (daily >= 1 && daily <= 10000) {
@@ -207,13 +207,13 @@ export default function PlaygroundPage() {
                 </p>
               </div>
               
-              <div className="text-center mt-3 p-3 bg-blue-50 rounded-lg">
-                <div className="text-xs text-gray-600 mb-1">Estimated monthly volume</div>
-                <span className="text-2xl font-bold text-blue-700">
+              <div className="text-center mt-3 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">Estimated monthly volume</div>
+                <span className="text-2xl font-bold text-gray-900 dark:text-white">
                   {volumeMultiplier.toLocaleString()}
                 </span>
-                <span className="text-sm text-gray-600 ml-2">prompts</span>
-                <div className="text-xs text-gray-500 mt-1">
+                <span className="text-sm text-gray-600 dark:text-gray-400 ml-2">prompts</span>
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   ≈ {(volumeMultiplier / 30).toFixed(0)} prompts/day
                 </div>
               </div>
@@ -221,7 +221,7 @@ export default function PlaygroundPage() {
           </div>
 
           {/* Right: Results */}
-          <div className="bg-white p-5 rounded-lg border-2 border-green-300">
+          <div className="bg-white p-5 rounded-lg border border-green-300">
             {(() => {
               // Costos realistas basados en usar GPT-4 vs PromptRouter
               let avgTokensPerPrompt = 0;
@@ -315,12 +315,12 @@ export default function PlaygroundPage() {
                     </div>
 
                     {/* Real-world impact */}
-                    <div className="bg-blue-50 p-3 rounded-lg mt-4">
+                    <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg mt-4">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="text-xs text-blue-800 font-semibold">💡 Context</div>
+                        <div className="text-xs text-gray-800 dark:text-gray-300 font-semibold">💡 Context</div>
                         <div className="group relative">
-                          <Info className="w-3 h-3 text-blue-600 hover:text-blue-800 cursor-help" />
-                          <div className="absolute left-0 top-5 hidden group-hover:block z-10 w-56 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg">
+                          <Info className="w-3 h-3 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 cursor-help" />
+                          <div className="absolute left-0 top-5 hidden group-hover:block z-10 w-56 p-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg shadow-lg">
                             PromptRouter automatically selects the cheapest model that meets your quality requirements
                           </div>
                         </div>
@@ -343,18 +343,18 @@ export default function PlaygroundPage() {
         {/* Input Section */}
         <div className="space-y-6">
           <div className="card">
-            <h2 className="text-xl font-bold mb-4">Prompt Configuration</h2>
+            <h2 className="text-xl font-bold mb-4 dark:text-white">Prompt Configuration</h2>
             
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="system-message" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="system-message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   System Message (Optional)
                 </label>
                 <textarea
                   id="system-message"
                   value={systemMessage}
                   onChange={(e) => setSystemMessage(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   rows={2}
                   placeholder="You are a helpful assistant..."
                   disabled={loading}
@@ -362,27 +362,27 @@ export default function PlaygroundPage() {
               </div>
 
               <div>
-                <label htmlFor="prompt" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="prompt" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Prompt <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   id="prompt"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent font-mono text-sm"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent font-mono text-sm"
                   rows={6}
                   placeholder="Enter your prompt here..."
                   disabled={loading}
                   required
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   {prompt.length} characters
                 </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="max-tokens" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="max-tokens" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Max Tokens
                   </label>
                   <input
@@ -392,12 +392,12 @@ export default function PlaygroundPage() {
                     max="32000"
                     value={maxTokens}
                     onChange={(e) => setMaxTokens(parseInt(e.target.value) || 500)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                     disabled={loading}
                   />
                 </div>
                 <div>
-                  <label htmlFor="temperature" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="temperature" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Temperature
                   </label>
                   <input
@@ -408,7 +408,7 @@ export default function PlaygroundPage() {
                     step="0.1"
                     value={temperature}
                     onChange={(e) => setTemperature(parseFloat(e.target.value) || 0.7)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                     disabled={loading}
                   />
                 </div>
@@ -435,12 +435,12 @@ export default function PlaygroundPage() {
           </div>
 
           {error && (
-            <div className="card bg-red-50 border-red-200">
+            <div className="card bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
               <div className="flex items-start">
-                <Info className="w-5 h-5 text-red-600 mr-2 mt-0.5" />
+                <Info className="w-5 h-5 text-red-600 dark:text-red-400 mr-2 mt-0.5" />
                 <div>
-                  <h3 className="font-semibold text-red-900 mb-1">Error</h3>
-                  <p className="text-sm text-red-700">{error}</p>
+                  <h3 className="font-semibold text-red-900 dark:text-red-300 mb-1">Error</h3>
+                  <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
                 </div>
               </div>
             </div>
@@ -453,9 +453,9 @@ export default function PlaygroundPage() {
             <>
               {/* Response */}
               <div className="card">
-                <h2 className="text-xl font-bold mb-4">Response</h2>
-                <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                  <p className="text-gray-900 whitespace-pre-wrap leading-relaxed">
+                <h2 className="text-xl font-bold mb-4 dark:text-white">Response</h2>
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                  <p className="text-gray-900 dark:text-gray-100 whitespace-pre-wrap leading-relaxed">
                     {result.content}
                   </p>
                 </div>
@@ -463,22 +463,22 @@ export default function PlaygroundPage() {
 
               {/* Routing Info */}
               <div className="card">
-                <h2 className="text-xl font-bold mb-4 flex items-center">
-                  <Zap className="w-5 h-5 mr-2 text-primary-600" />
+                <h2 className="text-xl font-bold mb-4 flex items-center dark:text-white">
+                  <Zap className="w-5 h-5 mr-2 text-gray-900 dark:text-gray-100" />
                   Routing Decision
                 </h2>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Selected Model</span>
-                    <span className="font-semibold">{result.routing.model}</span>
+                    <span className="text-gray-600 dark:text-gray-400">Selected Model</span>
+                    <span className="font-semibold dark:text-white">{result.routing.model}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Provider</span>
-                    <span className="font-semibold capitalize">{result.routing.provider}</span>
+                    <span className="text-gray-600 dark:text-gray-400">Provider</span>
+                    <span className="font-semibold capitalize dark:text-white">{result.routing.provider}</span>
                   </div>
-                  <div className="pt-3 border-t border-gray-200">
-                    <p className="text-sm text-gray-600 mb-2">Why this model?</p>
-                    <p className="text-sm text-gray-700 bg-primary-50 p-3 rounded-lg">
+                  <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Why this model?</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg">
                       {result.routing.reason}
                     </p>
                   </div>
@@ -487,47 +487,47 @@ export default function PlaygroundPage() {
 
               {/* Metrics */}
               <div className="card">
-                <h2 className="text-xl font-bold mb-4">Metrics</h2>
+                <h2 className="text-xl font-bold mb-4 dark:text-white">Metrics</h2>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                     <div className="flex items-center mb-2">
-                      <DollarSign className="w-4 h-4 text-primary-600 mr-2" />
-                      <span className="text-sm text-gray-600">Cost</span>
+                      <DollarSign className="w-4 h-4 text-gray-900 dark:text-gray-100 mr-2" />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Cost</span>
                     </div>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
                       €{result.savings.actual_cost.toFixed(4)}
                     </p>
                   </div>
-                  <div className="bg-green-50 p-4 rounded-lg">
+                  <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
                     <div className="flex items-center mb-2">
-                      <TrendingDown className="w-4 h-4 text-green-600 mr-2" />
-                      <span className="text-sm text-gray-600">Saved</span>
+                      <TrendingDown className="w-4 h-4 text-green-600 dark:text-green-400 mr-2" />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Saved</span>
                     </div>
-                    <p className="text-2xl font-bold text-green-600">
+                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                       €{result.savings.amount_saved.toFixed(4)}
                     </p>
-                    <p className="text-xs text-green-700 mt-1">
+                    <p className="text-xs text-green-700 dark:text-green-500 mt-1">
                       {result.savings.savings_percentage}% cheaper
                     </p>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                     <div className="flex items-center mb-2">
-                      <Clock className="w-4 h-4 text-primary-600 mr-2" />
-                      <span className="text-sm text-gray-600">Latency</span>
+                      <Clock className="w-4 h-4 text-gray-900 dark:text-gray-100 mr-2" />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Latency</span>
                     </div>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
                       {result.metrics.latency_ms}ms
                     </p>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                     <div className="flex items-center mb-2">
-                      <Zap className="w-4 h-4 text-primary-600 mr-2" />
-                      <span className="text-sm text-gray-600">Tokens</span>
+                      <Zap className="w-4 h-4 text-gray-900 dark:text-gray-100 mr-2" />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Tokens</span>
                     </div>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
                       {result.metrics.total_tokens.toLocaleString()}
                     </p>
-                    <p className="text-xs text-gray-600 mt-1">
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                       {result.metrics.input_tokens} in / {result.metrics.output_tokens} out
                     </p>
                   </div>
@@ -535,13 +535,13 @@ export default function PlaygroundPage() {
               </div>
 
               {/* This Prompt's Savings */}
-              <div className="card bg-gradient-to-br from-primary-50 to-white border-2 border-primary-200">
-                <h3 className="font-semibold mb-3 flex items-center">
-                  <DollarSign className="w-5 h-5 mr-2 text-primary-600" />
+              <div className="card bg-gray-100 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700">
+                <h3 className="font-semibold mb-3 flex items-center dark:text-white">
+                  <DollarSign className="w-5 h-5 mr-2 text-gray-900 dark:text-gray-100" />
                   Your Prompt's Savings
                 </h3>
                 <div className="space-y-3">
-                  <div className="bg-white p-3 rounded-lg border border-primary-200">
+                  <div className="bg-white dark:bg-gray-900 p-3 rounded-lg border border-gray-300 dark:border-gray-700">
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm text-gray-600">Single execution</span>
                       <span className="text-lg font-bold text-green-600">

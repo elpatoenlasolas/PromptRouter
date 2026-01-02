@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react'
 import { Key, Trash2, Plus, Copy, Check, Eye, EyeOff } from 'lucide-react'
 import type { UserConfig, APIKey } from '@/types'
 import { useRouter } from 'next/navigation'
+import { useUser } from '@clerk/nextjs'
+import { useToast } from '@/lib/toast'
+import { api } from '@/lib/api'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,6 +34,8 @@ export default function SettingsPage() {
   const [copiedToken, setCopiedToken] = useState(false)
 
   const router = useRouter()
+  const { user } = useUser()
+  const { showToast } = useToast()
 
   useEffect(() => {
     fetchConfig()
@@ -39,14 +44,10 @@ export default function SettingsPage() {
 
   const fetchConfig = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/config`)
-      if (!response.ok) {
-        throw new Error(`Failed to fetch config: ${response.statusText}`)
-      }
-      const data = await response.json()
+      const data = await api.get<UserConfig>('/v1/config')
       setConfig(data)
     } catch (error) {
-      console.error('Failed to fetch config:', error)
+      showToast('Failed to fetch config', 'error')
       // Set default config on error to prevent crashes
       setConfig({
         tier: 'free',
@@ -61,12 +62,9 @@ export default function SettingsPage() {
 
   const fetchTokens = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/tokens`)
-      if (!response.ok) throw new Error('Failed to fetch tokens')
-      const data = await response.json()
+      const data = await api.get<{ tokens: APIToken[] }>('/v1/tokens')
       setTokens(data.tokens || [])
     } catch (error) {
-      console.error('Failed to fetch tokens:', error)
       setTokens([])
     }
   }
@@ -74,20 +72,13 @@ export default function SettingsPage() {
   const handleCreateToken = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/tokens`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: newTokenName }),
-      })
-
-      if (!response.ok) throw new Error('Failed to create token')
-      const data = await response.json()
+      const data = await api.post<{ token: string }>('/v1/tokens', { name: newTokenName })
       setCreatedToken(data.token)
       setNewTokenName('')
       await fetchTokens()
+      showToast('API token created successfully', 'success')
     } catch (error) {
-      console.error('Error creating token:', error)
-      alert('Failed to create API token')
+      showToast(error instanceof Error ? error.message : 'Failed to create API token', 'error')
     }
   }
 
@@ -95,20 +86,17 @@ export default function SettingsPage() {
     if (!confirm('Are you sure you want to revoke this token? This cannot be undone.')) return
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/tokens/${tokenId}`, {
-        method: 'DELETE',
-      })
-
-      if (!response.ok) throw new Error('Failed to revoke token')
+      await api.delete(`/v1/tokens/${tokenId}`)
       await fetchTokens()
+      showToast('Token revoked successfully', 'success')
     } catch (error) {
-      console.error('Error revoking token:', error)
-      alert('Failed to revoke token')
+      showToast(error instanceof Error ? error.message : 'Failed to revoke token', 'error')
     }
   }
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
+    showToast('Copied to clipboard', 'success', 2000)
     setCopiedToken(true)
     setTimeout(() => setCopiedToken(false), 2000)
   }
@@ -116,23 +104,17 @@ export default function SettingsPage() {
   const handleAddKey = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/api-keys`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          provider: newKey.provider,
-          api_key: newKey.key,
-        }),
+      await api.post('/v1/api-keys', {
+        provider: newKey.provider,
+        api_key: newKey.key,
       })
-
-      if (!response.ok) throw new Error('Failed to add API key')
       
       setShowAddKey(false)
       setNewKey({ provider: 'openai', key: '' })
       await fetchConfig()
+      showToast('API key added successfully', 'success')
     } catch (error) {
-      console.error('Error adding API key:', error)
-      alert('Failed to add API key')
+      showToast(error instanceof Error ? error.message : 'Failed to add API key', 'error')
     }
   }
 
@@ -140,15 +122,11 @@ export default function SettingsPage() {
     if (!confirm('Are you sure you want to delete this API key?')) return
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/api-keys/${keyId}`, {
-        method: 'DELETE',
-      })
-
-      if (!response.ok) throw new Error('Failed to delete API key')
+      await api.delete(`/v1/api-keys/${keyId}`)
       await fetchConfig()
+      showToast('API key deleted successfully', 'success')
     } catch (error) {
-      console.error('Error deleting API key:', error)
-      alert('Failed to delete API key')
+      showToast(error instanceof Error ? error.message : 'Failed to delete API key', 'error')
     }
   }
 
@@ -228,17 +206,25 @@ export default function SettingsPage() {
             {config?.tier === 'free' && (
               <button 
                 className="btn-primary whitespace-nowrap" 
-                onClick={() => router.push('/pricing')}
+                onClick={() => router.push('/dashboard/upgrade')}
               >
                 Upgrade Plan
               </button>
             )}
-            {config?.tier !== 'free' && (
+            {config?.tier === 'starter' && (
+              <button 
+                className="btn-primary whitespace-nowrap" 
+                onClick={() => router.push('/dashboard/upgrade')}
+              >
+                Upgrade to Pro
+              </button>
+            )}
+            {config?.tier === 'pro' && (
               <button 
                 className="btn-secondary whitespace-nowrap" 
                 onClick={() => router.push('/pricing')}
               >
-                Change Plan
+                View Plans
               </button>
             )}
           </div>
@@ -272,55 +258,6 @@ export default function SettingsPage() {
             </p>
           )}
         </div>
-
-        {/* Quick Comparison */}
-        {config?.tier === 'free' && (
-          <div className="grid md:grid-cols-2 gap-4 mt-6">
-            <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-400 transition-colors cursor-pointer" onClick={() => router.push('/pricing')}>
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="font-semibold text-lg">Starter</h4>
-                <span className="text-2xl font-bold text-blue-600">€15<span className="text-sm text-gray-600">/mo</span></span>
-              </div>
-              <p className="text-sm text-gray-600 mb-3">For indie developers</p>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-start">
-                  <span className="text-green-500 mr-2">✓</span>
-                  <span>500K tokens/month</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-green-500 mr-2">✓</span>
-                  <span>Priority routing</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-green-500 mr-2">✓</span>
-                  <span>Email support</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="border-2 border-purple-200 rounded-lg p-4 hover:border-purple-400 transition-colors cursor-pointer" onClick={() => router.push('/pricing')}>
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="font-semibold text-lg">Pro</h4>
-                <span className="text-2xl font-bold text-purple-600">€25<span className="text-sm text-gray-600">/mo</span></span>
-              </div>
-              <p className="text-sm text-gray-600 mb-3">For power users</p>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-start">
-                  <span className="text-green-500 mr-2">✓</span>
-                  <span>5M tokens/month</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-green-500 mr-2">✓</span>
-                  <span>Custom routing rules</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-green-500 mr-2">✓</span>
-                  <span>Priority support</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* PromptRouter API Tokens */}

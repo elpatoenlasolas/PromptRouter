@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import SavingsChart from '@/components/dashboard/SavingsChart'
 import RecentRequests from '@/components/dashboard/RecentRequests'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 export const dynamic = 'force-dynamic'
 
@@ -66,8 +67,30 @@ export default function DashboardPage() {
   return (
     <>
         {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <div className="space-y-6">
+            <Skeleton className="h-8 w-64" />
+            <div className="grid md:grid-cols-4 gap-6">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="card">
+                  <Skeleton className="h-4 w-24 mb-3" />
+                  <Skeleton className="h-10 w-32 mb-2" />
+                  <Skeleton className="h-3 w-full" />
+                </div>
+              ))}
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="card">
+                <Skeleton className="h-6 w-40 mb-4" />
+                <Skeleton className="h-64 w-full" />
+              </div>
+              <div className="card">
+                <Skeleton className="h-6 w-32 mb-4" />
+                <div className="space-y-3">
+                  <Skeleton className="h-20 w-full" />
+                  <Skeleton className="h-20 w-full" />
+                </div>
+              </div>
+            </div>
           </div>
         ) : (
           <>
@@ -100,7 +123,7 @@ export default function DashboardPage() {
                         vs €{metrics?.estimated_spend_without_routing.toFixed(2) || '0.00'} without routing
                       </p>
                     </div>
-                    <DollarSign className="w-8 h-8 text-primary-600" />
+                    <DollarSign className="w-8 h-8 text-green-600" />
                   </div>
                 </Link>
 
@@ -116,7 +139,7 @@ export default function DashboardPage() {
                         {((metrics?.total_tokens || 0) / 1000).toFixed(1)}K tokens
                       </p>
                     </div>
-                    <Zap className="w-8 h-8 text-primary-600" />
+                    <Zap className="w-8 h-8 text-blue-600" />
                   </div>
                 </Link>
 
@@ -132,7 +155,7 @@ export default function DashboardPage() {
                         {metrics?.error_rate.toFixed(2) || '0'}% error rate
                       </p>
                     </div>
-                    <Clock className="w-8 h-8 text-primary-600" />
+                    <Clock className="w-8 h-8 text-gold-600" />
                   </div>
                 </div>
               </div>
@@ -143,12 +166,12 @@ export default function DashboardPage() {
               <div className="card">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-bold flex items-center">
-                    <BarChart3 className="w-5 h-5 mr-2 text-primary-600" />
+                    <BarChart3 className="w-5 h-5 mr-2 text-blue-600" />
                     Savings Over Time
                   </h2>
                   <div className="group relative">
                     <Info className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-help" />
-                    <div className="absolute right-0 top-6 hidden group-hover:block z-10 w-64 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg">
+                    <div className="absolute right-0 top-6 hidden group-hover:block z-10 w-64 p-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg">
                       Shows cumulative savings from your actual requests vs. if you had always used GPT-4
                     </div>
                   </div>
@@ -163,7 +186,7 @@ export default function DashboardPage() {
                     href="/dashboard/settings"
                     className="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
                   >
-                    <Settings className="w-5 h-5 mr-3 text-primary-600" />
+                    <Settings className="w-5 h-5 mr-3 text-blue-600" />
                     <div>
                       <p className="font-medium">Manage API Keys</p>
                       <p className="text-sm text-gray-600">Add or update provider credentials</p>
@@ -173,7 +196,7 @@ export default function DashboardPage() {
                     href="/dashboard/playground"
                     className="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
                   >
-                    <Zap className="w-5 h-5 mr-3 text-primary-600" />
+                    <Zap className="w-5 h-5 mr-3 text-gold-600" />
                     <div>
                       <p className="font-medium">Test Playground</p>
                       <p className="text-sm text-gray-600">Try routing with different prompts</p>
