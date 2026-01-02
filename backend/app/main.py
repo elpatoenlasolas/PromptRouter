@@ -68,13 +68,15 @@ app.include_router(metrics.router, prefix="/v1", tags=["Metrics"])
 app.include_router(config_router.router, prefix="/v1", tags=["Configuration"])
 app.include_router(usage.router, prefix="/v1", tags=["Usage"])
 
-# Import requests router, tokens router, and api_keys router
+# Import requests router, tokens router, api_keys router, and billing router
 from app.api.v1 import requests as requests_router
 from app.api.v1 import tokens as tokens_router
 from app.api.v1 import api_keys as api_keys_router
+from app.api.v1 import billing as billing_router
 app.include_router(requests_router.router, prefix="/v1", tags=["Requests"])
 app.include_router(tokens_router.router, prefix="/v1", tags=["API Tokens"])
 app.include_router(api_keys_router.router, prefix="/v1", tags=["LLM API Keys"])
+app.include_router(billing_router.router, prefix="/v1", tags=["Billing"])
 
 
 @app.get("/")

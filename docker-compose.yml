@@ -2,15 +2,15 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      POSTGRES_USER: elpatoenlasolas
-      POSTGRES_PASSWORD: Enlasolas10!
-      POSTGRES_DB: promptrouter
+      POSTGRES_USER: ${POSTGRES_USER:-promptrouter}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-promptrouter}
     ports:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U promptrouter"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-promptrouter}"]
       interval: 10s
       timeout: 5s
       retries: 5  
@@ -34,12 +34,12 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgresql://elpatoenlasolas:Enlasolas10!@postgres:5432/promptrouter
+      DATABASE_URL: postgresql://${POSTGRES_USER:-promptrouter}:${POSTGRES_PASSWORD:-dev_password}@postgres:5432/${POSTGRES_DB:-promptrouter}
       REDIS_URL: redis://redis:6379/0
-      ENVIRONMENT: development
-      DEBUG: "True"
-      API_SECRET_KEY: dev-secret-key-change-in-production
-      ENCRYPTION_KEY: dev-encryption-key-32-characters-min
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      DEBUG: ${DEBUG:-True}
+      API_SECRET_KEY: ${API_SECRET_KEY:-dev-secret-key-change-in-production}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-dev-encryption-key-32-characters-min}
     depends_on:
       postgres:
         condition: service_healthy

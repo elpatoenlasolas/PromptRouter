@@ -180,22 +180,147 @@ export default function SettingsPage() {
     <div className="max-w-4xl">
       <h1 className="text-3xl font-bold mb-6">Settings</h1>
 
-      {/* Account Tier */}
+      {/* Plan & Billing */}
       <div className="card mb-6">
-        <h2 className="text-xl font-semibold mb-4">Account Tier</h2>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-2xl font-bold capitalize">{config?.tier || 'free'}</p>
-            <p className="text-gray-600">
-              {config?.tokens_used_this_month?.toLocaleString() || '0'} / {config?.monthly_token_limit?.toLocaleString() || '0'} tokens used this month
-            </p>
+        <h2 className="text-xl font-semibold mb-4">Plan & Billing</h2>
+        
+        {/* Current Plan */}
+        <div className="bg-gradient-to-r from-primary-50 to-blue-50 rounded-lg p-6 mb-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <h3 className="text-2xl font-bold capitalize">{config?.tier || 'free'} Plan</h3>
+                {config?.tier === 'free' && (
+                  <span className="px-3 py-1 bg-gray-200 text-gray-700 text-xs font-semibold rounded-full">
+                    Current
+                  </span>
+                )}
+                {config?.tier === 'starter' && (
+                  <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                    Active
+                  </span>
+                )}
+                {config?.tier === 'pro' && (
+                  <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">
+                    Active
+                  </span>
+                )}
+              </div>
+              <p className="text-gray-600 mb-3">
+                {config?.tokens_used_this_month?.toLocaleString() || '0'} / {config?.monthly_token_limit?.toLocaleString() || '0'} tokens used this month
+              </p>
+              {config?.tier === 'free' && (
+                <p className="text-sm text-gray-500">
+                  🎯 Upgrade to unlock higher limits and priority routing
+                </p>
+              )}
+              {config?.tier === 'starter' && (
+                <p className="text-sm text-gray-500">
+                  📊 500K tokens/month • Priority routing • Email support
+                </p>
+              )}
+              {config?.tier === 'pro' && (
+                <p className="text-sm text-gray-500">
+                  🚀 5M tokens/month • Custom rules • Priority support
+                </p>
+              )}
+            </div>
+            {config?.tier === 'free' && (
+              <button 
+                className="btn-primary whitespace-nowrap" 
+                onClick={() => router.push('/pricing')}
+              >
+                Upgrade Plan
+              </button>
+            )}
+            {config?.tier !== 'free' && (
+              <button 
+                className="btn-secondary whitespace-nowrap" 
+                onClick={() => router.push('/pricing')}
+              >
+                Change Plan
+              </button>
+            )}
           </div>
-          {(!config || config.tier === 'free') && (
-            <button className="btn-primary" onClick={() => router.push('/pricing')}>
-              Upgrade to Starter
-            </button>
+        </div>
+
+        {/* Usage Progress Bar */}
+        <div className="mb-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-700">Token Usage</span>
+            <span className="text-sm text-gray-600">
+              {Math.round(((config?.tokens_used_this_month || 0) / (config?.monthly_token_limit || 1)) * 100)}%
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-3">
+            <div 
+              className={`h-3 rounded-full transition-all ${
+                ((config?.tokens_used_this_month || 0) / (config?.monthly_token_limit || 1)) > 0.9 
+                  ? 'bg-red-500' 
+                  : ((config?.tokens_used_this_month || 0) / (config?.monthly_token_limit || 1)) > 0.7 
+                  ? 'bg-yellow-500' 
+                  : 'bg-green-500'
+              }`}
+              style={{ 
+                width: `${Math.min(((config?.tokens_used_this_month || 0) / (config?.monthly_token_limit || 1)) * 100, 100)}%` 
+              }}
+            />
+          </div>
+          {((config?.tokens_used_this_month || 0) / (config?.monthly_token_limit || 1)) > 0.8 && (
+            <p className="text-xs text-orange-600 mt-2">
+              ⚠️ You're approaching your monthly limit. Consider upgrading to avoid service interruption.
+            </p>
           )}
         </div>
+
+        {/* Quick Comparison */}
+        {config?.tier === 'free' && (
+          <div className="grid md:grid-cols-2 gap-4 mt-6">
+            <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-400 transition-colors cursor-pointer" onClick={() => router.push('/pricing')}>
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold text-lg">Starter</h4>
+                <span className="text-2xl font-bold text-blue-600">€15<span className="text-sm text-gray-600">/mo</span></span>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">For indie developers</p>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>500K tokens/month</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Priority routing</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Email support</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="border-2 border-purple-200 rounded-lg p-4 hover:border-purple-400 transition-colors cursor-pointer" onClick={() => router.push('/pricing')}>
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold text-lg">Pro</h4>
+                <span className="text-2xl font-bold text-purple-600">€25<span className="text-sm text-gray-600">/mo</span></span>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">For power users</p>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>5M tokens/month</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Custom routing rules</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Priority support</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* PromptRouter API Tokens */}

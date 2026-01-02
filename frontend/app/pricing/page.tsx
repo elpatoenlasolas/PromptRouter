@@ -1,10 +1,43 @@
+'use client'
+
 import Link from 'next/link'
 import { Check, X, ArrowRight, BarChart3, Info } from 'lucide-react'
 import DashboardHeader from '@/components/dashboard/DashboardHeader'
+import { useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
 
 export default function PricingPage() {
+  const { user, isLoaded } = useUser()
+  const router = useRouter()
+
+  const handleUpgrade = async (tier: 'starter' | 'pro') => {
+    if (!isLoaded) return
+    
+    if (!user) {
+      // Not logged in - redirect to sign up
+      router.push('/sign-up')
+      return
+    }
+
+    // TODO: Implement Stripe checkout
+    // For now, show alert
+    alert(`Stripe checkout for ${tier} plan coming soon! This will redirect to Stripe Checkout.`)
+    
+    // Future implementation:
+    // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/create-checkout-session`, {
+    //   method: 'POST',
+    //   headers: { 
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${await user.getToken()}`
+    //   },
+    //   body: JSON.stringify({ tier })
+    // })
+    // const { checkout_url } = await response.json()
+    // window.location.href = checkout_url
+  }
+
   return (
     <div className="min-h-screen bg-[#ede7e3]">
       <DashboardHeader />
@@ -232,6 +265,58 @@ export default function PricingPage() {
               </div>
             </div>
 
+            {/* Starter Plan */}
+            <div className="bg-white rounded-xl shadow-lg border-2 border-blue-600 p-8 flex flex-col relative">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                  Popular
+                </span>
+              </div>
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Starter</h3>
+                <p className="text-sm text-gray-600 mb-4">For indie developers</p>
+                <div className="mb-4">
+                  <span className="text-4xl font-bold text-gray-900">€15</span>
+                  <span className="text-gray-600"> / month</span>
+                </div>
+                <p className="text-gray-600 text-sm mb-3">
+                  Get started with professional routing and priority support.
+                </p>
+              </div>
+
+              <ul className="space-y-3 mb-6 flex-grow">
+                <li className="flex items-start">
+                  <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">500K tokens / month</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">All routing modes</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Priority routing</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Email support</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Full savings dashboard</span>
+                </li>
+              </ul>
+
+              <div className="pt-6 border-t border-gray-200">
+                <button
+                  onClick={() => handleUpgrade('starter')}
+                  className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                >
+                  {user ? 'Upgrade to Starter' : 'Start with Starter'}
+                </button>
+              </div>
+            </div>
+
             {/* Pro Plan */}
             <div className="bg-white rounded-xl shadow-lg border-2 border-primary-600 p-8 flex flex-col relative">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2">
@@ -251,7 +336,7 @@ export default function PricingPage() {
                 </p>
                 <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                   <p className="text-green-800 text-sm font-medium">
-                    💰 Most users save €40+ per month on this plan.
+                    💰 Average savings: €60+ per month
                   </p>
                 </div>
               </div>
@@ -259,41 +344,41 @@ export default function PricingPage() {
               <ul className="space-y-3 mb-6 flex-grow">
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Up to 250K tokens / month</span>
+                  <span className="text-gray-700">5M tokens / month</span>
                 </li>
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Cheap, Fast, and Smart routing modes</span>
+                  <span className="text-gray-700">All routing modes</span>
                 </li>
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Batch prompt processing</span>
+                  <span className="text-gray-700">Custom routing rules</span>
                 </li>
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Daily and monthly cost caps</span>
+                  <span className="text-gray-700">Advanced analytics</span>
                 </li>
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Spending alerts</span>
+                  <span className="text-gray-700">Priority support</span>
                 </li>
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Full savings dashboard</span>
+                  <span className="text-gray-700">Cost caps & alerts</span>
                 </li>
               </ul>
 
               <div className="pt-6 border-t border-gray-200">
-                <Link
-                  href="/sign-up"
+                <button
+                  onClick={() => handleUpgrade('pro')}
                   className="block w-full text-center bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
                 >
-                  Start saving
-                </Link>
+                  {user ? 'Upgrade to Pro' : 'Start with Pro'}
+                </button>
               </div>
             </div>
 
-            {/* Power Plan */}
+            {/* Power Plan (Hidden for now) */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 flex flex-col">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Power</h3>
