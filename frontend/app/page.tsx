@@ -59,9 +59,6 @@ export default function HomePage() {
                   Start Saving Now
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
-                <Link href="/dashboard" className="bg-gray-700/40 hover:bg-gray-700/50 backdrop-blur-sm text-white text-lg px-8 py-4 rounded-lg font-medium transition-all">
-                  View Demo
-                </Link>
               </>
             )}
           </div>
@@ -75,11 +72,11 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid md:grid-cols-3 gap-8">
           <div className="card text-center">
-            <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <DollarSign className="w-8 h-8 text-gray-600" />
+            <div className="bg-gray-100 dark:bg-gray-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <DollarSign className="w-8 h-8 text-gray-900 dark:text-gray-100" />
             </div>
-            <h3 className="text-xl font-bold mb-2">Visible Savings</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-bold mb-2 dark:text-white">Visible Savings</h3>
+            <p className="text-gray-400 dark:text-gray-400">
               See exactly how much you save on every request. Dashboard shows total euros saved vs. what you would have paid.
             </p>
           </div>
@@ -89,7 +86,7 @@ export default function HomePage() {
               <Zap className="w-8 h-8 text-gray-900 dark:text-gray-100" />
             </div>
             <h3 className="text-xl font-bold mb-2 dark:text-white">Smart Routing</h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-400 dark:text-gray-400">
               AI-powered routing engine selects the optimal model based on cost, latency, and quality constraints.
             </p>
           </div>
@@ -99,7 +96,7 @@ export default function HomePage() {
               <Target className="w-8 h-8 text-gray-900 dark:text-gray-100" />
             </div>
             <h3 className="text-xl font-bold mb-2 dark:text-white">Your API Keys</h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-400 dark:text-gray-400">
               Bring your own API keys. We route, you own the data. No lock-in, no markup, just savings.
             </p>
           </div>
@@ -110,7 +107,7 @@ export default function HomePage() {
       <section className="bg-gray-100 dark:bg-gray-800 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center mb-6 dark:text-white">How It Works</h2>
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto text-lg">
+          <p className="text-center text-gray-400 dark:text-gray-300 mb-12 max-w-2xl mx-auto text-lg">
             Simple integration. Immediate savings. No code changes required.
           </p>
           
@@ -129,7 +126,7 @@ export default function HomePage() {
                 1
               </div>
               <h3 className="text-xl font-bold mb-2 dark:text-white">Connect API Keys</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-400 dark:text-gray-300">
                 Add your OpenAI, Anthropic, Google, or Grok API keys. They're encrypted and never logged.
               </p>
             </div>
@@ -139,7 +136,7 @@ export default function HomePage() {
                 2
               </div>
               <h3 className="text-xl font-bold mb-2 dark:text-white">Send Prompts</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-400 dark:text-gray-300">
                 Use our API to send prompts. Set cost, latency, and quality constraints.
               </p>
             </div>
@@ -149,7 +146,7 @@ export default function HomePage() {
                 3
               </div>
               <h3 className="text-xl font-bold mb-2 dark:text-white">Save Money</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-400 dark:text-gray-300">
                 We route to the cheapest model that meets your requirements. Watch savings accumulate.
               </p>
             </div>
@@ -160,14 +157,14 @@ export default function HomePage() {
       {/* Pricing */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <h2 className="text-4xl font-bold text-center mb-4">Simple Pricing</h2>
-        <p className="text-center text-gray-600 mb-12 text-lg">
+        <p className="text-center text-gray-400 mb-12 text-lg">
           You'll save more than the subscription cost
         </p>
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <div className="card border-2 flex flex-col justify-between">
             <h3 className="text-2xl font-bold mb-2">Free</h3>
-            <p className="text-4xl font-bold mb-4">€0<span className="text-lg text-gray-600">/mo</span></p>
-            <p className="text-gray-600 mb-6">Get started for free</p>
+            <p className="text-4xl font-bold mb-4">€0<span className="text-lg text-gray-400">/mo</span></p>
+            <p className="text-gray-400 mb-6">Get started for free</p>
             <ul className="space-y-2 mb-6">
               <li className="flex items-start">
                 <span className="text-success mr-2">✓</span>
@@ -182,18 +179,18 @@ export default function HomePage() {
                 Dashboard access
               </li>
             </ul>
-            <Link href="/sign-up" className="btn-secondary w-full block text-center">
+            <Link href="/sign-up" className="btn-primary w-full block text-center">
               Start Free
             </Link>
           </div>
 
-          <div className="card shadow-lg relative border-2 border-gray shadow-md flex flex-col justify-between">
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gray-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+          <div className="card shadow-lg relative border-2 border-blue-600 shadow-md flex flex-col justify-between">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
               Popular
             </div>
             <h3 className="text-2xl font-bold mb-2">Starter</h3>
-            <p className="text-4xl font-bold mb-4">€15<span className="text-lg text-gray-600">/mo</span></p>
-            <p className="text-gray-600 mb-6">For indie developers</p>
+            <p className="text-4xl font-bold mb-4">€15<span className="text-lg text-gray-400">/mo</span></p>
+            <p className="text-gray-400 mb-6">For indie developers</p>
             <ul className="space-y-2 mb-6">
               <li className="flex items-start">
                 <span className="text-success mr-2">✓</span>
@@ -219,8 +216,8 @@ export default function HomePage() {
 
           <div className="card border-2 flex flex-col justify-between">
             <h3 className="text-2xl font-bold mb-2">Pro</h3>
-            <p className="text-4xl font-bold mb-4">€25<span className="text-lg text-gray-600">/mo</span></p>
-            <p className="text-gray-600 mb-6">For power users</p>
+            <p className="text-4xl font-bold mb-4">€25<span className="text-lg text-gray-400">/mo</span></p>
+            <p className="text-gray-400 mb-6">For power users</p>
             <ul className="space-y-2 mb-6">
               <li className="flex items-start">
                 <span className="text-success mr-2">✓</span>
@@ -239,7 +236,7 @@ export default function HomePage() {
                 Priority support
               </li>
             </ul>
-            <Link href="/sign-up" className="btn-secondary w-full block text-center">
+            <Link href="/sign-up" className="btn-primary w-full block text-center">
               Get Started
             </Link>
           </div>
@@ -247,12 +244,12 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-gray-500 text-white py-20">
+      <section className="bg-gradient-to-br from-gray-600 via-gray-700 to-gray-800 dark:from-gray-600 dark:via-gray-700 dark:to-gray-800 text-white py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold mb-4">
             Start Saving on AI Costs Today
           </h2>
-          <p className="text-xl mb-8 text-gray-100">
+          <p className="text-xl mb-8 text-gray-50 dark:text-gray-100">
             Join hundreds of developers saving money with intelligent prompt routing
           </p>
           <Link href="/sign-up" className="bg-white text-gray-800 hover:bg-gray-50 text-lg px-8 py-4 rounded-lg font-medium inline-flex items-center shadow-lg transition-all">
