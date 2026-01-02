@@ -42,7 +42,9 @@ allowed_origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:3001",
-    "https://prompt-router-ten.vercel.app/"
+    "https://prompt-router-ten.vercel.app",
+    "https://www.prompt-router.com",
+    "https://prompt-router.com"
 ]
 
 # Add production origins if specified
