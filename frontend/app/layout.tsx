@@ -4,7 +4,11 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { Providers } from '@/components/providers'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'PromptRouter - AI Cost Optimizer',
@@ -35,7 +39,7 @@ export default function RootLayout({
 
   return (
     <ClerkProvider publishableKey={publishableKey || ''}>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" suppressHydrationWarning className={inter.variable}>
         <head>
           <script
             dangerouslySetInnerHTML={{
@@ -50,7 +54,7 @@ export default function RootLayout({
             }}
           />
         </head>
-        <body className={inter.className}>
+        <body className="font-sans">
           <Providers>
             {children}
           </Providers>

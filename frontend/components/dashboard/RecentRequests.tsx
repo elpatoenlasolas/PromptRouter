@@ -72,7 +72,7 @@ export default function RecentRequests() {
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead className="border-b border-gray-200">
-          <tr className="text-left text-sm text-gray-600">
+          <tr className="text-left text-sm text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted">
             <th className="pb-3 font-medium">Model</th>
             <th className="pb-3 font-medium">Provider</th>
             <th className="pb-3 font-medium">Latency</th>
@@ -87,17 +87,17 @@ export default function RecentRequests() {
             <tr key={req.id} className="text-sm">
               <td className="py-3 font-medium">{req.model}</td>
               <td className="py-3">
-                <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
+                <span className="px-2 py-1 bg-gray-100 dark:bg-dark-surface text-gray-700 dark:text-dark-text dark:text-dark-text rounded text-xs">
                   {req.provider}
                 </span>
               </td>
-              <td className="py-3 text-gray-600">
+              <td className="py-3 text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted">
                 <div className="flex items-center">
                   <Clock className="w-3 h-3 mr-1" />
                   {req.latency_ms}ms
                 </div>
               </td>
-              <td className="py-3 text-gray-600">€{req.cost.toFixed(4)}</td>
+              <td className="py-3 text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted">€{req.cost.toFixed(4)}</td>
               <td className="py-3 text-green-600 font-medium">+€{req.saved.toFixed(4)}</td>
               <td className="py-3">
                 {req.success ? (

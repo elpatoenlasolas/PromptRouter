@@ -89,7 +89,7 @@ export default function UsagePage() {
     <div>
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">Usage</h1>
-        <p className="text-gray-600">Monitor your token usage and limits</p>
+        <p className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted">Monitor your token usage and limits</p>
       </div>
 
       {/* Usage Overview */}
@@ -97,60 +97,60 @@ export default function UsagePage() {
         <div className="card">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <p className="text-gray-600 text-sm mb-1">Tokens Used</p>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-gray-600 dark:text-dark-text-muted dark:text-gray-400 text-sm mb-1">Tokens Used</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">
                 {stats?.tokens_used_this_month.toLocaleString() || '0'}
               </p>
-              <p className="text-gray-500 text-sm mt-2">
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
                 of {stats?.monthly_token_limit.toLocaleString() || '0'} limit
               </p>
             </div>
-            <BarChart3 className="w-8 h-8 text-primary-600" />
+            <BarChart3 className="w-8 h-8 text-primary dark:text-primary-light" />
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
             <div 
-              className="bg-primary-600 h-2 rounded-full transition-all"
+              className="bg-blue-600 dark:bg-blue-400 h-2 rounded-full transition-all"
               style={{ width: `${Math.min(usagePercentage, 100)}%` }}
             />
           </div>
-          <p className="text-sm text-gray-600 mt-2">{usagePercentage}% used</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{usagePercentage}% used</p>
         </div>
 
         <div className="card">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-gray-600 text-sm mb-1">Requests This Month</p>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-gray-600 dark:text-dark-text-muted dark:text-gray-400 text-sm mb-1">Requests This Month</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">
                 {stats?.requests_this_month.toLocaleString() || '0'}
               </p>
-              <p className="text-gray-500 text-sm mt-2">
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
                 Average: {stats ? Math.round(stats.requests_this_month / 30) : 0} per day
               </p>
             </div>
-            <Zap className="w-8 h-8 text-primary-600" />
+            <Zap className="w-8 h-8 text-primary dark:text-primary-light" />
           </div>
         </div>
 
         <div className="card">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-gray-600 text-sm mb-1">Remaining Tokens</p>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-gray-600 dark:text-dark-text-muted dark:text-gray-400 text-sm mb-1">Remaining Tokens</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">
                 {stats ? (stats.monthly_token_limit - stats.tokens_used_this_month).toLocaleString() : '0'}
               </p>
-              <p className="text-gray-500 text-sm mt-2">
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
                 Resets on the 1st of next month
               </p>
             </div>
-            <TrendingUp className="w-8 h-8 text-primary-600" />
+            <TrendingUp className="w-8 h-8 text-success dark:text-success" />
           </div>
         </div>
       </div>
 
       {/* Daily Usage Chart */}
       <div className="card">
-        <h2 className="text-xl font-bold mb-4 flex items-center">
-          <Calendar className="w-5 h-5 mr-2 text-primary-600" />
+        <h2 className="text-xl font-bold mb-4 flex items-center dark:text-white">
+          <Calendar className="w-5 h-5 mr-2 text-primary dark:text-primary-light" />
           Daily Usage (Last 7 Days)
         </h2>
         {stats?.daily_usage && stats.daily_usage.length > 0 ? (
@@ -164,10 +164,10 @@ export default function UsagePage() {
                 <div key={index}>
                   <div className="flex justify-between items-center mb-2">
                     <div>
-                      <p className="font-medium text-gray-900">
+                      <p className="font-medium text-gray-900 dark:text-white">
                         {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                       </p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         {day.tokens.toLocaleString()} tokens • {day.requests} requests
                       </p>
                     </div>
@@ -177,7 +177,7 @@ export default function UsagePage() {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div 
-                      className="bg-primary-600 h-2 rounded-full transition-all"
+                      className="bg-primary h-2 rounded-full transition-all"
                       style={{ width: `${Math.min(dayPercentage, 100)}%` }}
                     />
                   </div>

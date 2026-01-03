@@ -1,3 +1,6 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Code, BookOpen, Zap, Lock, ArrowRight, CheckCircle, Terminal } from 'lucide-react'
 import DashboardHeader from '@/components/dashboard/DashboardHeader'
@@ -5,18 +8,51 @@ import DashboardHeader from '@/components/dashboard/DashboardHeader'
 export const dynamic = 'force-dynamic'
 
 export default function DocsPage() {
+  const [activeSection, setActiveSection] = useState('how-it-works')
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['how-it-works', 'quickstart', 'authentication', 'api-reference', 'examples', 'best-practices']
+      const scrollPosition = window.scrollY + 150
+
+      // Check if we're near the bottom of the page
+      const isNearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100
+      
+      if (isNearBottom) {
+        setActiveSection('best-practices')
+        return
+      }
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId)
+        if (element) {
+          const { offsetTop, offsetHeight } = element
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(sectionId)
+            break
+          }
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll() // Check initial position
+    
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <div className="min-h-screen bg-neutral-100">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-base">
       <DashboardHeader />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 mt-14">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
-            <BookOpen className="w-8 h-8 text-primary-600" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+            <BookOpen className="w-8 h-8 text-primary" />
           </div>
           <h1 className="text-5xl font-bold mb-4">Documentation</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-dark-text-muted max-w-3xl mx-auto">
             Everything you need to integrate PromptRouter into your application and start saving on AI costs
           </p>
         </div>
@@ -24,19 +60,19 @@ export default function DocsPage() {
         {/* Quick Links */}
         <div className="grid md:grid-cols-3 gap-6 mb-16">
           <a href="#quickstart" className="card hover:shadow-lg transition-shadow">
-            <Zap className="w-8 h-8 text-primary-600 mb-3" />
+            <Zap className="w-8 h-8 text-primary mb-3" />
             <h3 className="font-bold text-lg mb-2">Quick Start</h3>
-            <p className="text-gray-600 text-sm">Get started in 5 minutes</p>
+            <p className="text-gray-600 dark:text-dark-text-muted text-sm">Get started in 5 minutes</p>
           </a>
           <a href="#api-reference" className="card hover:shadow-lg transition-shadow">
-            <Code className="w-8 h-8 text-primary-600 mb-3" />
+            <Code className="w-8 h-8 text-primary mb-3" />
             <h3 className="font-bold text-lg mb-2">API Reference</h3>
-            <p className="text-gray-600 text-sm">Complete endpoint documentation</p>
+            <p className="text-gray-600 dark:text-dark-text-muted text-sm">Complete endpoint documentation</p>
           </a>
           <a href="#examples" className="card hover:shadow-lg transition-shadow">
-            <Terminal className="w-8 h-8 text-primary-600 mb-3" />
+            <Terminal className="w-8 h-8 text-primary mb-3" />
             <h3 className="font-bold text-lg mb-2">Code Examples</h3>
-            <p className="text-gray-600 text-sm">Integration examples</p>
+            <p className="text-gray-600 dark:text-dark-text-muted text-sm">Integration examples</p>
           </a>
         </div>
 
@@ -45,25 +81,65 @@ export default function DocsPage() {
           {/* Sidebar Navigation */}
           <aside className="lg:col-span-1">
             <div className="sticky top-24 space-y-1">
-              <a href="#quickstart" className="block px-4 py-2 text-sm font-medium text-primary-600 bg-primary-50 rounded-lg">
-                Quick Start
-              </a>
-              <a href="#how-it-works" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+
+              <a 
+                href="#how-it-works" 
+                className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
+                  activeSection === 'how-it-works' 
+                    ? 'text-primary bg-primary/10 font-medium' 
+                    : 'text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-surface'
+                }`}
+              >
                 How It Works
               </a>
-              <a href="#authentication" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+              <a 
+                href="#quickstart" 
+                className={`block px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  activeSection === 'quickstart' 
+                    ? 'text-primary bg-primary/10' 
+                    : 'text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-surface'
+                }`}
+              >
+                Quick Start
+              </a>
+              <a 
+                href="#authentication" 
+                className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
+                  activeSection === 'authentication' 
+                    ? 'text-primary bg-primary/10 font-medium' 
+                    : 'text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-surface'
+                }`}
+              >
                 Authentication
               </a>
-              <a href="#api-reference" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+              <a 
+                href="#api-reference" 
+                className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
+                  activeSection === 'api-reference' 
+                    ? 'text-primary bg-primary/10 font-medium' 
+                    : 'text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-surface'
+                }`}
+              >
                 API Reference
               </a>
-              <a href="#examples" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+              <a 
+                href="#examples" 
+                className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
+                  activeSection === 'examples' 
+                    ? 'text-primary bg-primary/10 font-medium' 
+                    : 'text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-surface'
+                }`}
+              >
                 Code Examples
               </a>
-              <a href="#sdks" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                SDKs
-              </a>
-              <a href="#best-practices" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+              <a 
+                href="#best-practices" 
+                className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
+                  activeSection === 'best-practices' 
+                    ? 'text-primary bg-primary/10 font-medium' 
+                    : 'text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-surface'
+                }`}
+              >
                 Best Practices
               </a>
             </div>
@@ -74,18 +150,18 @@ export default function DocsPage() {
             {/* How It Works Flowchart */}
             <section id="how-it-works" className="card">
               <h2 className="text-3xl font-bold mb-6">How It Works</h2>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 dark:text-dark-text-muted mb-6">
                 PromptRouter automatically routes your prompts to the most cost-effective AI model while maintaining quality. Here's the complete flow:
               </p>
-              <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 mb-6">
+              <div className="bg-primary/5 rounded-xl p-6 mb-6">
                 <img 
                   src="/flowchart-promptrouter.png" 
                   alt="PromptRouter Implementation Flow - Complete 5-step process"
                   className="w-full h-auto rounded-lg shadow-lg"
                 />
               </div>
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <p className="text-sm text-green-900">
+              <div className="bg-success/5 border border-success/20 rounded-lg p-4">
+                <p className="text-sm text-success">
                   <strong>💡 Key benefit:</strong> Replace one API endpoint and start saving 85-99% on AI costs immediately. No architectural changes needed.
                 </p>
               </div>
@@ -94,22 +170,22 @@ export default function DocsPage() {
             {/* Quick Start */}
             <section id="quickstart" className="card">
               <h2 className="text-3xl font-bold mb-6 flex items-center">
-                <Zap className="w-8 h-8 mr-3 text-primary-600" />
+                <Zap className="w-8 h-8 mr-3 text-primary" />
                 Quick Start
               </h2>
               
               <div className="space-y-6">
                 <div>
                   <h3 className="text-xl font-semibold mb-3">1. Sign Up & Get API Keys</h3>
-                  <ol className="list-decimal list-inside space-y-2 text-gray-700 ml-4">
-                    <li>Create an account at <Link href="/sign-up" className="text-primary-600 hover:underline">PromptRouter</Link></li>
+                  <ol className="list-decimal list-inside space-y-2 text-gray-700 dark:text-dark-text ml-4">
+                    <li>Create an account at <Link href="/sign-up" className="text-primary hover:underline">PromptRouter</Link></li>
                     <li>Choose your plan (Free, Pro, or Power)</li>
                     <li>Go to Settings → "LLM Provider Keys" and add your API keys (OpenAI, Anthropic, etc.)</li>
                     <li>Go to Settings → "API Tokens" and click "Create Token"</li>
                     <li>Give your token a name (e.g., "Production API") and copy it</li>
                   </ol>
-                  <div className="mt-3 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                    <p className="text-sm text-yellow-900">
+                  <div className="mt-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-3">
+                    <p className="text-sm text-yellow-900 dark:text-yellow-200">
                       <strong>Important:</strong> Your API token will only be shown once. Make sure to copy and save it securely!
                     </p>
                   </div>
@@ -156,77 +232,13 @@ export default function DocsPage() {
                   </div>
                 </div>
 
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="bg-success/5 border border-success/20 rounded-lg p-4">
                   <div className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-semibold text-green-900 mb-1">You just saved 91%!</p>
-                      <p className="text-sm text-green-800">
+                      <p className="font-semibold text-success mb-1">You just saved 91%!</p>
+                      <p className="text-sm text-success">
                         PromptRouter automatically selected Claude Haiku instead of GPT-4, saving you €0.00254 on this single request.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* How It Works */}
-            <section id="how-it-works" className="card">
-              <h2 className="text-3xl font-bold mb-6">How It Works</h2>
-              
-              <div className="space-y-6">
-                <p className="text-gray-700">
-                  PromptRouter acts as an intelligent proxy between your application and LLM providers:
-                </p>
-
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <div className="space-y-4">
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold mr-4">
-                        1
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">You send a prompt</h4>
-                        <p className="text-gray-600 text-sm">Your app sends the prompt to PromptRouter's API</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold mr-4">
-                        2
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Intelligent routing</h4>
-                        <p className="text-gray-600 text-sm">Our engine analyzes prompt complexity and selects the cheapest suitable model</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold mr-4">
-                        3
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Execute with your keys</h4>
-                        <p className="text-gray-600 text-sm">We use YOUR API keys (no markup) to call the selected provider</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0 w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold mr-4">
-                        4
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Return with savings</h4>
-                        <p className="text-gray-600 text-sm">You get the response plus detailed metrics showing how much you saved</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-start">
-                    <Lock className="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="font-semibold text-blue-900 mb-1">Your API Keys Stay Yours</p>
-                      <p className="text-sm text-blue-800">
-                        We use your own API keys (BYOK - Bring Your Own Keys) with zero markup. Your data never leaves your control.
                       </p>
                     </div>
                   </div>
@@ -239,13 +251,13 @@ export default function DocsPage() {
               <h2 className="text-3xl font-bold mb-6">Authentication</h2>
               
               <div className="space-y-4">
-                <p className="text-gray-700">
+                <p className="text-gray-700 dark:text-dark-text">
                   All API requests require authentication using your PromptRouter API token.
                 </p>
 
                 <div>
                   <h3 className="font-semibold mb-2">Getting Your API Token</h3>
-                  <ol className="list-decimal list-inside space-y-1 text-gray-700 ml-4">
+                  <ol className="list-decimal list-inside space-y-1 text-gray-700 dark:text-dark-text ml-4">
                     <li>Log in to your PromptRouter dashboard</li>
                     <li>Go to Settings</li>
                     <li>Scroll to "API Tokens" section</li>
@@ -257,7 +269,7 @@ export default function DocsPage() {
 
                 <div>
                   <h3 className="font-semibold mb-2">Using the Token</h3>
-                  <p className="text-gray-700 mb-3">Include your token in the Authorization header:</p>
+                  <p className="text-gray-700 dark:text-dark-text mb-3">Include your token in the Authorization header:</p>
                   <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
                     <pre className="text-sm text-gray-100"><code>{`Authorization: Bearer YOUR_API_TOKEN`}</code></pre>
                   </div>
@@ -273,10 +285,10 @@ export default function DocsPage() {
                 {/* Execute Prompt */}
                 <div>
                   <div className="flex items-center mb-4">
-                    <span className="bg-green-600 text-white px-3 py-1 rounded text-sm font-mono mr-3">POST</span>
+                    <span className="bg-success text-white px-3 py-1 rounded text-sm font-mono mr-3">POST</span>
                     <code className="text-lg font-mono">/v1/prompt</code>
                   </div>
-                  <p className="text-gray-700 mb-4">Execute a prompt through intelligent routing</p>
+                  <p className="text-gray-700 dark:text-dark-text mb-4">Execute a prompt through intelligent routing</p>
                   
                   <h4 className="font-semibold mb-2">Request Body</h4>
                   <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto mb-4">
@@ -327,10 +339,10 @@ export default function DocsPage() {
                     <span className="bg-blue-600 text-white px-3 py-1 rounded text-sm font-mono mr-3">GET</span>
                     <code className="text-lg font-mono">/v1/metrics</code>
                   </div>
-                  <p className="text-gray-700 mb-4">Get usage statistics and savings</p>
+                  <p className="text-gray-700 dark:text-dark-text mb-4">Get usage statistics and savings</p>
                   
                   <h4 className="font-semibold mb-2">Query Parameters</h4>
-                  <ul className="list-disc list-inside text-gray-700 mb-4 ml-4">
+                  <ul className="list-disc list-inside text-gray-700 dark:text-dark-text mb-4 ml-4">
                     <li><code className="bg-gray-100 px-2 py-1 rounded">days</code> - Number of days to look back (default: 30)</li>
                   </ul>
 
@@ -429,69 +441,42 @@ console.log('Saved:', response.data.savings.amount_saved, 'EUR');`}</code></pre>
               </div>
             </section>
 
-            {/* SDKs */}
-            <section id="sdks" className="card">
-              <h2 className="text-3xl font-bold mb-6">SDKs (Coming Soon)</h2>
-              
-              <p className="text-gray-700 mb-6">
-                Official SDKs are in development. Subscribe to updates to be notified when they're available:
-              </p>
-
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                  <div className="text-4xl mb-2">🐍</div>
-                  <h4 className="font-semibold mb-1">Python SDK</h4>
-                  <p className="text-sm text-gray-600">Coming Q1 2026</p>
-                </div>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                  <div className="text-4xl mb-2">📦</div>
-                  <h4 className="font-semibold mb-1">Node.js SDK</h4>
-                  <p className="text-sm text-gray-600">Coming Q1 2026</p>
-                </div>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                  <div className="text-4xl mb-2">🔷</div>
-                  <h4 className="font-semibold mb-1">TypeScript SDK</h4>
-                  <p className="text-sm text-gray-600">Coming Q1 2026</p>
-                </div>
-              </div>
-            </section>
-
             {/* Best Practices */}
             <section id="best-practices" className="card">
               <h2 className="text-3xl font-bold mb-6">Best Practices</h2>
               
               <div className="space-y-4">
-                <div className="border-l-4 border-primary-600 pl-4">
+                <div className="border-l-4 border-primary pl-4">
                   <h4 className="font-semibold mb-2">🎯 Let PromptRouter decide the model</h4>
-                  <p className="text-gray-700 text-sm">
+                  <p className="text-gray-700 dark:text-dark-text text-sm">
                     Don't specify a model - let our routing engine select the optimal one based on your prompt and constraints.
                   </p>
                 </div>
 
-                <div className="border-l-4 border-primary-600 pl-4">
+                <div className="border-l-4 border-primary pl-4">
                   <h4 className="font-semibold mb-2">💰 Add multiple provider keys</h4>
-                  <p className="text-gray-700 text-sm">
+                  <p className="text-gray-700 dark:text-dark-text text-sm">
                     The more providers you add, the better we can optimize. Add OpenAI, Anthropic, Google, and Grok for maximum savings.
                   </p>
                 </div>
 
-                <div className="border-l-4 border-primary-600 pl-4">
+                <div className="border-l-4 border-primary pl-4">
                   <h4 className="font-semibold mb-2">📊 Monitor your metrics</h4>
-                  <p className="text-gray-700 text-sm">
+                  <p className="text-gray-700 dark:text-dark-text text-sm">
                     Regularly check your dashboard to see savings trends and identify optimization opportunities.
                   </p>
                 </div>
 
-                <div className="border-l-4 border-primary-600 pl-4">
+                <div className="border-l-4 border-primary pl-4">
                   <h4 className="font-semibold mb-2">🔧 Use constraints wisely</h4>
-                  <p className="text-gray-700 text-sm">
+                  <p className="text-gray-700 dark:text-dark-text text-sm">
                     Set quality tiers and latency constraints only when necessary. Fewer constraints = more routing options = better savings.
                   </p>
                 </div>
 
-                <div className="border-l-4 border-primary-600 pl-4">
+                <div className="border-l-4 border-primary pl-4">
                   <h4 className="font-semibold mb-2">🔐 Keep your API token secure</h4>
-                  <p className="text-gray-700 text-sm">
+                  <p className="text-gray-700 dark:text-dark-text text-sm">
                     Never expose your PromptRouter API token in client-side code. Use environment variables and keep it server-side.
                   </p>
                 </div>
@@ -499,22 +484,22 @@ console.log('Saved:', response.data.savings.amount_saved, 'EUR');`}</code></pre>
             </section>
 
             {/* CTA */}
-            <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl p-8 text-white text-center">
+            <div className="bg-gradient-to-br from-primary to-accent rounded-xl p-8 text-white text-center">
               <h3 className="text-2xl font-bold mb-4">Ready to start saving?</h3>
-              <p className="text-primary-100 mb-6">
+              <p className="text-gray-100 mb-6">
                 Join thousands of developers optimizing their AI costs with PromptRouter
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/sign-up"
-                  className="inline-flex items-center justify-center bg-white text-primary-700 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors"
+                  className="inline-flex items-center justify-center bg-white text-gray-900 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors"
                 >
                   Get Started Free
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
                 <Link
                   href="/dashboard/playground"
-                  className="inline-flex items-center justify-center bg-primary-700 hover:bg-primary-800 border-2 border-white text-white font-semibold py-3 px-8 rounded-lg transition-colors"
+                  className="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 border-2 border-white text-white font-semibold py-3 px-8 rounded-lg transition-colors"
                 >
                   Try the Calculator
                 </Link>

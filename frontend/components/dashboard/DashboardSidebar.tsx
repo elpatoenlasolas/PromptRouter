@@ -35,7 +35,7 @@ export default function DashboardSidebar() {
   }
 
   return (
-    <aside className="hidden md:block w-64 bg-white shadow-sm min-h-screen fixed left-0 top-16">
+    <aside className="hidden md:block w-64 bg-white dark:bg-dark-surface shadow-sm dark:shadow-gray-900 min-h-screen fixed left-0 top-16">
       <nav className="p-4 space-y-1">
         {navigation.map((item) => {
           const Icon = item.icon
@@ -49,12 +49,12 @@ export default function DashboardSidebar() {
                 flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all
                 ${
                   active
-                    ? 'bg-blue-50 text-blue-700'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-gray-700 dark:text-dark-text dark:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-border'
                 }
               `}
             >
-              <Icon className={`w-5 h-5 mr-3 ${active ? 'text-blue-600' : 'text-gray-400'}`} />
+              <Icon className={`w-5 h-5 mr-3 ${active ? 'text-primary' : 'text-gray-400 dark:text-dark-text-muted'}`} />
               {item.name}
             </Link>
           )

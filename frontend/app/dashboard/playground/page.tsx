@@ -90,13 +90,13 @@ export default function PlaygroundPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold mb-2">Playground</h1>
-        <p className="text-gray-600">Calculate savings and test prompts with intelligent routing</p>
+        <p className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted">Calculate savings and test prompts with intelligent routing</p>
       </div>
 
       {/* Savings Calculator - Always Visible */}
-      <div className="card bg-gradient-to-br from-green-50 to-white border border-green-300">
+      <div className="card bg-success/5 border border-success/20">
         <div className="flex items-center mb-4">
-          <TrendingDown className="w-6 h-6 mr-2 text-green-600" />
+          <TrendingDown className="w-6 h-6 mr-2 text-success" />
           <h2 className="text-2xl font-bold">Savings Calculator</h2>
         </div>
         <p className="text-sm text-gray-600 mb-6">
@@ -172,7 +172,7 @@ export default function PlaygroundPage() {
                     onClick={() => setVolumeMultiplier(vol.monthly)}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                       volumeMultiplier === vol.monthly
-                        ? 'bg-green-600 dark:bg-green-700 text-white shadow-md'
+                        ? 'bg-success dark:bg-green-700 text-white shadow-md'
                         : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                     }`}
                   >
@@ -221,7 +221,7 @@ export default function PlaygroundPage() {
           </div>
 
           {/* Right: Results */}
-          <div className="bg-white p-5 rounded-lg border border-green-300">
+          <div className="bg-white dark:bg-dark-surface p-5 rounded-lg border border-green-300">
             {(() => {
               // Costos realistas basados en usar GPT-4 vs PromptRouter
               let avgTokensPerPrompt = 0;
@@ -265,9 +265,9 @@ export default function PlaygroundPage() {
                   </div>
                   
                   <div className="space-y-3">
-                    <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                    <div className="flex justify-between items-center pb-2 border-b border-gray-200 dark:border-dark-border">
                       <div>
-                        <div className="text-gray-600 text-sm">Without optimization</div>
+                        <div className="text-gray-600 dark:text-dark-text-muted text-sm">Without optimization</div>
                         <div className="text-xs text-gray-400">
                           Always GPT-4: {avgTokensPerPrompt} tokens × €0.03/1K
                         </div>
@@ -277,37 +277,37 @@ export default function PlaygroundPage() {
                       </span>
                     </div>
                     
-                    <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                    <div className="flex justify-between items-center pb-2 border-b border-gray-200 dark:border-dark-border">
                       <div>
-                        <div className="text-gray-600 text-sm">With PromptRouter</div>
+                        <div className="text-gray-600 dark:text-dark-text-muted text-sm">With PromptRouter</div>
                         <div className="text-xs text-gray-400">
                           Smart routing (99% Gemini)
                         </div>
                       </div>
-                      <span className="font-semibold text-green-600">
+                      <span className="font-semibold text-success">
                         €{monthlyCostWith.toFixed(2)}/mo
                       </span>
                     </div>
                     
-                    <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg mt-4 border-2 border-green-400">
+                    <div className="bg-success/10 p-4 rounded-lg mt-4 border-2 border-success/30">
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <div className="text-xs text-green-700 font-medium">YOUR SAVINGS</div>
-                          <div className="text-xs text-green-600 mt-1">
+                          <div className="text-xs text-success font-medium">YOUR SAVINGS</div>
+                          <div className="text-xs text-success/80 mt-1">
                             {savingsPercentage.toFixed(1)}% cheaper
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-3xl font-bold text-green-700">
+                          <div className="text-3xl font-bold text-success">
                             €{monthlySavings.toFixed(2)}
                           </div>
-                          <div className="text-xs text-green-600">per month</div>
+                          <div className="text-xs text-success">per month</div>
                         </div>
                       </div>
                       <div className="pt-3 border-t border-green-300 mt-3">
                         <div className="flex justify-between items-center text-sm">
-                          <span className="text-green-800 font-medium">Annual savings</span>
-                          <span className="font-bold text-green-700 text-lg">
+                          <span className="text-success font-medium">Annual savings</span>
+                          <span className="font-bold text-success text-lg">
                             €{annualSavings.toFixed(2)}
                           </span>
                         </div>
@@ -469,11 +469,11 @@ export default function PlaygroundPage() {
                 </h2>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Selected Model</span>
+                    <span className="text-gray-600 dark:text-dark-text-muted dark:text-gray-400">Selected Model</span>
                     <span className="font-semibold dark:text-white">{result.routing.model}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Provider</span>
+                    <span className="text-gray-600 dark:text-dark-text-muted dark:text-gray-400">Provider</span>
                     <span className="font-semibold capitalize dark:text-white">{result.routing.provider}</span>
                   </div>
                   <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
@@ -498,15 +498,15 @@ export default function PlaygroundPage() {
                       €{result.savings.actual_cost.toFixed(4)}
                     </p>
                   </div>
-                  <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                  <div className="bg-success/5 dark:bg-green-900/20 p-4 rounded-lg">
                     <div className="flex items-center mb-2">
-                      <TrendingDown className="w-4 h-4 text-green-600 dark:text-green-400 mr-2" />
+                      <TrendingDown className="w-4 h-4 text-success dark:text-success mr-2" />
                       <span className="text-sm text-gray-600 dark:text-gray-400">Saved</span>
                     </div>
-                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                    <p className="text-2xl font-bold text-success dark:text-success">
                       €{result.savings.amount_saved.toFixed(4)}
                     </p>
-                    <p className="text-xs text-green-700 dark:text-green-500 mt-1">
+                    <p className="text-xs text-success dark:text-success mt-1">
                       {result.savings.savings_percentage}% cheaper
                     </p>
                   </div>
@@ -535,16 +535,16 @@ export default function PlaygroundPage() {
               </div>
 
               {/* This Prompt's Savings */}
-              <div className="card bg-gray-100 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700">
+              <div className="card bg-gray-100 dark:bg-gray-800 border-2 border-gray-300 dark:border-dark-border dark:border-gray-700">
                 <h3 className="font-semibold mb-3 flex items-center dark:text-white">
                   <DollarSign className="w-5 h-5 mr-2 text-gray-900 dark:text-gray-100" />
                   Your Prompt's Savings
                 </h3>
                 <div className="space-y-3">
-                  <div className="bg-white dark:bg-gray-900 p-3 rounded-lg border border-gray-300 dark:border-gray-700">
+                  <div className="bg-white dark:bg-dark-surface p-3 rounded-lg border border-gray-300 dark:border-gray-700">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-gray-600">Single execution</span>
-                      <span className="text-lg font-bold text-green-600">
+                      <span className="text-sm text-gray-600 dark:text-dark-text-muted">Single execution</span>
+                      <span className="text-lg font-bold text-success">
                         €{result.savings.amount_saved.toFixed(4)}
                       </span>
                     </div>
@@ -559,21 +559,21 @@ export default function PlaygroundPage() {
                       If you ran this exact prompt:
                     </p>
                     <div className="space-y-2 text-sm">
-                      <div className="flex justify-between items-center bg-white p-2 rounded">
-                        <span className="text-gray-600">100 times/month</span>
-                        <span className="font-semibold text-green-600">
+                      <div className="flex justify-between items-center bg-white dark:bg-dark-surface p-2 rounded">
+                        <span className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted">100 times/month</span>
+                        <span className="font-semibold text-success">
                           Save €{(result.savings.amount_saved * 100).toFixed(2)}/mo
                         </span>
                       </div>
-                      <div className="flex justify-between items-center bg-white p-2 rounded">
-                        <span className="text-gray-600">1,000 times/month</span>
-                        <span className="font-semibold text-green-600">
+                      <div className="flex justify-between items-center bg-white dark:bg-dark-surface p-2 rounded">
+                        <span className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted">1,000 times/month</span>
+                        <span className="font-semibold text-success">
                           Save €{(result.savings.amount_saved * 1000).toFixed(2)}/mo
                         </span>
                       </div>
-                      <div className="flex justify-between items-center bg-white p-2 rounded">
-                        <span className="text-gray-600">10,000 times/month</span>
-                        <span className="font-semibold text-green-600">
+                      <div className="flex justify-between items-center bg-white dark:bg-dark-surface p-2 rounded">
+                        <span className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted">10,000 times/month</span>
+                        <span className="font-semibold text-success">
                           Save €{(result.savings.amount_saved * 10000).toFixed(2)}/mo
                         </span>
                       </div>
@@ -591,7 +591,7 @@ export default function PlaygroundPage() {
                         min="1"
                         max="1000000"
                         defaultValue="5000"
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        className="flex-1 px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg text-sm"
                         onChange={(e) => {
                           const val = parseInt(e.target.value) || 0;
                           const savingsEl = e.target.parentElement?.querySelector('.custom-savings');
@@ -600,8 +600,8 @@ export default function PlaygroundPage() {
                           }
                         }}
                       />
-                      <span className="text-sm text-gray-600">prompts/mo =</span>
-                      <span className="custom-savings font-bold text-green-600 text-lg">
+                      <span className="text-sm text-gray-600 dark:text-dark-text-muted">prompts/mo =</span>
+                      <span className="custom-savings font-bold text-success text-lg">
                         €{(result.savings.amount_saved * 5000).toFixed(2)}/mo
                       </span>
                     </div>
@@ -615,7 +615,7 @@ export default function PlaygroundPage() {
             <div className="card bg-gray-50 border-2 border-dashed border-gray-300">
               <div className="text-center py-12">
                 <Zap className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 mb-2">No results yet</p>
+                <p className="text-gray-600 dark:text-dark-text-muted mb-2">No results yet</p>
                 <p className="text-sm text-gray-500">
                   Enter a prompt and click "Execute Prompt" to see routing in action
                 </p>

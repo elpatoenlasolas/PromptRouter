@@ -70,7 +70,7 @@ export default function MobileNav() {
       {/* Drawer */}
       <aside
         className={`
-          fixed top-0 left-0 bottom-0 w-64 bg-white shadow-xl z-50 md:hidden
+          fixed top-0 left-0 bottom-0 w-64 bg-white dark:bg-dark-surface shadow dark:shadow-gray-900-xl z-50 md:hidden
           transform transition-transform duration-300 ease-in-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
@@ -103,7 +103,7 @@ export default function MobileNav() {
                   flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all
                   ${active
                     ? 'bg-blue-50 text-blue-700'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    : 'text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-border'
                   }
                 `}
               >

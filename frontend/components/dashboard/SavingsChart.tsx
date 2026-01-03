@@ -23,7 +23,7 @@ interface ChartDataPoint {
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
+      <div className="bg-white dark:bg-dark-surface p-3 border border-gray-200 dark:border-dark-border rounded-lg shadow-lg">
         <p className="font-semibold text-sm mb-2">{payload[0].payload.date}</p>
         <div className="space-y-1 text-xs">
           <p className="text-green-600 font-medium">
@@ -35,7 +35,7 @@ const CustomTooltip = ({ active, payload }: any) => {
           <p className="text-red-600">
             GPT-4 cost: €{payload[0].payload.gpt4Cost.toFixed(2)}
           </p>
-          <p className="text-gray-600 border-t pt-1 mt-1">
+          <p className="text-gray-600 dark:text-dark-text-muted border-t pt-1 mt-1">
             Savings: {payload[0].payload.gpt4Cost > 0 ? ((payload[0].payload.savedCumulative / payload[0].payload.gpt4Cost) * 100).toFixed(1) : '0'}%
           </p>
         </div>

@@ -40,10 +40,10 @@ export default function PricingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-base">
       <DashboardHeader />
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-black dark:via-gray-900 dark:to-black text-white py-20 mt-14">
+      <section className="bg-gradient-to-br from-primary to-accent dark:from-dark-base dark:to-dark-surface text-white py-20 mt-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
             <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
@@ -80,7 +80,7 @@ export default function PricingPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/sign-up"
-                className="bg-white text-gray-600 hover:bg-gray-50 font-semibold py-3 px-8 rounded-lg transition-all inline-flex items-center justify-center shadow-lg"
+                className="bg-white dark:bg-dark-surface text-gray-600 dark:text-dark-text hover:bg-gray-50 dark:hover:bg-dark-border font-semibold py-3 px-8 rounded-lg transition-all inline-flex items-center justify-center shadow-lg"
               >
                 Start free
               </Link>
@@ -97,9 +97,9 @@ export default function PricingPage() {
       </section>
 
       {/* Social Proof */}
-      {/* <section className="py-12 bg-white border-b border-gray-200">
+      {/* <section className="py-12 bg-white border-b border-gray-200 dark:border-dark-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-gray-600 text-lg">
+          <p className="text-center text-gray-600 dark:text-dark-text-muted text-lg">
             Used by indie developers, agencies, and AI-first startups
           </p>
         </div>
@@ -118,7 +118,7 @@ export default function PricingPage() {
           </div>
           
           {/* Flowchart Image */}
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl dark:shadow-gray-950 p-8 mb-12">
+          <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-xl dark:shadow-gray-950 p-8 mb-12">
             <img 
               src="/flowchart-promptrouter.png" 
               alt="PromptRouter Implementation Flow - 5 steps from API key setup to cost savings tracking"
@@ -132,7 +132,7 @@ export default function PricingPage() {
           {/* Detailed Steps */}
           <div className="grid md:grid-cols-5 gap-6">
             {/* Step 1 */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm border-2 border-gray-300 dark:border-gray-700">
+            <div className="bg-white dark:bg-dark-surface rounded-lg p-6 shadow-sm border-2 border-gray-300 dark:border-dark-border dark:border-gray-700">
               <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
                 <span className="text-2xl font-bold text-gray-900 dark:text-white">1</span>
               </div>
@@ -143,7 +143,7 @@ export default function PricingPage() {
             </div>
 
             {/* Step 2 */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm border-2 border-gray-300 dark:border-gray-700">
+            <div className="bg-white dark:bg-dark-surface rounded-lg p-6 shadow-sm border-2 border-gray-300 dark:border-dark-border dark:border-gray-700">
               <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
                 <span className="text-2xl font-bold text-gray-900 dark:text-white">2</span>
               </div>
@@ -154,7 +154,7 @@ export default function PricingPage() {
             </div>
 
             {/* Step 3 */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm border-2 border-gray-300 dark:border-gray-700">
+            <div className="bg-white dark:bg-dark-surface rounded-lg p-6 shadow-sm border-2 border-gray-300 dark:border-dark-border dark:border-gray-700">
               <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
                 <span className="text-2xl font-bold text-gray-900 dark:text-white">3</span>
               </div>
@@ -168,9 +168,9 @@ export default function PricingPage() {
             </div>
 
             {/* Step 4 */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm border-2 border-gray-300 dark:border-gray-700">
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
-                <span className="text-2xl font-bold text-green-600 dark:text-green-400">4</span>
+            <div className="bg-white dark:bg-dark-surface rounded-lg p-6 shadow-sm border-2 border-gray-300 dark:border-dark-border dark:border-gray-700">
+              <div className="w-12 h-12 bg-success/10 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+                <span className="text-2xl font-bold text-success dark:text-success">4</span>
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Auto-Routing</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300">
@@ -179,9 +179,9 @@ export default function PricingPage() {
             </div>
 
             {/* Step 5 */}
-            <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6 shadow-sm border-2 border-green-300 dark:border-green-800">
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
-                <span className="text-2xl font-bold text-green-600 dark:text-green-400">5</span>
+            <div className="bg-success/5 dark:bg-green-900/20 rounded-lg p-6 shadow-sm border-2 border-green-300 dark:border-green-800">
+              <div className="w-12 h-12 bg-success/10 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+                <span className="text-2xl font-bold text-success dark:text-success">5</span>
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Track Savings</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
@@ -196,7 +196,7 @@ export default function PricingPage() {
           </div>
 
           {/* Real Results */}
-          <div className="mt-12 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-black dark:via-gray-900 dark:to-black rounded-2xl p-8 text-white border border-gray-700 dark:border-gray-800">
+          <div className="mt-12 bg-gradient-to-br from-primary to-accent dark:from-dark-base dark:to-dark-surface rounded-2xl p-8 text-white border border-gray-700 dark:border-gray-800">
             <h3 className="text-4xl font-bold mb-6 text-center">Real Results</h3>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
@@ -238,19 +238,19 @@ export default function PricingPage() {
 
               <ul className="space-y-2 mb-4 flex-grow">
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">10K tokens / month</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Smart routing</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Basic dashboard</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Cost comparison</span>
                 </li>
               </ul>
@@ -266,7 +266,7 @@ export default function PricingPage() {
             </div>
 
             {/* Starter Plan */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-300 dark:border-gray-600 shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col relative">
+            <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-300 dark:border-dark-border dark:border-gray-600 shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span className="bg-gray-800 dark:bg-gray-700 text-white px-3 py-0.5 rounded-full text-xs font-semibold">
                   Popular
@@ -286,23 +286,23 @@ export default function PricingPage() {
 
               <ul className="space-y-2 mb-4 flex-grow">
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">500K tokens/mo</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">All routing modes</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Priority routing</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Email support</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Full dashboard</span>
                 </li>
               </ul>
@@ -320,7 +320,7 @@ export default function PricingPage() {
             </div>
 
             {/* Pro Plan */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-300 dark:border-gray-600 shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col relative">
+            <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-300 dark:border-dark-border dark:border-gray-600 shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span className="bg-yellow-500 dark:bg-yellow-600 text-gray-900 dark:text-white px-3 py-0.5 rounded-full text-xs font-semibold">
                   Best Value
@@ -336,8 +336,8 @@ export default function PricingPage() {
                 <p className="text-gray-600 dark:text-gray-400 text-xs mb-2">
                   Real savings and AI spend control.
                 </p>
-                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-2">
-                  <p className="text-green-800 dark:text-green-300 text-xs font-medium">
+                <div className="bg-success/5 dark:bg-green-900/20 border border-success/20 dark:border-green-800 rounded-lg p-2">
+                  <p className="text-success dark:text-green-300 text-xs font-medium">
                     💰 Avg savings: €60+/mo
                   </p>
                 </div>
@@ -345,27 +345,27 @@ export default function PricingPage() {
 
               <ul className="space-y-2 mb-4 flex-grow">
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">5M tokens/mo</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">All routing modes</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Custom rules</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Advanced analytics</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Priority support</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Cost caps & alerts</span>
                 </li>
               </ul>
@@ -388,7 +388,7 @@ export default function PricingPage() {
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Elite</h3>
                 <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">Max savings</p>
                 <div className="mb-3">
-                  <span className="text-3xl font-bold text-gray-900 dark:text-white">€59</span>
+                  <span className="text-3xl font-bold text-gray-900 dark:text-white">Custom</span>
                   <span className="text-gray-600 dark:text-gray-400 text-sm"> / mo</span>
                 </div>
                 <p className="text-gray-600 dark:text-gray-400 text-xs">
@@ -398,23 +398,23 @@ export default function PricingPage() {
 
               <ul className="space-y-2 mb-4 flex-grow">
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">5M+ tokens/mo</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Custom rules</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Shadow benchmark</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Export reports</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-success mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300 text-sm">Priority routing</span>
                 </li>
               </ul>
@@ -440,106 +440,76 @@ export default function PricingPage() {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="border-b-2 border-gray-300">
-                  <th className="text-left py-4 px-6 font-semibold text-gray-900">Feature</th>
-                  <th className="text-center py-4 px-6 font-semibold text-gray-900">Free</th>
-                  <th className="text-center py-4 px-6 font-semibold text-gray-900">Starter</th>
-                  <th className="text-center py-4 px-6 font-semibold text-gray-900">Pro</th>
-                  <th className="text-center py-4 px-6 font-semibold text-gray-900">Elite</th>
+                  <th className="text-left py-4 px-6 font-semibold text-gray-900 dark:text-white">Feature</th>
+                  <th className="text-center py-4 px-6 font-semibold text-gray-900 dark:text-white">Free</th>
+                  <th className="text-center py-4 px-6 font-semibold text-gray-900 dark:text-white">Starter</th>
+                  <th className="text-center py-4 px-6 font-semibold text-gray-900 dark:text-white">Pro</th>
+                  <th className="text-center py-4 px-6 font-semibold text-gray-900 dark:text-white">Elite</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-gray-200">
-                  <td className="py-4 px-6 text-gray-700">Visible savings</td>
+                <tr className="border-b border-gray-200 dark:border-dark-border">
+                  <td className="py-4 px-6 text-gray-700 dark:text-dark-text">Visible savings</td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
-                  </td>
-                </tr>
-                <tr className="border-b border-gray-200 bg-gray-50">
-                  <td className="py-4 px-6 text-gray-700">Smart routing</td>
-                  <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
-                  </td>
-                  <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
-                  </td>
-                  <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
-                  </td>
-                  <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                 </tr>
-                <tr className="border-b border-gray-200">
-                  <td className="py-4 px-6 text-gray-700">Cheap / Fast modes</td>
+                <tr className="border-b border-gray-200 dark:border-dark-border bg-gray-50">
+                  <td className="py-4 px-6 text-gray-700 dark:text-dark-text">Smart routing</td>
                   <td className="text-center py-4 px-6">
-                    <X className="w-5 h-5 text-gray-400 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
-                  </td>
-                </tr>
-                <tr className="border-b border-gray-200 bg-gray-50">
-                  <td className="py-4 px-6 text-gray-700">Batch processing</td>
-                  <td className="text-center py-4 px-6">
-                    <X className="w-5 h-5 text-gray-400 mx-auto" />
-                  </td>
-                  <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
-                  </td>
-                  <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
-                  </td>
-                  <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                 </tr>
-                <tr className="border-b border-gray-200">
-                  <td className="py-4 px-6 text-gray-700">Cost caps & alerts</td>
+                <tr className="border-b border-gray-200 dark:border-dark-border">
+                  <td className="py-4 px-6 text-gray-700 dark:text-dark-text">Cheap / Fast modes</td>
                   <td className="text-center py-4 px-6">
                     <X className="w-5 h-5 text-gray-400 mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <X className="w-5 h-5 text-gray-400 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                 </tr>
-                <tr className="border-b border-gray-200 bg-gray-50">
-                  <td className="py-4 px-6 text-gray-700">Custom routing rules</td>
+                <tr className="border-b border-gray-200 dark:border-dark-border bg-gray-50">
+                  <td className="py-4 px-6 text-gray-700 dark:text-dark-text">Batch processing</td>
                   <td className="text-center py-4 px-6">
                     <X className="w-5 h-5 text-gray-400 mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <X className="w-5 h-5 text-gray-400 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                 </tr>
-                <tr className="border-b border-gray-200">
-                  <td className="py-4 px-6 text-gray-700">Shadow benchmarking</td>
+                <tr className="border-b border-gray-200 dark:border-dark-border">
+                  <td className="py-4 px-6 text-gray-700 dark:text-dark-text">Cost caps & alerts</td>
                   <td className="text-center py-4 px-6">
                     <X className="w-5 h-5 text-gray-400 mx-auto" />
                   </td>
@@ -547,14 +517,29 @@ export default function PricingPage() {
                     <X className="w-5 h-5 text-gray-400 mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <X className="w-5 h-5 text-gray-400 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                 </tr>
-                <tr className="border-b border-gray-200 bg-gray-50">
-                  <td className="py-4 px-6 text-gray-700">Exportable reports</td>
+                <tr className="border-b border-gray-200 dark:border-dark-border bg-gray-50">
+                  <td className="py-4 px-6 text-gray-700 dark:text-dark-text">Custom routing rules</td>
+                  <td className="text-center py-4 px-6">
+                    <X className="w-5 h-5 text-gray-400 mx-auto" />
+                  </td>
+                  <td className="text-center py-4 px-6">
+                    <X className="w-5 h-5 text-gray-400 mx-auto" />
+                  </td>
+                  <td className="text-center py-4 px-6">
+                    <Check className="w-5 h-5 text-success mx-auto" />
+                  </td>
+                  <td className="text-center py-4 px-6">
+                    <Check className="w-5 h-5 text-success mx-auto" />
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-200 dark:border-dark-border">
+                  <td className="py-4 px-6 text-gray-700 dark:text-dark-text">Shadow benchmarking</td>
                   <td className="text-center py-4 px-6">
                     <X className="w-5 h-5 text-gray-400 mx-auto" />
                   </td>
@@ -565,7 +550,22 @@ export default function PricingPage() {
                     <X className="w-5 h-5 text-gray-400 mx-auto" />
                   </td>
                   <td className="text-center py-4 px-6">
-                    <Check className="w-5 h-5 text-green-500 mx-auto" />
+                    <Check className="w-5 h-5 text-success mx-auto" />
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-200 dark:border-dark-border bg-gray-50">
+                  <td className="py-4 px-6 text-gray-700 dark:text-dark-text">Exportable reports</td>
+                  <td className="text-center py-4 px-6">
+                    <X className="w-5 h-5 text-gray-400 mx-auto" />
+                  </td>
+                  <td className="text-center py-4 px-6">
+                    <X className="w-5 h-5 text-gray-400 mx-auto" />
+                  </td>
+                  <td className="text-center py-4 px-6">
+                    <X className="w-5 h-5 text-gray-400 mx-auto" />
+                  </td>
+                  <td className="text-center py-4 px-6">
+                    <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                 </tr>
               </tbody>
@@ -580,26 +580,26 @@ export default function PricingPage() {
           <h2 className="text-3xl font-bold text-center mb-12">Frequently asked questions</h2>
           <div className="space-y-8">
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 What if I don't save money?
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-dark-text-muted">
                 PromptRouter is designed so that most users save more than the subscription cost. If you don't, the free plan lets you walk away without risk.
               </p>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Do you see or store my prompts?
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-dark-text-muted">
                 No. We never train on or log your prompt content. All API keys are encrypted.
               </p>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Can I cancel anytime?
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-dark-text-muted">
                 Yes. No lock-in, no long-term contracts.
               </p>
             </div>
@@ -608,7 +608,7 @@ export default function PricingPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-black dark:via-gray-900 dark:to-black text-white">
+      <section className="py-20 bg-gradient-to-br from-primary to-accent dark:from-dark-base dark:to-dark-surface text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold mb-4">Start saving on AI today</h2>
           <p className="text-xl text-gray-300 dark:text-gray-400 mb-8">
@@ -617,7 +617,7 @@ export default function PricingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/sign-up"
-              className="inline-flex items-center bg-white text-gray-700 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors justify-center"
+              className="inline-flex items-center bg-white dark:bg-dark-surface text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-border font-semibold py-3 px-8 rounded-lg transition-colors justify-center"
             >
               Try PromptRouter for free
               <ArrowRight className="w-5 h-5 ml-2" />

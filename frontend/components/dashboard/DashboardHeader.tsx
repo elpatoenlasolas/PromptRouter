@@ -51,9 +51,9 @@ export default function DashboardHeader() {
               aria-label="Toggle theme"
             >
               {theme === 'light' ? (
-                <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                <Moon className="w-5 h-5 text-gray-600 dark:text-dark-text-muted dark:text-gray-300" />
               ) : (
-                <Sun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                <Sun className="w-5 h-5 text-gray-600 dark:text-dark-text-muted dark:text-gray-300" />
               )}
             </button>
             
@@ -80,7 +80,7 @@ export default function DashboardHeader() {
                         key={item.name}
                         href={item.href}
                         onClick={() => setShowMenu(false)}
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-dark-text dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       >
                         <Icon className="w-4 h-4 mr-3 text-gray-900 dark:text-gray-100" />
                         {item.name}
@@ -98,7 +98,7 @@ export default function DashboardHeader() {
               aria-label="Quick menu"
             >
               <svg
-                className="w-5 h-5 text-gray-600 dark:text-gray-300"
+                className="w-5 h-5 text-gray-600 dark:text-dark-text-muted dark:text-gray-300"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

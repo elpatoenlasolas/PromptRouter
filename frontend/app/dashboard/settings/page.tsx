@@ -134,7 +134,7 @@ export default function SettingsPage() {
     return (
       <div className="text-center py-12">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-        <p className="mt-4 text-gray-600">Loading settings...</p>
+        <p className="mt-4 text-gray-600 dark:text-dark-text-muted">Loading settings...</p>
       </div>
     )
   }
@@ -174,17 +174,17 @@ export default function SettingsPage() {
                   </span>
                 )}
                 {config?.tier === 'starter' && (
-                  <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                  <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">
                     Active
                   </span>
                 )}
                 {config?.tier === 'pro' && (
-                  <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">
+                  <span className="px-3 py-1 bg-accent/10 text-accent text-xs font-semibold rounded-full">
                     Active
                   </span>
                 )}
               </div>
-              <p className="text-gray-600 mb-3">
+              <p className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted mb-3">
                 {config?.tokens_used_this_month?.toLocaleString() || '0'} / {config?.monthly_token_limit?.toLocaleString() || '0'} tokens used this month
               </p>
               {config?.tier === 'free' && (
@@ -234,7 +234,7 @@ export default function SettingsPage() {
         <div className="mb-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-gray-700">Token Usage</span>
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-gray-600 dark:text-dark-text-muted">
               {Math.round(((config?.tokens_used_this_month || 0) / (config?.monthly_token_limit || 1)) * 100)}%
             </span>
           </div>
@@ -245,7 +245,7 @@ export default function SettingsPage() {
                   ? 'bg-red-500' 
                   : ((config?.tokens_used_this_month || 0) / (config?.monthly_token_limit || 1)) > 0.7 
                   ? 'bg-yellow-500' 
-                  : 'bg-green-500'
+                  : 'bg-success'
               }`}
               style={{ 
                 width: `${Math.min(((config?.tokens_used_this_month || 0) / (config?.monthly_token_limit || 1)) * 100, 100)}%` 
@@ -283,14 +283,14 @@ export default function SettingsPage() {
 
         {/* Create Token Form */}
         {showCreateToken && !createdToken && (
-          <form onSubmit={handleCreateToken} className="mb-6 p-4 bg-gray-50 rounded-lg">
+          <form onSubmit={handleCreateToken} className="mb-6 p-4 bg-gray-50 dark:bg-dark-surface rounded-lg">
             <div className="mb-4">
               <label className="block text-sm font-medium mb-2">Token Name</label>
               <input
                 type="text"
                 value={newTokenName}
                 onChange={(e) => setNewTokenName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-3 py-2 border border-gray-300 text-gray-900 dark:border-dark-border rounded-lg"
                 placeholder="e.g., Production API, Development, My App"
                 required
               />
@@ -318,15 +318,15 @@ export default function SettingsPage() {
 
         {/* Newly Created Token - Show Once */}
         {createdToken && (
-          <div className="mb-6 p-4 bg-green-50 border-2 border-green-500 rounded-lg">
+          <div className="mb-6 p-4 bg-success/5 border-2 border-success rounded-lg">
             <div className="flex items-start mb-3">
-              <Check className="w-5 h-5 text-green-600 mr-2 mt-0.5" />
+              <Check className="w-5 h-5 text-success mr-2 mt-0.5" />
               <div className="flex-1">
-                <h3 className="font-semibold text-green-900 mb-1">Token Created Successfully!</h3>
-                <p className="text-sm text-green-800 mb-3">
+                <h3 className="font-semibold text-success mb-1">Token Created Successfully!</h3>
+                <p className="text-sm text-success mb-3">
                   Make sure to copy your token now. You won't be able to see it again!
                 </p>
-                <div className="flex items-center gap-2 bg-white p-3 rounded border border-green-300">
+                <div className="flex items-center gap-2 bg-white dark:bg-dark-surface p-3 rounded border border-green-300">
                   <code className="flex-1 text-sm font-mono break-all">{createdToken}</code>
                   <button
                     onClick={() => copyToClipboard(createdToken)}
@@ -366,13 +366,13 @@ export default function SettingsPage() {
               <div
                 key={token.id}
                 className={`flex items-center justify-between p-4 rounded-lg ${
-                  token.is_active ? 'bg-gray-50' : 'bg-red-50 opacity-60'
+                  token.is_active ? 'bg-gray-50 text-gray-900 dark:bg-dark-surface' : 'bg-red-50 opacity-60 dark:bg-dark-surface'
                 }`}
               >
                 <div className="flex items-center flex-1">
                   <Key className="w-5 h-5 text-gray-400 mr-3" />
                   <div className="flex-1">
-                    <p className="font-medium">{token.name}</p>
+                    <p className="font-medium text-gray-600 dark:text-gray-50">{token.name}</p>
                     <code className="text-xs text-gray-500 font-mono">{token.token_preview}</code>
                     <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
                       <span>Created {new Date(token.created_at).toLocaleDateString()}</span>
@@ -388,7 +388,7 @@ export default function SettingsPage() {
                 {token.is_active && (
                   <button
                     onClick={() => handleRevokeToken(token.id)}
-                    className="btn-danger flex items-center ml-3"
+                    className="btn-danger flex items-center ml-3 dark:bg-red-900/50 dark:hover:bg-red-900/80"
                   >
                     <Trash2 className="w-4 h-4 mr-1" />
                     Revoke
@@ -425,14 +425,14 @@ export default function SettingsPage() {
         </div>
 
         {showAddKey && (
-          <form onSubmit={handleAddKey} className="mb-6 p-4 bg-gray-50 rounded-lg">
+          <form onSubmit={handleAddKey} className="mb-6 p-4 bg-gray-50 dark:bg-dark-surface rounded-lg">
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="block text-sm font-medium mb-2">Provider</label>
                 <select
                   value={newKey.provider}
                   onChange={(e) => setNewKey({ ...newKey, provider: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg"
                 >
                   <option value="openai">OpenAI</option>
                   <option value="anthropic">Anthropic</option>
@@ -446,7 +446,7 @@ export default function SettingsPage() {
                   type="password"
                   value={newKey.key}
                   onChange={(e) => setNewKey({ ...newKey, key: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg"
                   placeholder="sk-..."
                   required
                 />
@@ -475,7 +475,7 @@ export default function SettingsPage() {
             config.api_keys.map((key) => (
               <div
                 key={key.id}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                className="flex items-center justify-between p-4 bg-gray-50 dark:bg-dark-surface rounded-lg"
               >
                 <div className="flex items-center">
                   <Key className="w-5 h-5 text-gray-400 mr-3" />
@@ -490,7 +490,7 @@ export default function SettingsPage() {
                   <span
                     className={`px-2 py-1 rounded text-xs ${
                       key.is_active
-                        ? 'bg-green-100 text-green-700'
+                        ? 'bg-success/10 text-success'
                         : 'bg-gray-100 text-gray-700'
                     }`}
                   >

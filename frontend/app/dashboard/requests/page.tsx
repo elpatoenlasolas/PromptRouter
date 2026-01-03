@@ -155,7 +155,7 @@ export default function RequestsPage() {
     <div>
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">Requests</h1>
-        <p className="text-gray-600">View and analyze all your prompt executions</p>
+        <p className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted">View and analyze all your prompt executions</p>
       </div>
 
       {/* Filters */}
@@ -168,7 +168,7 @@ export default function RequestsPage() {
               placeholder="Search by model, provider, or reason..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
             />
           </div>
           <div className="relative">
@@ -176,7 +176,7 @@ export default function RequestsPage() {
             <select
               value={filterProvider}
               onChange={(e) => setFilterProvider(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent appearance-none bg-white"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent appearance-none bg-white dark:bg-dark-surface"
             >
               <option value="all">All Providers</option>
               {providers.map((provider) => (
@@ -200,8 +200,8 @@ export default function RequestsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="border-b border-gray-200">
-                <tr className="text-left text-sm text-gray-600">
+              <thead className="border-b border-gray-200 dark:border-dark-border">
+                <tr className="text-left text-sm text-gray-600 dark:text-dark-text-muted">
                   <th className="pb-3 font-medium">Status</th>
                   <th className="pb-3 font-medium">Model</th>
                   <th className="pb-3 font-medium">Provider</th>
@@ -213,12 +213,12 @@ export default function RequestsPage() {
                   <th className="pb-3 font-medium">Time</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-100 dark:divide-dark-border">
                 {filteredRequests.map((req) => (
                   <tr key={req.id} className="text-sm hover:bg-gray-50 transition-colors">
                     <td className="py-3">
                       {req.success ? (
-                        <CheckCircle className="w-5 h-5 text-green-500" />
+                        <CheckCircle className="w-5 h-5 text-success" />
                       ) : (
                         <XCircle className="w-5 h-5 text-red-500" />
                       )}
@@ -229,7 +229,7 @@ export default function RequestsPage() {
                         {req.provider}
                       </span>
                     </td>
-                    <td className="py-3 text-gray-600">
+                    <td className="py-3 text-gray-600 dark:text-dark-text-muted">
                       {req.input_tokens && req.output_tokens ? (
                         <span>
                           {req.input_tokens + req.output_tokens} 
@@ -241,16 +241,16 @@ export default function RequestsPage() {
                         '-'
                       )}
                     </td>
-                    <td className="py-3 text-gray-600">
+                    <td className="py-3 text-gray-600 dark:text-dark-text-muted">
                       <div className="flex items-center">
                         <Clock className="w-3 h-3 mr-1" />
                         {req.latency_ms}ms
                       </div>
                     </td>
-                    <td className="py-3 text-gray-900 font-medium">€{req.cost.toFixed(4)}</td>
+                    <td className="py-3 text-gray-900 dark:text-white font-medium">€{req.cost.toFixed(4)}</td>
                     <td className="py-3">
                       {req.saved > 0 ? (
-                        <span className="text-green-600 font-medium">+€{req.saved.toFixed(4)}</span>
+                        <span className="text-success font-medium">+€{req.saved.toFixed(4)}</span>
                       ) : (
                         <span className="text-gray-400">-</span>
                       )}
@@ -270,18 +270,18 @@ export default function RequestsPage() {
       {/* Summary Stats */}
       <div className="grid md:grid-cols-3 gap-6 mt-6">
         <div className="card">
-          <p className="text-gray-600 text-sm mb-1">Total Requests</p>
-          <p className="text-2xl font-bold text-gray-900">{filteredRequests.length}</p>
+          <p className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted text-sm mb-1">Total Requests</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{filteredRequests.length}</p>
         </div>
         <div className="card">
-          <p className="text-gray-600 text-sm mb-1">Total Cost</p>
-          <p className="text-2xl font-bold text-gray-900">
+          <p className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted text-sm mb-1">Total Cost</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">
             €{filteredRequests.reduce((sum, r) => sum + r.cost, 0).toFixed(4)}
           </p>
         </div>
         <div className="card">
-          <p className="text-gray-600 text-sm mb-1">Total Saved</p>
-          <p className="text-2xl font-bold text-green-600">
+          <p className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted text-sm mb-1">Total Saved</p>
+          <p className="text-2xl font-bold text-success">
             €{filteredRequests.reduce((sum, r) => sum + r.saved, 0).toFixed(4)}
           </p>
         </div>
