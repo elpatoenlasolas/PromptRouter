@@ -44,7 +44,7 @@ export default function HomePage() {
                     </Link>
                   ) : (
                     <>
-                      <Link href="/sign-in" className="text-gray-300 hover:text-white transition-colors">
+                      <Link href="/sign-in" className="text-gray-50 hover:text-white transition-colors">
                         Sign In
                       </Link>
                       <Link href="/sign-up" className="btn-accent">
