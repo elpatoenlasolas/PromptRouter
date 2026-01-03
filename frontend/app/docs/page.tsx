@@ -197,7 +197,7 @@ export default function DocsPage() {
                 <div>
                   <h3 className="text-lg sm:text-xl font-semibold mb-3">2. Make Your First Request</h3>
                   <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
-                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`curl -X POST https://api.promptrouter.com/v1/prompt \\
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`curl -X POST https://prompt-router.com/v1/prompt \\
   -H "Authorization: Bearer YOUR_API_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -375,7 +375,7 @@ export default function DocsPage() {
                   <h3 className="text-lg sm:text-xl font-semibold mb-3">JavaScript / TypeScript</h3>
                   <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
                     <pre className="text-xs sm:text-sm text-gray-100"><code>{`// Using fetch
-const response = await fetch('https://api.promptrouter.com/v1/prompt', {
+const response = await fetch('https://prompt-router.com/v1/prompt', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_TOKEN',
@@ -400,7 +400,7 @@ console.log('Saved:', data.savings.amount_saved, 'EUR');`}</code></pre>
                     <pre className="text-xs sm:text-sm text-gray-100"><code>{`import requests
 
 response = requests.post(
-    'https://api.promptrouter.com/v1/prompt',
+    'https://prompt-router.com/v1/prompt',
     headers={
         'Authorization': 'Bearer YOUR_API_TOKEN',
         'Content-Type': 'application/json'
@@ -424,7 +424,7 @@ print(f"Saved: €{data['savings']['amount_saved']}")`}</code></pre>
                     <pre className="text-xs sm:text-sm text-gray-100"><code>{`const axios = require('axios');
 
 const response = await axios.post(
-  'https://api.promptrouter.com/v1/prompt',
+  'https://prompt-router.com/v1/prompt',
   {
     prompt: 'Explain quantum computing in simple terms',
     max_tokens: 500

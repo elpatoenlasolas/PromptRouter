@@ -51,7 +51,7 @@ Response:
 Include your token in the `Authorization` header of all API requests:
 
 ```bash
-curl -X POST https://api.promptrouter.com/v1/prompt \
+curl -X POST https://prompt-router.com/v1/prompt \
   -H "Authorization: Bearer pr_live_YOUR_TOKEN_HERE" \
   -H "Content-Type: application/json" \
   -d '{
@@ -63,7 +63,7 @@ curl -X POST https://api.promptrouter.com/v1/prompt \
 ### JavaScript/TypeScript
 
 ```javascript
-const response = await fetch('https://api.promptrouter.com/v1/prompt', {
+const response = await fetch('https://prompt-router.com/v1/prompt', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer pr_live_YOUR_TOKEN_HERE',
@@ -82,7 +82,7 @@ const response = await fetch('https://api.promptrouter.com/v1/prompt', {
 import requests
 
 response = requests.post(
-    'https://api.promptrouter.com/v1/prompt',
+    'https://prompt-router.com/v1/prompt',
     headers={
         'Authorization': 'Bearer pr_live_YOUR_TOKEN_HERE',
         'Content-Type': 'application/json'

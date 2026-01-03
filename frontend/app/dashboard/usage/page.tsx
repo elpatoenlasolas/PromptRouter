@@ -17,10 +17,19 @@ export default function UsagePage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchUsageStats()
+    fetchUsageStats(true)
+    
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(() => {
+      fetchUsageStats(false)
+    }, 30000)
+    
+    return () => clearInterval(interval)
   }, [])
 
-  const fetchUsageStats = async () => {
+  const fetchUsageStats = async (showLoading = true) => {
+    if (showLoading) setLoading(true)
+    
     try {
       // Get usage stats from config endpoint
       const configResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/config`)
@@ -61,15 +70,17 @@ export default function UsagePage() {
       })
     } catch (error) {
       console.error('Failed to fetch usage stats:', error)
-      // Set empty stats on error
-      setStats({
-        tokens_used_this_month: 0,
-        monthly_token_limit: 10000,
-        requests_this_month: 0,
-        daily_usage: []
-      })
+      // Set empty stats on error only on first load
+      if (showLoading) {
+        setStats({
+          tokens_used_this_month: 0,
+          monthly_token_limit: 10000,
+          requests_this_month: 0,
+          daily_usage: []
+        })
+      }
     } finally {
-      setLoading(false)
+      if (showLoading) setLoading(false)
     }
   }
 

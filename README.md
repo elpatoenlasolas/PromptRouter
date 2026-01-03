@@ -212,7 +212,7 @@ This aligns our success with customer value.
 First, create an API token in your dashboard (Settings → API Tokens). Then:
 
 ```bash
-curl -X POST https://api.promptrouter.com/v1/prompt \
+curl -X POST https://prompt-router.com/v1/prompt \
   -H "Authorization: Bearer pr_live_YOUR_TOKEN_HERE" \
   -H "Content-Type: application/json" \
   -d '{
