@@ -12,10 +12,26 @@ from typing import Optional
 
 class PromptConstraints(BaseModel):
     """User-defined constraints for routing"""
-    max_cost_per_1k_tokens: Optional[float] = Field(None, description="Maximum cost in euros per 1K tokens")
-    max_latency_ms: Optional[int] = Field(None, description="Maximum acceptable latency in milliseconds")
+    # Cost constraints
+    max_cost_per_1k_tokens: Optional[float] = Field(None, description="Hard ceiling on cost per 1K tokens")
+    cost_priority: Optional[float] = Field(0.7, ge=0.0, le=1.0, description="Weight for cost in routing (0=ignore, 1=critical)")
+    
+    # Latency constraints
+    max_latency_ms: Optional[int] = Field(None, description="Hard ceiling on latency in milliseconds")
+    latency_priority: Optional[float] = Field(0.2, ge=0.0, le=1.0, description="Weight for latency in routing")
+    
+    # Quality and risk constraints
     min_quality_tier: Optional[str] = Field("basic", description="Minimum quality tier: basic, standard, premium")
+    quality_priority: Optional[float] = Field(0.1, ge=0.0, le=1.0, description="Weight for quality in routing")
+    
+    # NEW: Risk and correctness
+    risk_level: Optional[str] = Field("low", description="Risk level: low, medium, high, critical")
+    requires_verification: Optional[bool] = Field(False, description="Task requires factual accuracy (medical, legal, financial)")
+    is_irreversible: Optional[bool] = Field(False, description="Decision cannot be easily reversed or checked")
+    
+    # Preferences
     preferred_providers: Optional[list[str]] = Field(None, description="Preferred providers if available")
+    baseline_model: Optional[str] = Field("gpt-4", description="Model to compare savings against")
 
 
 class PromptRequest(BaseModel):
