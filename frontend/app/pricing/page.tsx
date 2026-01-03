@@ -433,7 +433,7 @@ export default function PricingPage() {
       </section>
 
       {/* Comparison Table */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white dark:bg-dark-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">Compare plans</h2>
           <div className="overflow-x-auto">
@@ -463,7 +463,7 @@ export default function PricingPage() {
                     <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                 </tr>
-                <tr className="border-b border-gray-200 dark:border-dark-border bg-gray-50">
+                <tr className="border-b border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-dark-surface">
                   <td className="py-4 px-6 text-gray-700 dark:text-dark-text">Smart routing</td>
                   <td className="text-center py-4 px-6">
                     <Check className="w-5 h-5 text-success mx-auto" />
@@ -493,7 +493,7 @@ export default function PricingPage() {
                     <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                 </tr>
-                <tr className="border-b border-gray-200 dark:border-dark-border bg-gray-50">
+                <tr className="border-b border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-dark-surface">
                   <td className="py-4 px-6 text-gray-700 dark:text-dark-text">Batch processing</td>
                   <td className="text-center py-4 px-6">
                     <X className="w-5 h-5 text-gray-400 mx-auto" />
@@ -523,7 +523,7 @@ export default function PricingPage() {
                     <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                 </tr>
-                <tr className="border-b border-gray-200 dark:border-dark-border bg-gray-50">
+                <tr className="border-b border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-dark-surface">
                   <td className="py-4 px-6 text-gray-700 dark:text-dark-text">Custom routing rules</td>
                   <td className="text-center py-4 px-6">
                     <X className="w-5 h-5 text-gray-400 mx-auto" />
@@ -553,7 +553,7 @@ export default function PricingPage() {
                     <Check className="w-5 h-5 text-success mx-auto" />
                   </td>
                 </tr>
-                <tr className="border-b border-gray-200 dark:border-dark-border bg-gray-50">
+                <tr className="border-b border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-dark-surface">
                   <td className="py-4 px-6 text-gray-700 dark:text-dark-text">Exportable reports</td>
                   <td className="text-center py-4 px-6">
                     <X className="w-5 h-5 text-gray-400 mx-auto" />
@@ -575,7 +575,7 @@ export default function PricingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white dark:bg-dark-surface">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">Frequently asked questions</h2>
           <div className="space-y-8">

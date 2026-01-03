@@ -19,7 +19,7 @@ module.exports = {
         },
         
         // ACCENT - Gold (premium CTAs, distinctive)
-        accent: '#51deaad2',
+        accent: '#51deaa',
         
         // SEMANTIC STATES
         success: {

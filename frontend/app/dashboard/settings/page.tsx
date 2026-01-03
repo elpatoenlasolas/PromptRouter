@@ -366,7 +366,7 @@ export default function SettingsPage() {
               <div
                 key={token.id}
                 className={`flex items-center justify-between p-4 rounded-lg ${
-                  token.is_active ? 'bg-gray-50 text-gray-900 dark:bg-dark-surface' : 'bg-red-50 opacity-60 dark:bg-dark-surface'
+                  token.is_active ? 'bg-gray-50 text-gray-900 dark:bg-dark-surface' : 'bg-red-50 opacity-60 dark:bg-gray-700/20 text-gray-500'
                 }`}
               >
                 <div className="flex items-center flex-1">

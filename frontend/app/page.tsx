@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { ArrowRight, Zap, DollarSign, Target } from 'lucide-react'
+import MobileNav from '@/components/dashboard/MobileNav'
 import { useUser } from '@clerk/nextjs'
 
 export default function HomePage() {
@@ -12,8 +13,11 @@ export default function HomePage() {
       <header className="bg-gradient-to-br from-primary to-accent dark:from-dark-base dark:to-dark-surface text-white">
         <nav className="mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <Link href="/" className="text-2xl font-bold">PromptRouter</Link>
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center gap-3">
+              <MobileNav publicOnly />
+              <Link href="/" className="text-2xl font-bold">PromptRouter</Link>
+            </div>
+            <div className="hidden md:flex items-center space-x-6">
               <Link href="/pricing" className="text-gray-50 hover:text-white transition-colors">
                 Pricing
               </Link>
