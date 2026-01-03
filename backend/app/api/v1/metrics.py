@@ -3,7 +3,7 @@ Metrics API endpoints
 """
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+from sqlalchemy import select, func, Integer
 from datetime import datetime, timedelta
 from app.core.database import get_db
 from app.models.database import PromptExecution
@@ -39,7 +39,7 @@ async def get_usage_metrics(
             func.sum(PromptExecution.cheapest_alternative_cost).label("estimated_spend"),
             func.sum(PromptExecution.savings).label("total_saved"),
             func.avg(PromptExecution.latency_ms).label("avg_latency"),
-            func.sum(func.cast(~PromptExecution.success, int)).label("error_count"),
+            func.sum(func.cast(~PromptExecution.success, Integer)).label("error_count"),
         )
         .where(PromptExecution.user_id == user_id)
         .where(PromptExecution.created_at >= period_start)
