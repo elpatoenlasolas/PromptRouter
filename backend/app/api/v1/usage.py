@@ -4,6 +4,8 @@ Usage statistics endpoint
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
+from app.core.auth import get_user_from_clerk
+from app.models.database import User
 from app.services.usage_limits import UsageLimitService
 
 router = APIRouter()
@@ -11,7 +13,7 @@ router = APIRouter()
 
 @router.get("/usage")
 async def get_usage(
-    user_id: int = 1,  # TODO: Extract from auth token
+    current_user: User = Depends(get_user_from_clerk),
     db: AsyncSession = Depends(get_db),
 ):
     """
@@ -23,5 +25,5 @@ async def get_usage(
     - Usage percentage
     """
     service = UsageLimitService(db)
-    stats = await service.get_usage_stats(user_id)
+    stats = await service.get_usage_stats(current_user.id)
     return stats

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { ArrowRight, Zap, DollarSign, Target } from 'lucide-react'
 import MobileNav from '@/components/dashboard/MobileNav'
+import Footer from '@/components/Footer'
 import { useUser } from '@clerk/nextjs'
 
 export default function HomePage() {
@@ -279,11 +280,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-50 dark:bg-dark-surface text-gray-900 dark:text-dark-text-muted py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="caption">&copy; 2025 PromptRouter. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

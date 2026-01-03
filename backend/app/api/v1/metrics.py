@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, Integer
 from datetime import datetime, timedelta
 from app.core.database import get_db
-from app.models.database import PromptExecution
+from app.core.auth import get_user_from_clerk
+from app.models.database import PromptExecution, User
 from app.models.schemas import UsageMetrics, SavingsBreakdown
 
 router = APIRouter()
@@ -14,7 +15,7 @@ router = APIRouter()
 
 @router.get("/metrics", response_model=UsageMetrics)
 async def get_usage_metrics(
-    user_id: int = 1,  # TODO: Extract from auth token
+    current_user: User = Depends(get_user_from_clerk),
     days: int = Query(30, ge=1, le=365, description="Number of days to look back"),
     db: AsyncSession = Depends(get_db),
 ):
@@ -65,7 +66,7 @@ async def get_usage_metrics(
 
 @router.get("/savings", response_model=SavingsBreakdown)
 async def get_savings_breakdown(
-    user_id: int = 1,  # TODO: Extract from auth token
+    current_user: User = Depends(get_user_from_clerk),
     days: int = Query(30, ge=1, le=365),
     db: AsyncSession = Depends(get_db),
 ):
@@ -77,7 +78,7 @@ async def get_savings_breakdown(
     # Query executions
     result = await db.execute(
         select(PromptExecution)
-        .where(PromptExecution.user_id == user_id)
+        .where(PromptExecution.user_id == current_user.id)
         .where(PromptExecution.created_at >= period_start)
     )
     executions = result.scalars().all()

@@ -8,6 +8,7 @@ from sqlalchemy import select
 from pydantic import BaseModel
 from datetime import datetime
 from app.core.database import get_db
+from app.core.auth import get_user_from_clerk
 from app.models.database import User, APIToken
 
 router = APIRouter()
@@ -48,7 +49,7 @@ def generate_api_token(prefix: str = "pr_live") -> str:
 @router.post("/tokens", response_model=TokenResponse)
 async def create_api_token(
     token_data: TokenCreate,
-    user_id: int = 1,  # TODO: Extract from auth token
+    current_user: User = Depends(get_user_from_clerk),
     db: AsyncSession = Depends(get_db),
 ):
     """
@@ -56,21 +57,15 @@ async def create_api_token(
     
     The token will be shown only once - make sure to save it!
     """
-    # Check if user exists
-    result = await db.execute(
-        select(User).where(User.id == user_id)
-    )
-    user = result.scalar_one_or_none()
-    
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+    # User already verified by get_user_from_clerk
+    user = current_user
     
     # Generate token
     token = generate_api_token()
     
     # Create token record
     api_token = APIToken(
-        user_id=user_id,
+        user_id=user.id,
         token=token,
         name=token_data.name,
         is_active=True,
@@ -92,13 +87,13 @@ async def create_api_token(
 
 @router.get("/tokens")
 async def list_api_tokens(
-    user_id: int = 1,  # TODO: Extract from auth token
+    current_user: User = Depends(get_user_from_clerk),
     db: AsyncSession = Depends(get_db),
 ):
     """List all API tokens for the user (tokens are masked)"""
     result = await db.execute(
         select(APIToken)
-        .where(APIToken.user_id == user_id)
+        .where(APIToken.user_id == current_user.id)
         .order_by(APIToken.created_at.desc())
     )
     tokens = result.scalars().all()
@@ -121,14 +116,14 @@ async def list_api_tokens(
 @router.delete("/tokens/{token_id}")
 async def revoke_api_token(
     token_id: int,
-    user_id: int = 1,  # TODO: Extract from auth token
+    current_user: User = Depends(get_user_from_clerk),
     db: AsyncSession = Depends(get_db),
 ):
     """Revoke (deactivate) an API token"""
     result = await db.execute(
         select(APIToken)
         .where(APIToken.id == token_id)
-        .where(APIToken.user_id == user_id)
+        .where(APIToken.user_id == current_user.id)
     )
     token = result.scalar_one_or_none()
     

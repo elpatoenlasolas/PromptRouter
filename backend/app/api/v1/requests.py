@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, desc
 from datetime import datetime, timedelta
 from app.core.database import get_db
-from app.models.database import PromptExecution
+from app.core.auth import get_user_from_clerk
+from app.models.database import PromptExecution, User
 from typing import Optional
 
 router = APIRouter()
@@ -14,7 +15,7 @@ router = APIRouter()
 
 @router.get("/requests")
 async def get_requests(
-    user_id: int = 1,  # TODO: Extract from auth token
+    current_user: User = Depends(get_user_from_clerk),
     limit: int = Query(50, ge=1, le=100, description="Number of requests to return"),
     offset: int = Query(0, ge=0, description="Offset for pagination"),
     provider: Optional[str] = Query(None, description="Filter by provider"),
@@ -28,7 +29,7 @@ async def get_requests(
     # Build query
     query = (
         select(PromptExecution)
-        .where(PromptExecution.user_id == user_id)
+        .where(PromptExecution.user_id == current_user.id)
         .order_by(desc(PromptExecution.created_at))
         .limit(limit)
         .offset(offset)

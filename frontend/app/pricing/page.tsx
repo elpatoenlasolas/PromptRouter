@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Check, X, ArrowRight, BarChart3, Info } from 'lucide-react'
 import DashboardHeader from '@/components/dashboard/DashboardHeader'
+import Footer from '@/components/Footer'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/lib/toast'
@@ -52,25 +53,25 @@ export default function PricingPage() {
             <h1 className="text-5xl font-bold mb-6">
               Stop overpaying for AI.
             </h1>
-            <p className="text-xl text-gray-300 dark:text-gray-400 mb-4">
+            <p className="text-xl text-gray-100 dark:text-gray-400 mb-4">
               PromptRouter automatically routes every prompt to the cheapest model that meets your requirements.
             </p>
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 mb-8 max-w-xl mx-auto">
+            <div className="bg-white/20 backdrop-blur-md rounded-xl p-6 mb-8 max-w-xl mx-auto">
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
                   <div className="text-3xl font-bold">30-50</div>
-                  <div className="text-xs text-gray-300 dark:text-gray-400">prompts/day</div>
+                  <div className="text-xs font-bold text-gray-100 dark:text-gray-400">prompts/day</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-yellow-300">€16</div>
-                  <div className="text-xs text-gray-300 dark:text-gray-400">saved/month</div>
+                  <div className="text-3xl font-bold">€16</div>
+                  <div className="text-xs font-bold text-gray-100 dark:text-gray-400">saved/month</div>
                 </div>
                 <div className="group relative">
                   <div className="flex items-center justify-center gap-1">
-                    <div className="text-3xl font-bold text-yellow-300">99%</div>
-                    <Info className="w-4 h-4 text-gray-300 dark:text-gray-400 hover:text-white cursor-help" />
+                    <div className="text-3xl font-bold">99%</div>
+                    <Info className="w-4 h-4 text-gray-100 dark:text-gray-400 hover:text-white cursor-help" />
                   </div>
-                  <div className="text-xs text-gray-300 dark:text-gray-400">savings</div>
+                  <div className="text-xs font-bold text-gray-100 dark:text-gray-400">savings</div>
                   <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 hidden group-hover:block z-10 w-48 p-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg">
                     vs. always using GPT-4 (€0.03/1K tokens)
                   </div>
@@ -80,16 +81,17 @@ export default function PricingPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/sign-up"
-                className="bg-white dark:bg-dark-surface text-gray-600 dark:text-dark-text hover:bg-gray-50 dark:hover:bg-dark-border font-semibold py-3 px-8 rounded-lg transition-all inline-flex items-center justify-center shadow-lg"
+                className="inline-flex items-center bg-white dark:bg-dark-surface text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-border font-semibold py-3 px-8 rounded-lg transition-colors justify-center"
               >
-                Start free
+                Try PromptRouter for free
+                <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
               <Link
                 href="/dashboard/playground"
-                className="bg-blue-600/20 hover:bg-blue-600/30 backdrop-blur-sm text-white font-semibold py-3 px-8 rounded-lg transition-all inline-flex items-center justify-center"
+                className="inline-flex items-center bg-gray-700 hover:bg-gray-800 border-2 border-white text-white font-semibold py-3 px-8 rounded-lg transition-colors justify-center"
               >
+                <BarChart3 className="w-5 h-5 mr-2" />
                 Calculate your savings
-                <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </div>
           </div>
@@ -611,7 +613,7 @@ export default function PricingPage() {
       <section className="py-20 bg-gradient-to-br from-primary to-accent dark:from-dark-base dark:to-dark-surface text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold mb-4">Start saving on AI today</h2>
-          <p className="text-xl text-gray-300 dark:text-gray-400 mb-8">
+          <p className="text-xl text-gray-100 dark:text-gray-400 mb-8">
             Connect your API keys and see savings in minutes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -619,7 +621,7 @@ export default function PricingPage() {
               href="/sign-up"
               className="inline-flex items-center bg-white dark:bg-dark-surface text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-border font-semibold py-3 px-8 rounded-lg transition-colors justify-center"
             >
-              Try PromptRouter for free
+              Start today for free
               <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
             <Link
@@ -627,11 +629,12 @@ export default function PricingPage() {
               className="inline-flex items-center bg-gray-700 hover:bg-gray-800 border-2 border-white text-white font-semibold py-3 px-8 rounded-lg transition-colors justify-center"
             >
               <BarChart3 className="w-5 h-5 mr-2" />
-              Calculate Your Savings
+              Calculate your savings
             </Link>
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   )
 }

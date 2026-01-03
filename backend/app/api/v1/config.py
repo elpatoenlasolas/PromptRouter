@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from datetime import datetime, timedelta
 from app.core.database import get_db
-from app.core.auth import get_current_user
+from app.core.auth import get_user_from_clerk
 from app.models.database import User, UserAPIKey, PromptExecution, ProviderType
 from app.models.schemas import APIKeyCreate, APIKeyResponse, UserConfigResponse
 from app.core.security import encrypt_api_key
@@ -17,7 +17,7 @@ router = APIRouter()
 @router.post("/api-keys", response_model=APIKeyResponse)
 async def add_api_key(
     key_data: APIKeyCreate,
-    user_id: int = 1,  # TODO: Extract from auth token
+    current_user: User = Depends(get_user_from_clerk),
     db: AsyncSession = Depends(get_db),
 ):
     """
@@ -34,56 +34,13 @@ async def add_api_key(
             detail=f"Invalid provider. Must be one of: openai, anthropic, google, grok"
         )
     
-    # Ensure user exists (create if not exists for development)
-    result = await db.execute(
-        select(User).where(User.id == user_id)
-    )
-    user = result.scalar_one_or_none()
-    
-    if not user:
-        # Create default user for development
-        # In production, this should be created via Clerk webhook
-        from app.models.database import UserTier
-        try:
-            # Check if clerk_user_id or email already exists
-            result = await db.execute(
-                select(User).where(
-                    (User.clerk_user_id == f"dev_user_{user_id}") |
-                    (User.email == f"dev_user_{user_id}@example.com")
-                )
-            )
-            existing = result.scalar_one_or_none()
-            
-            if existing:
-                user = existing
-            else:
-                user = User(
-                    id=user_id,
-                    clerk_user_id=f"dev_user_{user_id}",
-                    email=f"dev_user_{user_id}@example.com",
-                    tier=UserTier.FREE,
-                    monthly_token_limit=10_000,
-                )
-                db.add(user)
-                await db.commit()
-                await db.refresh(user)
-        except Exception as e:
-            await db.rollback()
-            # Try to fetch user one more time
-            result = await db.execute(
-                select(User).where(User.id == user_id)
-            )
-            user = result.scalar_one_or_none()
-            if not user:
-                raise HTTPException(
-                    status_code=500,
-                    detail=f"Failed to create or retrieve user: {str(e)}"
-                )
+    # User already verified by get_user_from_clerk
+    user = current_user
     
     # Check if key already exists for this provider
     result = await db.execute(
         select(UserAPIKey)
-        .where(UserAPIKey.user_id == user_id)
+        .where(UserAPIKey.user_id == user.id)
         .where(UserAPIKey.provider == provider)
     )
     existing = result.scalar_one_or_none()
@@ -97,7 +54,7 @@ async def add_api_key(
         else:
             # Create new key
             api_key_record = UserAPIKey(
-                user_id=user_id,
+                user_id=user.id,
                 provider=provider,
                 encrypted_key=encrypt_api_key(key_data.api_key),
                 is_active=True,

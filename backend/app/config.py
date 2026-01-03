@@ -23,6 +23,10 @@ class Settings(BaseSettings):
     API_SECRET_KEY: str
     ENCRYPTION_KEY: str
     
+    # Clerk Authentication
+    CLERK_SECRET_KEY: str | None = None
+    CLERK_DOMAIN: str = "https://api.clerk.dev"
+    
     # LLM Provider API Keys (for admin testing only)
     OPENAI_API_KEY: str | None = None
     ANTHROPIC_API_KEY: str | None = None
