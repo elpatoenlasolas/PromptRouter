@@ -30,14 +30,14 @@ export default function UpgradePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-base">
       <DashboardHeader />
       
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-14">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Back Button */}
         <button
           onClick={() => router.back()}
-          className="flex items-center text-gray-600 dark:text-dark-text-muted hover:text-gray-900 dark:hover:text-white dark:hover:text-white dark:text-white mb-8 transition-colors"
+          className="flex items-center text-gray-600 dark:text-dark-text-muted hover:text-gray-900 dark:hover:text-white mb-8 transition-colors"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
           Back to Settings
@@ -56,7 +56,7 @@ export default function UpgradePage() {
         {/* Plan Cards */}
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Starter Plan */}
-          <div className="bg-white dark:bg-dark-surface rounded-xl shadow-lg border-2 border-blue-500 p-8 flex flex-col relative">
+          <div className="bg-white dark:bg-dark-surface rounded-xl shadow-lg border-2 border-blue-500 dark:border-blue-400 p-8 flex flex-col relative">
             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
               <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-xs font-semibold">
                 Popular
@@ -65,10 +65,10 @@ export default function UpgradePage() {
             
             <div className="mb-6">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Starter</h3>
-              <p className="text-sm text-gray-600 mb-4">For indie developers</p>
+              <p className="text-sm text-gray-600 dark:text-dark-text-muted mb-4">For indie developers</p>
               <div className="mb-4">
                 <span className="text-5xl font-bold text-gray-900 dark:text-white">€15</span>
-                <span className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted"> / month</span>
+                <span className="text-gray-600 dark:text-dark-text-muted"> / month</span>
               </div>
               <p className="text-gray-600 dark:text-dark-text-muted text-sm">
                 Get started with professional routing and priority support.
@@ -78,23 +78,23 @@ export default function UpgradePage() {
             <ul className="space-y-3 mb-8 flex-grow">
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700"><strong>500K tokens</strong> / month</span>
+                <span className="text-gray-700 dark:text-dark-text"><strong>500K tokens</strong> / month</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">All routing modes</span>
+                <span className="text-gray-700 dark:text-dark-text">All routing modes</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Priority routing</span>
+                <span className="text-gray-700 dark:text-dark-text">Priority routing</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Email support</span>
+                <span className="text-gray-700 dark:text-dark-text">Email support</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Full savings dashboard</span>
+                <span className="text-gray-700 dark:text-dark-text">Full savings dashboard</span>
               </li>
             </ul>
 
@@ -109,7 +109,7 @@ export default function UpgradePage() {
           </div>
 
           {/* Pro Plan */}
-          <div className="bg-white dark:bg-dark-surface rounded-xl shadow-lg border-2 border-accent p-8 flex flex-col relative">
+          <div className="bg-white dark:bg-dark-surface rounded-xl shadow-lg border-2 border-accent dark:border-accent-light p-8 flex flex-col relative">
             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
               <span className="bg-accent text-white px-4 py-1 rounded-full text-xs font-semibold">
                 Best Value
@@ -118,10 +118,10 @@ export default function UpgradePage() {
             
             <div className="mb-6">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pro</h3>
-              <p className="text-sm text-gray-600 mb-4">It pays for itself</p>
+              <p className="text-sm text-gray-600 dark:text-dark-text-muted mb-4">It pays for itself</p>
               <div className="mb-4">
                 <span className="text-5xl font-bold text-gray-900 dark:text-white">€25</span>
-                <span className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted"> / month</span>
+                <span className="text-gray-600 dark:text-dark-text-muted"> / month</span>
               </div>
               <p className="text-gray-600 dark:text-dark-text-muted text-sm mb-3">
                 For users who want real savings and control over their AI spend.
@@ -136,27 +136,27 @@ export default function UpgradePage() {
             <ul className="space-y-3 mb-8 flex-grow">
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700"><strong>5M tokens</strong> / month</span>
+                <span className="text-gray-700 dark:text-dark-text"><strong>5M tokens</strong> / month</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">All routing modes</span>
+                <span className="text-gray-700 dark:text-dark-text">All routing modes</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Custom routing rules</span>
+                <span className="text-gray-700 dark:text-dark-text">Custom routing rules</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Advanced analytics</span>
+                <span className="text-gray-700 dark:text-dark-text">Advanced analytics</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Priority support</span>
+                <span className="text-gray-700 dark:text-dark-text">Priority support</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Cost caps & alerts</span>
+                <span className="text-gray-700 dark:text-dark-text">Cost caps & alerts</span>
               </li>
             </ul>
 
@@ -171,7 +171,7 @@ export default function UpgradePage() {
           </div>
 
           {/* Elite Plan */}
-          <div className="bg-white dark:bg-dark-surface rounded-xl shadow-lg border-2 border-purple-500 p-8 flex flex-col relative">
+          <div className="bg-white dark:bg-dark-surface rounded-xl shadow-lg border-2 border-purple-500 dark:border-purple-400 p-8 flex flex-col relative">
             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
               <span className="bg-purple-500 text-white px-4 py-1 rounded-full text-xs font-semibold">
                 Maximum Savings
@@ -180,10 +180,10 @@ export default function UpgradePage() {
             
             <div className="mb-6">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Elite</h3>
-              <p className="text-sm text-gray-600 mb-4">For power users</p>
+              <p className="text-sm text-gray-600 dark:text-dark-text-muted mb-4">For power users</p>
               <div className="mb-4">
                 <span className="text-5xl font-bold text-gray-900 dark:text-white">Custom</span>
-                <span className="text-gray-600 dark:text-dark-text-muted dark:text-dark-text-muted"> / month</span>
+                <span className="text-gray-600 dark:text-dark-text-muted"> / month</span>
               </div>
               <p className="text-gray-600 dark:text-dark-text-muted text-sm">
                 For power users running large volumes who want maximum optimization.
@@ -193,27 +193,27 @@ export default function UpgradePage() {
             <ul className="space-y-3 mb-8 flex-grow">
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700"><strong>5M+ tokens</strong> / month</span>
+                <span className="text-gray-700 dark:text-dark-text"><strong>5M+ tokens</strong> / month</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Custom routing rules</span>
+                <span className="text-gray-700 dark:text-dark-text">Custom routing rules</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Shadow benchmarking</span>
+                <span className="text-gray-700 dark:text-dark-text">Shadow benchmarking</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Exportable reports (CSV/PDF)</span>
+                <span className="text-gray-700 dark:text-dark-text">Exportable reports (CSV/PDF)</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Priority routing</span>
+                <span className="text-gray-700 dark:text-dark-text">Priority routing</span>
               </li>
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-success mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">Dedicated support</span>
+                <span className="text-gray-700 dark:text-dark-text">Dedicated support</span>
               </li>
             </ul>
 
