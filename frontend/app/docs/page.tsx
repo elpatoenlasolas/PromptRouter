@@ -15,7 +15,7 @@ export default function DocsPage() {
       const sections = ['how-it-works', 'quickstart', 'authentication', 'api-reference', 'examples', 'best-practices']
       const scrollPosition = window.scrollY + 150
 
-      // Check if we're near the bottom of the page
+      // Check if we&apos;re near the bottom of the page
       const isNearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100
       
       if (isNearBottom) {
@@ -154,7 +154,7 @@ export default function DocsPage() {
             <section id="how-it-works" className="card overflow-hidden">
               <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">How It Works</h2>
               <p className="text-gray-600 dark:text-dark-text-muted mb-6">
-                PromptRouter automatically routes your prompts to the most cost-effective AI model while maintaining quality. Here's the complete flow:
+                PromptRouter automatically routes your prompts to the most cost-effective AI model while maintaining quality. Here&apos;s the complete flow:
               </p>
               <div className="bg-primary/5 rounded-xl p-4 sm:p-6 mb-6 -mx-4 sm:mx-0">
                 <img 
@@ -183,9 +183,9 @@ export default function DocsPage() {
                   <ol className="list-decimal list-inside space-y-2 text-gray-700 dark:text-dark-text ml-4">
                     <li>Create an account at <Link href="/sign-up" className="text-primary hover:underline">PromptRouter</Link></li>
                     <li>Choose your plan (Free, Pro, or Power)</li>
-                    <li>Go to Settings → "LLM Provider Keys" and add your API keys (OpenAI, Anthropic, etc.)</li>
-                    <li>Go to Settings → "API Tokens" and click "Create Token"</li>
-                    <li>Give your token a name (e.g., "Production API") and copy it</li>
+                    <li>Go to Settings → &quot;LLM Provider Keys&quot; and add your API keys (OpenAI, Anthropic, etc.)</li>
+                    <li>Go to Settings → &quot;API Tokens&quot; and click &quot;Create Token&quot;</li>
+                    <li>Give your token a name (e.g., &quot;Production API&quot;) and copy it</li>
                   </ol>
                   <div className="mt-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-3">
                     <p className="text-sm text-yellow-900 dark:text-yellow-200">
@@ -201,8 +201,8 @@ export default function DocsPage() {
   -H "Authorization: Bearer YOUR_API_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "prompt": "Write a haiku about coding",
-    "max_tokens": 100
+    &quot;prompt&quot;: "Write a haiku about coding",
+    &quot;max_tokens&quot;: 100
   }'`}</code></pre>
                   </div>
                 </div>
@@ -211,10 +211,10 @@ export default function DocsPage() {
                   <h3 className="text-lg sm:text-xl font-semibold mb-3">3. Get the Response</h3>
                   <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
                     <pre className="text-xs sm:text-sm text-gray-100"><code>{`{
-  "content": "Code flows like water\\nBugs hide in silent shadows\\nDebug brings the light",
+  &quot;content&quot;: "Code flows like water\\nBugs hide in silent shadows\\nDebug brings the light",
   "routing": {
     "provider": "anthropic",
-    "model": "claude-3-haiku-20240307",
+    &quot;model&quot;: "claude-3-haiku-20240307",
     "reason": "Cheapest option for simple creative task",
     "estimated_cost": 0.00025,
     "estimated_latency_ms": 450
@@ -263,10 +263,10 @@ export default function DocsPage() {
                   <ol className="list-decimal list-inside space-y-1 text-gray-700 dark:text-dark-text ml-4">
                     <li>Log in to your PromptRouter dashboard</li>
                     <li>Go to Settings</li>
-                    <li>Scroll to "API Tokens" section</li>
-                    <li>Click "Create Token"</li>
+                    <li>Scroll to &quot;API Tokens&quot; section</li>
+                    <li>Click &quot;Create Token&quot;</li>
                     <li>Give it a descriptive name</li>
-                    <li>Copy the token immediately (it won't be shown again!)</li>
+                    <li>Copy the token immediately (it won&apos;t be shown again!)</li>
                   </ol>
                 </div>
 
@@ -296,9 +296,9 @@ export default function DocsPage() {
                   <h4 className="font-semibold mb-2">Request Body</h4>
                   <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0 mb-4">
                     <pre className="text-xs sm:text-sm text-gray-100"><code>{`{
-  "prompt": "string (required)",
-  "max_tokens": 1000,
-  "temperature": 0.7,
+  &quot;prompt&quot;: "string (required)",
+  &quot;max_tokens&quot;: 1000,
+  &quot;temperature&quot;: 0.7,
   "system_message": "string (optional)",
   "constraints": {
     "min_quality_tier": "basic" | "standard" | "premium",
@@ -312,10 +312,10 @@ export default function DocsPage() {
                   <h4 className="font-semibold mb-2">Response</h4>
                   <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
                     <pre className="text-xs sm:text-sm text-gray-100"><code>{`{
-  "content": "string",
+  &quot;content&quot;: "string",
   "routing": {
     "provider": "string",
-    "model": "string",
+    &quot;model&quot;: "string",
     "reason": "string",
     "estimated_cost": 0.00025,
     "estimated_latency_ms": 450
@@ -412,8 +412,8 @@ response = requests.post(
 )
 
 data = response.json()
-print(f"Response: {data['content']}")
-print(f"Saved: €{data['savings']['amount_saved']}")`}</code></pre>
+print(f"Response: {data['content']}&quot;)
+print(f"Saved: €{data['savings']['amount_saved']}&quot;)`}</code></pre>
                   </div>
                 </div>
 
@@ -452,7 +452,7 @@ console.log('Saved:', response.data.savings.amount_saved, 'EUR');`}</code></pre>
                 <div className="border-l-4 border-primary pl-4">
                   <h4 className="font-semibold mb-2">🎯 Let PromptRouter decide the model</h4>
                   <p className="text-gray-700 dark:text-dark-text text-sm">
-                    Don't specify a model - let our routing engine select the optimal one based on your prompt and constraints.
+                    Don&apos;t specify a model - let our routing engine select the optimal one based on your prompt and constraints.
                   </p>
                 </div>
 

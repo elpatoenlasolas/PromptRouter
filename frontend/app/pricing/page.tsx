@@ -583,10 +583,10 @@ export default function PricingPage() {
           <div className="space-y-8">
             <div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                What if I don't save money?
+                What if I don&apos;t save money?
               </h3>
               <p className="text-gray-600 dark:text-dark-text-muted">
-                PromptRouter is designed so that most users save more than the subscription cost. If you don't, the free plan lets you walk away without risk.
+                PromptRouter is designed so that most users save more than the subscription cost. If you don&apos;t, the free plan lets you walk away without risk.
               </p>
             </div>
             <div>

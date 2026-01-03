@@ -17,7 +17,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">1. Acceptance of Terms</h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              By accessing and using PromptRouter ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to these Terms, please do not use the Service.
+              By accessing and using PromptRouter (&quot;the Service&quot;), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to these Terms, please do not use the Service.
             </p>
           </section>
 
@@ -147,7 +147,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">12. Disclaimer of Warranties</h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND. We do not guarantee accuracy, reliability, or availability. We are not responsible for outputs from third-party AI models.
+              THE SERVICE IS PROVIDED &quot;AS IS&quot; WITHOUT WARRANTIES OF ANY KIND. We do not guarantee accuracy, reliability, or availability. We are not responsible for outputs from third-party AI models.
             </p>
           </section>
 

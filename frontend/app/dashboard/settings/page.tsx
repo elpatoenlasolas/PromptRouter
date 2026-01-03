@@ -254,7 +254,7 @@ export default function SettingsPage() {
           </div>
           {((config?.tokens_used_this_month || 0) / (config?.monthly_token_limit || 1)) > 0.8 && (
             <p className="text-xs text-orange-600 mt-2">
-              ⚠️ You're approaching your monthly limit. Consider upgrading to avoid service interruption.
+              ⚠️ You&apos;re approaching your monthly limit. Consider upgrading to avoid service interruption.
             </p>
           )}
         </div>
@@ -266,7 +266,7 @@ export default function SettingsPage() {
           <div>
             <h2 className="text-xl font-semibold">API Tokens</h2>
             <p className="text-sm text-gray-600 mt-1">
-              Use these tokens to authenticate requests to PromptRouter's API
+              Use these tokens to authenticate requests to PromptRouter&apos;s API
             </p>
           </div>
           <button
@@ -295,7 +295,7 @@ export default function SettingsPage() {
                 required
               />
               <p className="text-xs text-gray-500 mt-1">
-                Give your token a descriptive name to remember where it's used
+                Give your token a descriptive name to remember where it&apos;s used
               </p>
             </div>
             <div className="flex gap-2">
@@ -324,7 +324,7 @@ export default function SettingsPage() {
               <div className="flex-1">
                 <h3 className="font-semibold text-success mb-1">Token Created Successfully!</h3>
                 <p className="text-sm text-success mb-3">
-                  Make sure to copy your token now. You won't be able to see it again!
+                  Make sure to copy your token now. You won&apos;t be able to see it again!
                 </p>
                 <div className="flex items-center gap-2 bg-white dark:bg-dark-surface p-3 rounded border border-green-300">
                   <code className="flex-1 text-sm font-mono break-all">{createdToken}</code>
@@ -354,7 +354,7 @@ export default function SettingsPage() {
               }}
               className="btn-primary w-full"
             >
-              I've saved my token
+              I&apos;ve saved my token
             </button>
           </div>
         )}

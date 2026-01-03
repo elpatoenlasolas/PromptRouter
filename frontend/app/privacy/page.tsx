@@ -17,7 +17,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">1. Introduction</h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              PromptRouter ("we", "our", or "us") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our service.
+              PromptRouter (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our service.
             </p>
           </section>
 
@@ -193,7 +193,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">11. Children's Privacy</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">11. Children&apos;s Privacy</h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               Our Service is not intended for children under 18. We do not knowingly collect data from children. If you believe we have collected data from a child, please contact us immediately.
             </p>

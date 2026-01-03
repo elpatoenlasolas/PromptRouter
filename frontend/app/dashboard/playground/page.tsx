@@ -538,7 +538,7 @@ export default function PlaygroundPage() {
               <div className="card bg-gray-100 dark:bg-gray-800 border-2 border-gray-300 dark:border-dark-border dark:border-gray-700">
                 <h3 className="font-semibold mb-3 flex items-center dark:text-white">
                   <DollarSign className="w-5 h-5 mr-2 text-gray-900 dark:text-gray-100" />
-                  Your Prompt's Savings
+                  Your Prompt&apos;s Savings
                 </h3>
                 <div className="space-y-3">
                   <div className="bg-white dark:bg-dark-surface p-3 rounded-lg border border-gray-300 dark:border-gray-700">
@@ -617,7 +617,7 @@ export default function PlaygroundPage() {
                 <Zap className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-600 dark:text-dark-text-muted mb-2">No results yet</p>
                 <p className="text-sm text-gray-500">
-                  Enter a prompt and click "Execute Prompt" to see routing in action
+                  Enter a prompt and click &quot;Execute Prompt&quot; to see routing in action
                 </p>
               </div>
             </div>

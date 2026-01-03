@@ -56,7 +56,7 @@ export default function UpgradeSuccessPage() {
             Welcome to {info.name}! 🎉
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Your upgrade was successful. Here's what you get:
+            Your upgrade was successful. Here&apos;s what you get:
           </p>
 
           {/* Features Grid */}

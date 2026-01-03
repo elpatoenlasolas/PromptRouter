@@ -173,8 +173,8 @@ export default function OnboardingPage() {
                 <CheckCircle className="w-6 h-6 text-success" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold">You're All Set!</h2>
-                <p className="text-gray-600 dark:text-dark-text-muted">Here's your first routing result</p>
+                <h2 className="text-2xl font-bold">You&apos;re All Set!</h2>
+                <p className="text-gray-600 dark:text-dark-text-muted">Here&apos;s your first routing result</p>
               </div>
             </div>
 
@@ -203,7 +203,7 @@ export default function OnboardingPage() {
 
               <div className="border-t border-gray-200 dark:border-dark-border mt-4 pt-4">
                 <p className="text-sm text-gray-600 dark:text-dark-text-muted mb-2">Response:</p>
-                <p className="text-gray-900 dark:text-dark-text italic">"{testResult?.content || 'No response'}"</p>
+                <p className="text-gray-900 dark:text-dark-text italic">&quot;{testResult?.content || 'No response'}&quot;</p>
               </div>
             </div>
 

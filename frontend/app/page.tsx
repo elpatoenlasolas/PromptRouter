@@ -141,7 +141,7 @@ export default function HomePage() {
               </div>
               <h3 className="heading-4 mb-2">Connect API Keys</h3>
               <p className="caption text-gray-600 dark:text-dark-text-muted">
-                Add your OpenAI, Anthropic, Google, or Grok API keys. They're encrypted and never logged.
+                Add your OpenAI, Anthropic, Google, or Grok API keys. They&apos;re encrypted and never logged.
               </p>
             </div>
 
@@ -172,7 +172,7 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <h2 className="heading-2 text-center mb-4">Simple Pricing</h2>
         <p className="body-large text-center text-gray-600 dark:text-dark-text-muted mb-12">
-          You'll save more than the subscription cost
+          You&apos;ll save more than the subscription cost
         </p>
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <div className="card border-2 border-gray-200 dark:border-dark-border flex flex-col justify-between">
