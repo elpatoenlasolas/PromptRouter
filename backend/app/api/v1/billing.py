@@ -80,6 +80,11 @@ async def create_checkout_session(
         )
     
     try:
+        # Ensure FRONTEND_URL has proper scheme
+        frontend_url = settings.FRONTEND_URL
+        if not frontend_url.startswith(('http://', 'https://')):
+            frontend_url = f'https://{frontend_url}'
+        
         # Create Stripe Checkout Session
         checkout_session = stripe.checkout.Session.create(
             customer_email=current_user.email,
@@ -90,8 +95,8 @@ async def create_checkout_session(
                 'price': price_id,
                 'quantity': 1,
             }],
-            success_url=f"{settings.FRONTEND_URL}/dashboard/settings?upgrade=success&tier={request.tier}",
-            cancel_url=f"{settings.FRONTEND_URL}/pricing?upgrade=cancelled",
+            success_url=f"{frontend_url}/dashboard/settings?upgrade=success&tier={request.tier}",
+            cancel_url=f"{frontend_url}/pricing?upgrade=cancelled",
             metadata={
                 'user_id': str(current_user.id),
                 'clerk_user_id': current_user.clerk_user_id,
