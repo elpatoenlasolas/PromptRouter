@@ -7,7 +7,9 @@ from app.core.database import get_db
 from app.core.auth import get_current_user
 from app.models.database import User
 from app.models.schemas import PromptRequest, PromptResponse
-from app.services.execution import PromptExecutionService
+# Import heavy execution service lazily inside the endpoint to avoid importing
+# external provider SDKs at application import time (helps tests run with
+# minimal dependencies).
 
 router = APIRouter()
 
@@ -31,6 +33,8 @@ async def execute_prompt(
     try:
         print(f"DEBUG: Received prompt request from user {current_user.id}")
         print(f"DEBUG: Prompt length: {len(request.prompt)}")
+        from app.services.execution import PromptExecutionService
+
         service = PromptExecutionService(db)
         response = await service.execute_prompt(current_user.id, request)
         print(f"DEBUG: Prompt executed successfully")

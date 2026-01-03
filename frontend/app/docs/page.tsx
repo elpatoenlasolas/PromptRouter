@@ -45,20 +45,20 @@ export default function DocsPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-dark-base">
       <DashboardHeader />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 mt-14">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 mt-14">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
             <BookOpen className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-5xl font-bold mb-4">Documentation</h1>
-          <p className="text-xl text-gray-600 dark:text-dark-text-muted max-w-3xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Documentation</h1>
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-dark-text-muted max-w-3xl mx-auto">
             Everything you need to integrate PromptRouter into your application and start saving on AI costs
           </p>
         </div>
 
         {/* Quick Links */}
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16">
           <a href="#quickstart" className="card hover:shadow-lg transition-shadow">
             <Zap className="w-8 h-8 text-primary mb-3" />
             <h3 className="font-bold text-lg mb-2">Quick Start</h3>
@@ -77,10 +77,13 @@ export default function DocsPage() {
         </div>
 
         {/* Main Content */}
-        <div className="grid lg:grid-cols-4 gap-8">
+        <div className="grid lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Sidebar Navigation */}
           <aside className="lg:col-span-1">
-            <div className="sticky top-24 space-y-1">
+            <div className="lg:sticky top-24 space-y-1 mb-8 lg:mb-0">
+              <div className="text-xs font-semibold text-gray-500 dark:text-dark-text-muted uppercase tracking-wider mb-3 px-4">
+                On this page
+              </div>
 
               <a 
                 href="#how-it-works" 
@@ -146,14 +149,14 @@ export default function DocsPage() {
           </aside>
 
           {/* Content */}
-          <div className="lg:col-span-3 space-y-12">
+          <div className="lg:col-span-3 space-y-8 sm:space-y-12 min-w-0">
             {/* How It Works Flowchart */}
-            <section id="how-it-works" className="card">
-              <h2 className="text-3xl font-bold mb-6">How It Works</h2>
+            <section id="how-it-works" className="card overflow-hidden">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">How It Works</h2>
               <p className="text-gray-600 dark:text-dark-text-muted mb-6">
                 PromptRouter automatically routes your prompts to the most cost-effective AI model while maintaining quality. Here's the complete flow:
               </p>
-              <div className="bg-primary/5 rounded-xl p-6 mb-6">
+              <div className="bg-primary/5 rounded-xl p-4 sm:p-6 mb-6 -mx-4 sm:mx-0">
                 <img 
                   src="/flowchart-promptrouter.png" 
                   alt="PromptRouter Implementation Flow - Complete 5-step process"
@@ -168,15 +171,15 @@ export default function DocsPage() {
             </section>
 
             {/* Quick Start */}
-            <section id="quickstart" className="card">
-              <h2 className="text-3xl font-bold mb-6 flex items-center">
-                <Zap className="w-8 h-8 mr-3 text-primary" />
+            <section id="quickstart" className="card overflow-hidden">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 flex items-center">
+                <Zap className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-primary" />
                 Quick Start
               </h2>
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-xl font-semibold mb-3">1. Sign Up & Get API Keys</h3>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3">1. Sign Up & Get API Keys</h3>
                   <ol className="list-decimal list-inside space-y-2 text-gray-700 dark:text-dark-text ml-4">
                     <li>Create an account at <Link href="/sign-up" className="text-primary hover:underline">PromptRouter</Link></li>
                     <li>Choose your plan (Free, Pro, or Power)</li>
@@ -192,9 +195,9 @@ export default function DocsPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-semibold mb-3">2. Make Your First Request</h3>
-                  <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                    <pre className="text-sm text-gray-100"><code>{`curl -X POST https://api.promptrouter.com/v1/prompt \\
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3">2. Make Your First Request</h3>
+                  <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`curl -X POST https://api.promptrouter.com/v1/prompt \\
   -H "Authorization: Bearer YOUR_API_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -205,9 +208,9 @@ export default function DocsPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-semibold mb-3">3. Get the Response</h3>
-                  <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                    <pre className="text-sm text-gray-100"><code>{`{
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3">3. Get the Response</h3>
+                  <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`{
   "content": "Code flows like water\\nBugs hide in silent shadows\\nDebug brings the light",
   "routing": {
     "provider": "anthropic",
@@ -247,8 +250,8 @@ export default function DocsPage() {
             </section>
 
             {/* Authentication */}
-            <section id="authentication" className="card">
-              <h2 className="text-3xl font-bold mb-6">Authentication</h2>
+            <section id="authentication" className="card overflow-hidden">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Authentication</h2>
               
               <div className="space-y-4">
                 <p className="text-gray-700 dark:text-dark-text">
@@ -270,29 +273,29 @@ export default function DocsPage() {
                 <div>
                   <h3 className="font-semibold mb-2">Using the Token</h3>
                   <p className="text-gray-700 dark:text-dark-text mb-3">Include your token in the Authorization header:</p>
-                  <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                    <pre className="text-sm text-gray-100"><code>{`Authorization: Bearer YOUR_API_TOKEN`}</code></pre>
+                  <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`Authorization: Bearer YOUR_API_TOKEN`}</code></pre>
                   </div>
                 </div>
               </div>
             </section>
 
             {/* API Reference */}
-            <section id="api-reference" className="card">
-              <h2 className="text-3xl font-bold mb-6">API Reference</h2>
+            <section id="api-reference" className="card overflow-hidden">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">API Reference</h2>
               
               <div className="space-y-8">
                 {/* Execute Prompt */}
                 <div>
-                  <div className="flex items-center mb-4">
-                    <span className="bg-success text-white px-3 py-1 rounded text-sm font-mono mr-3">POST</span>
-                    <code className="text-lg font-mono">/v1/prompt</code>
+                  <div className="flex flex-col sm:flex-row sm:items-center mb-4 gap-2 sm:gap-0">
+                    <span className="bg-success text-white px-3 py-1 rounded text-sm font-mono mr-3 w-fit">POST</span>
+                    <code className="text-sm sm:text-base md:text-lg font-mono break-all">/v1/prompt</code>
                   </div>
                   <p className="text-gray-700 dark:text-dark-text mb-4">Execute a prompt through intelligent routing</p>
                   
                   <h4 className="font-semibold mb-2">Request Body</h4>
-                  <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto mb-4">
-                    <pre className="text-sm text-gray-100"><code>{`{
+                  <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0 mb-4">
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`{
   "prompt": "string (required)",
   "max_tokens": 1000,
   "temperature": 0.7,
@@ -307,8 +310,8 @@ export default function DocsPage() {
                   </div>
 
                   <h4 className="font-semibold mb-2">Response</h4>
-                  <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                    <pre className="text-sm text-gray-100"><code>{`{
+                  <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`{
   "content": "string",
   "routing": {
     "provider": "string",
@@ -335,9 +338,9 @@ export default function DocsPage() {
 
                 {/* Get Metrics */}
                 <div>
-                  <div className="flex items-center mb-4">
-                    <span className="bg-blue-600 text-white px-3 py-1 rounded text-sm font-mono mr-3">GET</span>
-                    <code className="text-lg font-mono">/v1/metrics</code>
+                  <div className="flex flex-col sm:flex-row sm:items-center mb-4 gap-2 sm:gap-0">
+                    <span className="bg-blue-600 text-white px-3 py-1 rounded text-sm font-mono mr-3 w-fit">GET</span>
+                    <code className="text-sm sm:text-base md:text-lg font-mono break-all">/v1/metrics</code>
                   </div>
                   <p className="text-gray-700 dark:text-dark-text mb-4">Get usage statistics and savings</p>
                   
@@ -347,8 +350,8 @@ export default function DocsPage() {
                   </ul>
 
                   <h4 className="font-semibold mb-2">Response</h4>
-                  <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                    <pre className="text-sm text-gray-100"><code>{`{
+                  <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`{
   "total_requests": 1234,
   "total_tokens": 567890,
   "total_spend": 12.45,
@@ -363,15 +366,15 @@ export default function DocsPage() {
             </section>
 
             {/* Code Examples */}
-            <section id="examples" className="card">
-              <h2 className="text-3xl font-bold mb-6">Code Examples</h2>
+            <section id="examples" className="card overflow-hidden">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Code Examples</h2>
               
               <div className="space-y-6">
                 {/* JavaScript/TypeScript */}
                 <div>
-                  <h3 className="text-xl font-semibold mb-3">JavaScript / TypeScript</h3>
-                  <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                    <pre className="text-sm text-gray-100"><code>{`// Using fetch
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3">JavaScript / TypeScript</h3>
+                  <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`// Using fetch
 const response = await fetch('https://api.promptrouter.com/v1/prompt', {
   method: 'POST',
   headers: {
@@ -392,9 +395,9 @@ console.log('Saved:', data.savings.amount_saved, 'EUR');`}</code></pre>
 
                 {/* Python */}
                 <div>
-                  <h3 className="text-xl font-semibold mb-3">Python</h3>
-                  <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                    <pre className="text-sm text-gray-100"><code>{`import requests
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3">Python</h3>
+                  <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`import requests
 
 response = requests.post(
     'https://api.promptrouter.com/v1/prompt',
@@ -416,9 +419,9 @@ print(f"Saved: €{data['savings']['amount_saved']}")`}</code></pre>
 
                 {/* Node.js */}
                 <div>
-                  <h3 className="text-xl font-semibold mb-3">Node.js (axios)</h3>
-                  <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                    <pre className="text-sm text-gray-100"><code>{`const axios = require('axios');
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3">Node.js (axios)</h3>
+                  <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`const axios = require('axios');
 
 const response = await axios.post(
   'https://api.promptrouter.com/v1/prompt',
@@ -442,8 +445,8 @@ console.log('Saved:', response.data.savings.amount_saved, 'EUR');`}</code></pre>
             </section>
 
             {/* Best Practices */}
-            <section id="best-practices" className="card">
-              <h2 className="text-3xl font-bold mb-6">Best Practices</h2>
+            <section id="best-practices" className="card overflow-hidden">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Best Practices</h2>
               
               <div className="space-y-4">
                 <div className="border-l-4 border-primary pl-4">
@@ -482,29 +485,29 @@ console.log('Saved:', response.data.savings.amount_saved, 'EUR');`}</code></pre>
                 </div>
               </div>
             </section>
+          </div>
+        </div>
 
-            {/* CTA */}
-            <div className="bg-gradient-to-br from-primary to-accent rounded-xl p-8 text-white text-center">
-              <h3 className="text-2xl font-bold mb-4">Ready to start saving?</h3>
-              <p className="text-gray-100 mb-6">
-                Join thousands of developers optimizing their AI costs with PromptRouter
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  href="/sign-up"
-                  className="inline-flex items-center justify-center bg-white text-gray-900 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors"
-                >
-                  Get Started Free
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Link>
-                <Link
-                  href="/dashboard/playground"
-                  className="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 border-2 border-white text-white font-semibold py-3 px-8 rounded-lg transition-colors"
-                >
-                  Try the Calculator
-                </Link>
-              </div>
-            </div>
+        {/* CTA */}
+        <div className="mt-12 sm:mt-16 bg-gradient-to-br from-primary to-accent rounded-xl p-6 sm:p-8 text-white text-center">
+          <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Ready to start saving?</h3>
+          <p className="text-sm sm:text-base text-gray-100 mb-4 sm:mb-6">
+            Join thousands of developers optimizing their AI costs with PromptRouter
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+            <Link
+              href="/sign-up"
+              className="inline-flex items-center justify-center bg-white text-gray-900 hover:bg-gray-100 font-semibold py-3 px-6 sm:px-8 rounded-lg transition-colors"
+            >
+              Get Started Free
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
+            <Link
+              href="/dashboard/playground"
+              className="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 border-2 border-white text-white font-semibold py-3 px-6 sm:px-8 rounded-lg transition-colors"
+            >
+              Try the Calculator
+            </Link>
           </div>
         </div>
       </div>

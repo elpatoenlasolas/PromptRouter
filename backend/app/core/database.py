@@ -8,13 +8,21 @@ from app.config import get_settings
 settings = get_settings()
 
 # Create async engine
-engine = create_async_engine(
-    settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://"),
-    echo=settings.DEBUG,
-    pool_pre_ping=True,
-    pool_size=10,
-    max_overflow=20
-)
+db_url = settings.DATABASE_URL
+if db_url.startswith("postgresql://"):
+    engine = create_async_engine(
+        db_url.replace("postgresql://", "postgresql+asyncpg://"),
+        echo=settings.DEBUG,
+        pool_pre_ping=True,
+        pool_size=10,
+        max_overflow=20,
+    )
+else:
+    # For SQLite (tests) or other drivers, avoid passing pool_size/max_overflow
+    engine = create_async_engine(
+        db_url,
+        echo=settings.DEBUG,
+    )
 
 # Session factory
 AsyncSessionLocal = async_sessionmaker(

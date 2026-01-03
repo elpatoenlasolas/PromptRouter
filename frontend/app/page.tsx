@@ -15,8 +15,22 @@ export default function HomePage() {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
               <MobileNav publicOnly />
-              <Link href="/" className="text-2xl font-bold">PromptRouter</Link>
+              <Link href="/" className="hidden sm:flex items-center gap-2">
+                <img 
+                  src="/images/logo-white.svg" 
+                  alt="PromptRouter" 
+                  className="h-8 w-auto"
+                />
+                <span className="text-2xl font-bold">PromptRouter</span>
+              </Link>
             </div>
+            <Link href="/" className="sm:hidden">
+              <img 
+                src="/images/logo-white.svg" 
+                alt="PromptRouter" 
+                className="h-8 w-auto"
+              />
+            </Link>
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/pricing" className="text-gray-50 hover:text-white transition-colors">
                 Pricing

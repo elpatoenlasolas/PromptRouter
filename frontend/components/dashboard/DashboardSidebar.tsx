@@ -7,7 +7,9 @@ import {
   FileText, 
   BarChart3, 
   Settings,
-  Zap
+  Zap,
+  BookOpen,
+  Book
 } from 'lucide-react'
 
 interface NavItem {
@@ -22,6 +24,7 @@ const navigation: NavItem[] = [
   { name: 'Requests', href: '/dashboard/requests', icon: FileText },
   { name: 'Usage', href: '/dashboard/usage', icon: BarChart3 },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+  { name: 'Docs', href: '/docs', icon: BookOpen },
 ]
 
 export default function DashboardSidebar() {

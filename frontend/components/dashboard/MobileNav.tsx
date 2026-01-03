@@ -63,10 +63,10 @@ export default function MobileNav({ publicOnly }: { publicOnly?: boolean }) {
         type="button"
         onClick={() => setIsOpen((v) => !v)}
         aria-expanded={isOpen}
-        className="md:hidden bg-white p-2 rounded-lg hover:bg-gray-100 transition-colors z-50"
+        className="md:hidden bg-white dark:bg-gray-800 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors z-50"
         aria-label="Toggle navigation menu"
       >
-        <Menu className="w-6 h-6 text-gray-700" />
+        <Menu className="w-6 h-6 text-gray-700 dark:text-gray-200" />
       </button>
 
       {/* Overlay */}
@@ -86,9 +86,18 @@ export default function MobileNav({ publicOnly }: { publicOnly?: boolean }) {
         `}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <Link href="/" className="text-xl font-bold text-gray-600 dark:text-white italic">
-            PromptRouter
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+          <Link href="/" className="flex items-center gap-2">
+            <img 
+              src="/images/logo.svg" 
+              alt="PromptRouter" 
+              className="h-7 w-auto dark:hidden"
+            />
+            <img 
+              src="/images/logo-white.svg" 
+              alt="PromptRouter" 
+              className="h-7 w-auto hidden dark:block"
+            />
           </Link>
           <button
             type="button"

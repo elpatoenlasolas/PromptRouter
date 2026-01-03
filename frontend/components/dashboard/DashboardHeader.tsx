@@ -39,8 +39,18 @@ export default function DashboardHeader() {
         <div className="flex h-full items-center justify-between">
           <div className="flex items-center gap-3">
             <MobileNav />
-            <Link href="/dashboard" className="text-2xl font-bold italic text-gray-900 dark:text-white">
-              PromptRouter
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <img 
+                src="/images/logo.svg" 
+                alt="PromptRouter" 
+                className="h-8 w-auto dark:hidden"
+              />
+              <img 
+                src="/images/logo-white.svg" 
+                alt="PromptRouter" 
+                className="h-8 w-auto hidden dark:block"
+              />
+              <span className="hidden sm:block text-2xl font-bold italic text-gray-900 dark:text-white">PromptRouter</span>
             </Link>
           </div>
           <div className="flex items-center gap-2 relative" ref={menuRef}>

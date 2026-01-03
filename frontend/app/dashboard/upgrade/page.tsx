@@ -109,9 +109,9 @@ export default function UpgradePage() {
           </div>
 
           {/* Pro Plan */}
-          <div className="bg-white dark:bg-dark-surface rounded-xl shadow-lg border-2 border-gold-500 p-8 flex flex-col relative">
+          <div className="bg-white dark:bg-dark-surface rounded-xl shadow-lg border-2 border-accent p-8 flex flex-col relative">
             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-              <span className="bg-gold-500 text-white px-4 py-1 rounded-full text-xs font-semibold">
+              <span className="bg-accent text-white px-4 py-1 rounded-full text-xs font-semibold">
                 Best Value
               </span>
             </div>
@@ -163,7 +163,7 @@ export default function UpgradePage() {
             <button
               onClick={() => handleUpgrade('pro')}
               disabled={loadingTier !== null}
-              className="w-full bg-gold-500 hover:bg-gold-600 text-white font-semibold py-4 px-6 rounded-lg transition-all shadow-sm hover:shadow disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-accent hover:bg-accent-dark text-white font-semibold py-4 px-6 rounded-lg transition-all shadow-sm hover:shadow disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loadingTier === 'pro' && <LoadingSpinner size="sm" />}
               {loadingTier === 'pro' ? 'Processing...' : 'Upgrade to Pro'}
