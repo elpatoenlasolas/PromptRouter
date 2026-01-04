@@ -28,7 +28,6 @@ export default function DashboardHeader() {
   const menuItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-    { name: 'Usage', href: '/dashboard/usage', icon: BarChart3 },
     { name: 'Docs', href: '/docs', icon: BookOpen },
     { name: 'Pricing', href: '/pricing', icon: CreditCard },
   ]
@@ -74,7 +73,7 @@ export default function DashboardHeader() {
                   elements: {
                     avatarBox: "w-10 h-10",
                     userButtonPopoverCard: "shadow-lg rounded-lg",
-                    userButtonPopoverActionButton: "hover:bg-blue-50 dark:hover:bg-dark-border",
+                    userButtonPopoverActionButton: "hover:bg-blue-50 dark:hover:bg-gray-200",
                     userButtonPopoverActionButtonText: "text-gray-700 dark:text-dark-text",
                   }
                 }}

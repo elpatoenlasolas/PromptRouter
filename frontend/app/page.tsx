@@ -1,13 +1,39 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Zap, DollarSign, Target } from 'lucide-react'
+import { ArrowRight, Zap, DollarSign, Target, Moon, Sun, LayoutDashboard, Settings, BookOpen, CreditCard } from 'lucide-react'
 import MobileNav from '@/components/dashboard/MobileNav'
 import Footer from '@/components/Footer'
-import { useUser } from '@clerk/nextjs'
+import { useUser, UserButton } from '@clerk/nextjs'
+import { useTheme } from '@/lib/theme'
+import { useState, useRef, useEffect } from 'react'
 
 export default function HomePage() {
   const { isSignedIn, isLoaded } = useUser()
+  const { theme, toggleTheme } = useTheme()
+  const [showMenu, setShowMenu] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowMenu(false)
+      }
+    }
+
+    if (showMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showMenu])
+
+  const menuItems = [
+    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+    { name: 'Docs', href: '/docs', icon: BookOpen },
+    { name: 'Pricing', href: '/pricing', icon: CreditCard },
+  ]
+  
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-dark-base">
       {/* Hero Section */}
@@ -33,17 +59,81 @@ export default function HomePage() {
               />
             </Link>
             <div className="hidden md:flex items-center space-x-6">
-              <Link href="/pricing" className="text-gray-50 hover:text-white transition-colors">
-                Pricing
-              </Link>
               {isLoaded && (
                 <>
                   {isSignedIn ? (
-                    <Link href="/dashboard" className="btn-primary">
-                      Go to Dashboard
-                    </Link>
+                    <div className="flex items-center gap-2 relative" ref={menuRef}>
+                      {/* Theme Toggle */}
+                      <button
+                        onClick={toggleTheme}
+                        className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                        aria-label="Toggle theme"
+                      >
+                        {theme === 'light' ? (
+                          <Moon className="w-5 h-5 text-gray-100" />
+                        ) : (
+                          <Sun className="w-5 h-5 text-gray-100" />
+                        )}
+                      </button>
+                      
+                      {/* User Avatar */}
+                      <UserButton 
+                        appearance={{
+                          elements: {
+                            avatarBox: "w-10 h-10",
+                            userButtonPopoverCard: "shadow-lg rounded-lg",
+                            userButtonPopoverActionButton: "hover:bg-blue-50 dark:hover:bg-gray-200",
+                            userButtonPopoverActionButtonText: "text-gray-700 dark:text-dark-text",
+                          }
+                        }}
+                      />
+
+                      {/* Quick Access Menu Button */}
+                      <button
+                        onClick={() => setShowMenu(!showMenu)}
+                        className="p-2 rounded-lg hover:bg-white/10 transition-colors relative"
+                        aria-label="Quick menu"
+                      >
+                        <svg
+                          className="w-5 h-5 text-gray-100"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                          />
+                        </svg>
+                      </button>
+
+                      {/* Custom Menu Overlay */}
+                      {showMenu && (
+                        <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-900 py-2 z-50">
+                          {menuItems.map((item) => {
+                            const Icon = item.icon
+                            return (
+                              <Link
+                                key={item.name}
+                                href={item.href}
+                                onClick={() => setShowMenu(false)}
+                                className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                              >
+                                <Icon className="w-4 h-4 mr-3 text-gray-900 dark:text-gray-100" />
+                                {item.name}
+                              </Link>
+                            )
+                          })}
+                        </div>
+                      )}
+                    </div>
                   ) : (
                     <>
+                      <Link href="/pricing" className="text-gray-50 hover:text-white transition-colors">
+                        Pricing
+                      </Link>
                       <Link href="/sign-in" className="text-gray-50 hover:text-white transition-colors">
                         Sign In
                       </Link>

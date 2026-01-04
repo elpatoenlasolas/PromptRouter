@@ -7,7 +7,7 @@ import { X, Menu } from 'lucide-react'
 import { 
   LayoutDashboard, 
   FileText, 
-  BarChart3, 
+  BookOpen, 
   Settings,
   Zap
 } from 'lucide-react'
@@ -17,8 +17,8 @@ const dashboardNavigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Playground', href: '/dashboard/playground', icon: Zap },
   { name: 'Requests', href: '/dashboard/requests', icon: FileText },
-  { name: 'Usage', href: '/dashboard/usage', icon: BarChart3 },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+  { name: 'Docs', href: '/docs', icon: BookOpen },
 ]
 
 const publicNavigation = [
