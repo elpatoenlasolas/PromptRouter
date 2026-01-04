@@ -544,7 +544,7 @@ console.log('Savings:', response['x-promptrouter'].savings);`}
         </div>
 
         {showAddKey && (
-          <form onSubmit={handleAddKey} className="mb-6 p-4 bg-gray-50 dark:bg-dark-surface rounded-lg">
+          <form onSubmit={handleAddKey} className="mb-6 p-4 bg-gray-50 dark:bg-dark-surface dark:text-gray-900 rounded-lg">
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="block text-sm font-medium mb-2">Provider</label>
@@ -566,7 +566,12 @@ console.log('Savings:', response['x-promptrouter'].savings);`}
                   value={newKey.key}
                   onChange={(e) => setNewKey({ ...newKey, key: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg"
-                  placeholder="sk-..."
+                  placeholder={
+                    newKey.provider === 'openai' ? 'sk-...' :
+                    newKey.provider === 'anthropic' ? 'api-...' :
+                    newKey.provider === 'google' ? 'AIza...' :
+                    'xai-...'
+                  }
                   required
                 />
               </div>

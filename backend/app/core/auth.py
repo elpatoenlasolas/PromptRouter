@@ -130,15 +130,14 @@ async def get_user_from_clerk(
     Clerk sends the session token in the Authorization header as:
     Authorization: Bearer <clerk_session_token>
     
-    In development mode, still validates Clerk tokens if provided.
-    Only falls back to dev user if no auth header is present.
+    In development mode, ALWAYS returns dev user for easier testing.
+    In production, validates Clerk tokens properly.
     """
     auth_header = request.headers.get("authorization")
     
-    # Development mode: if NO auth header, return dev user
-    # But if there IS an auth header, validate it properly
-    if os.getenv("ENVIRONMENT", "development") == "development" and not auth_header:
-        print("DEBUG: No auth header in development mode, returning dev user")
+    # Development mode: ALWAYS return dev user (ignore Clerk tokens for local testing)
+    if os.getenv("ENVIRONMENT", "development") == "development":
+        print("DEBUG: Development mode - returning dev user")
         result = await db.execute(select(User).where(User.id == 1))
         user = result.scalar_one_or_none()
         
@@ -150,7 +149,7 @@ async def get_user_from_clerk(
                 clerk_user_id="dev_user_1",
                 email="dev@promptrouter.local",
                 tier=UserTier.FREE,
-                monthly_token_limit=10_000,
+                monthly_token_limit=5_000_000,
             )
             db.add(user)
             await db.commit()
@@ -159,8 +158,8 @@ async def get_user_from_clerk(
         print(f"DEBUG: Returning dev user: {user.email}")
         return user
     
-    # Production OR development with auth header: verify Clerk token
-    print(f"DEBUG: Auth header present: {auth_header[:50] if auth_header else 'None'}...")
+    # Production: verify Clerk token
+    print(f"DEBUG: Production mode - verifying Clerk token...")
     if not auth_header:
         raise HTTPException(status_code=401, detail="No authorization header")
     
