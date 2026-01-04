@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from datetime import datetime, timedelta
 from app.core.database import get_db
-from app.core.auth import get_user_from_clerk
+from app.core.auth import get_user_from_clerk, get_current_user
 from app.models.database import User, UserAPIKey, PromptExecution, ProviderType
 from app.models.schemas import APIKeyCreate, APIKeyResponse, UserConfigResponse
 from app.core.security import encrypt_api_key
