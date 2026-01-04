@@ -8,7 +8,7 @@ from sqlalchemy import select
 from pydantic import BaseModel
 from datetime import datetime
 from app.core.database import get_db
-from app.core.auth import get_user_from_clerk
+from app.core.auth import get_user_from_clerk, verify_api_token
 from app.models.database import User, APIToken
 
 router = APIRouter()
@@ -134,30 +134,3 @@ async def revoke_api_token(
     await db.commit()
     
     return {"message": "Token revoked successfully"}
-
-
-async def verify_api_token(token: str, db: AsyncSession) -> User | None:
-    """
-    Verify an API token and return the associated user
-    
-    Returns None if token is invalid or inactive
-    """
-    result = await db.execute(
-        select(APIToken)
-        .where(APIToken.token == token)
-        .where(APIToken.is_active == True)
-    )
-    api_token = result.scalar_one_or_none()
-    
-    if not api_token:
-        return None
-    
-    # Update last used timestamp
-    api_token.last_used_at = datetime.utcnow()
-    await db.commit()
-    
-    # Get user
-    result = await db.execute(
-        select(User).where(User.id == api_token.user_id)
-    )
-    return result.scalar_one_or_none()

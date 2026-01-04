@@ -5,12 +5,39 @@ from fastapi import Depends, HTTPException, Header, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from typing import Optional
+from datetime import datetime
 import os
 import jwt
 from jwt import PyJWKClient
 from app.core.database import get_db
-from app.api.v1.tokens import verify_api_token
-from app.models.database import User, UserTier
+from app.models.database import User, UserTier, APIToken
+
+
+async def verify_api_token(token: str, db: AsyncSession) -> User | None:
+    """
+    Verify an API token and return the associated user
+    
+    Returns None if token is invalid or inactive
+    """
+    result = await db.execute(
+        select(APIToken)
+        .where(APIToken.token == token)
+        .where(APIToken.is_active == True)
+    )
+    api_token = result.scalar_one_or_none()
+    
+    if not api_token:
+        return None
+    
+    # Update last used timestamp
+    api_token.last_used_at = datetime.utcnow()
+    await db.commit()
+    
+    # Get user
+    result = await db.execute(
+        select(User).where(User.id == api_token.user_id)
+    )
+    return result.scalar_one_or_none()
 
 
 async def get_current_user(
