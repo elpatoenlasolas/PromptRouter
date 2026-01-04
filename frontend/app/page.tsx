@@ -109,7 +109,7 @@ export default function HomePage() {
                         </svg>
                       </button>
 
-                      {/* Custom Menu Overlay */}
+                      {/* Custom menu Overlay */}
                       {showMenu && (
                         <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-900 py-2 z-50">
                           {menuItems.map((item) => {
