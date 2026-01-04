@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useAuth } from '@clerk/nextjs'
 import { 
   TrendingDown, 
   Zap, 
@@ -14,6 +15,7 @@ import {
 import SavingsChart from '@/components/dashboard/SavingsChart'
 import RecentRequests from '@/components/dashboard/RecentRequests'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { makeAuthenticatedRequest } from '@/lib/clerk-api'
 
 export const dynamic = 'force-dynamic'
 
@@ -28,6 +30,7 @@ interface Metrics {
 }
 
 export default function DashboardPage() {
+  const { getToken } = useAuth()
   const [metrics, setMetrics] = useState<Metrics | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -37,11 +40,7 @@ export default function DashboardPage() {
 
   const fetchMetrics = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/metrics`)
-      if (!response.ok) {
-        throw new Error('Failed to fetch metrics')
-      }
-      const data = await response.json()
+      const data = await makeAuthenticatedRequest<Metrics>('/v1/metrics', getToken)
       setMetrics(data)
     } catch (error) {
       console.error('Failed to fetch metrics:', error)

@@ -11,11 +11,12 @@ from fastapi import HTTPException
 class UsageLimitService:
     """Service for tracking usage and enforcing tier limits"""
     
-    # Token limits by tier
+    # Token limits by tier (default limits)
     TIER_LIMITS = {
         UserTier.FREE: 10_000,
         UserTier.STARTER: 500_000,
         UserTier.PRO: 5_000_000,
+        UserTier.ELITE: 100_000_000,  # 100M tokens default for Elite
     }
     
     def __init__(self, db: AsyncSession):
@@ -51,8 +52,12 @@ class UsageLimitService:
         )
         tokens_used = result.scalar() or 0
         
-        # Get limit for user's tier
-        limit = self.TIER_LIMITS.get(user.tier, self.TIER_LIMITS[UserTier.FREE])
+        # Get limit: use custom monthly_token_limit if set, otherwise use tier default
+        # This allows Elite tier (and others) to have custom limits
+        if user.monthly_token_limit is not None:
+            limit = user.monthly_token_limit
+        else:
+            limit = self.TIER_LIMITS.get(user.tier, self.TIER_LIMITS[UserTier.FREE])
         
         # Check if within limit
         tokens_remaining = limit - tokens_used
@@ -90,7 +95,11 @@ class UsageLimitService:
         )
         user = result.scalar_one()
         
-        limit = self.TIER_LIMITS.get(user.tier, self.TIER_LIMITS[UserTier.FREE])
+        # Use custom limit if set, otherwise tier default
+        if user.monthly_token_limit is not None:
+            limit = user.monthly_token_limit
+        else:
+            limit = self.TIER_LIMITS.get(user.tier, self.TIER_LIMITS[UserTier.FREE])
         
         return {
             "tier": user.tier.value,

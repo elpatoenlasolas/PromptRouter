@@ -13,6 +13,7 @@ class UserTier(str, enum.Enum):
     FREE = "free"
     STARTER = "starter"
     PRO = "pro"
+    ELITE = "elite"
 
 
 class ProviderType(str, enum.Enum):

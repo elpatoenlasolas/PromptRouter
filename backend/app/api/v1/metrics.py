@@ -42,7 +42,7 @@ async def get_usage_metrics(
             func.avg(PromptExecution.latency_ms).label("avg_latency"),
             func.sum(func.cast(~PromptExecution.success, Integer)).label("error_count"),
         )
-        .where(PromptExecution.user_id == user_id)
+        .where(PromptExecution.user_id == current_user.id)
         .where(PromptExecution.created_at >= period_start)
     )
     

@@ -33,8 +33,16 @@ async def execute_prompt(
     try:
         print(f"DEBUG: Received prompt request from user {current_user.id}")
         print(f"DEBUG: Prompt length: {len(request.prompt)}")
+        
+        # Enforce usage limits before execution
+        from app.services.usage_limits import UsageLimitService
+        usage_service = UsageLimitService(db)
+        
+        # Estimate tokens (rough: 4 chars per token)
+        estimated_tokens = (len(request.prompt) + (request.max_tokens or 1000)) // 4
+        await usage_service.enforce_usage_limit(current_user.id, estimated_tokens)
+        
         from app.services.execution import PromptExecutionService
-
         service = PromptExecutionService(db)
         response = await service.execute_prompt(current_user.id, request)
         print(f"DEBUG: Prompt executed successfully")

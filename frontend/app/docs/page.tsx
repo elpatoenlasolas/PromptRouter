@@ -12,7 +12,7 @@ export default function DocsPage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['how-it-works', 'quickstart', 'authentication', 'api-reference', 'examples', 'best-practices']
+      const sections = ['how-it-works', 'quickstart', 'openai-compatibility', 'authentication', 'api-reference', 'examples', 'best-practices']
       const scrollPosition = window.scrollY + 150
 
       // Check if we&apos;re near the bottom of the page
@@ -104,6 +104,16 @@ export default function DocsPage() {
                 }`}
               >
                 Quick Start
+              </a>
+              <a 
+                href="#openai-compatibility" 
+                className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
+                  activeSection === 'openai-compatibility' 
+                    ? 'text-primary bg-primary/10 font-medium' 
+                    : 'text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-dark-surface'
+                }`}
+              >
+                OpenAI Compatibility
               </a>
               <a 
                 href="#authentication" 
@@ -239,11 +249,126 @@ export default function DocsPage() {
                   <div className="flex items-start">
                     <CheckCircle className="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-semibold text-success mb-1">You just saved 91%!</p>
                       <p className="text-sm text-success">
-                        PromptRouter automatically selected Claude Haiku instead of GPT-4, saving you €0.00254 on this single request.
+                        <strong>You just saved 91% on that request!</strong> PromptRouter automatically selected Claude Haiku instead of GPT-4 for this creative task.
                       </p>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* OpenAI Compatibility */}
+            <section id="openai-compatibility" className="card overflow-hidden">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 flex items-center">
+                <Code className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-primary" />
+                OpenAI SDK Compatibility
+              </h2>
+              
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                <p className="text-sm text-blue-900 dark:text-blue-100">
+                  <strong>✨ Drop-in Replacement:</strong> PromptRouter provides a fully compatible <code className="bg-blue-100 dark:bg-blue-800 px-1.5 py-0.5 rounded">/v1/chat/completions</code> endpoint. Change 2 lines of code and start saving 30-60% instantly!
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3">Python (OpenAI SDK)</h3>
+                  <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`from openai import OpenAI
+
+# Before: Direct OpenAI
+# client = OpenAI(api_key="sk-...")
+
+# After: PromptRouter (drop-in replacement!)
+client = OpenAI(
+    base_url="https://api.prompt-router.com/v1",
+    api_key="pr_live_your_token_here"
+)
+
+# Same API - automatic cost optimization!
+response = client.chat.completions.create(
+    # Omit 'model' for auto-routing (recommended)
+    messages=[
+        {"role": "user", "content": "Explain quantum computing"}
+    ]
+)
+
+print(response.choices[0].message.content)
+
+# Check your savings
+print(f"Saved: ${'{'}response.x_promptrouter.savings['amount_saved']:.4f{'}'}")`}</code></pre>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3">JavaScript/TypeScript</h3>
+                  <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`import OpenAI from 'openai';
+
+const client = new OpenAI({
+  baseURL: 'https://api.prompt-router.com/v1',
+  apiKey: 'pr_live_your_token_here'
+});
+
+const response = await client.chat.completions.create({
+  messages: [{ role: 'user', content: 'Hello!' }]
+});
+
+console.log('Savings:', response['x-promptrouter'].savings);`}</code></pre>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3">Key Features</h3>
+                  <ul className="space-y-2">
+                    <li className="flex items-start">
+                      <CheckCircle className="w-5 h-5 text-success mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>Auto-routing:</strong> Omit <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm">model</code> parameter for cost optimization</span>
+                    </li>
+                    <li className="flex items-start">
+                      <CheckCircle className="w-5 h-5 text-success mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>Model override:</strong> Specify <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm">model=&quot;gpt-4&quot;</code> when needed</span>
+                    </li>
+                    <li className="flex items-start">
+                      <CheckCircle className="w-5 h-5 text-success mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>Multi-turn conversations:</strong> Full message array support</span>
+                    </li>
+                    <li className="flex items-start">
+                      <CheckCircle className="w-5 h-5 text-success mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>Transparent savings:</strong> Every response includes cost breakdown in <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm">x-promptrouter</code> field</span>
+                    </li>
+                    <li className="flex items-start">
+                      <CheckCircle className="w-5 h-5 text-success mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>All providers:</strong> Works with OpenAI, Anthropic, Google, and Grok</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-gray-50 dark:bg-dark-surface rounded-lg p-4">
+                  <h4 className="font-semibold mb-2">Response Format</h4>
+                  <p className="text-sm text-gray-600 dark:text-dark-text-muted mb-3">
+                    Standard OpenAI format with PromptRouter extensions:
+                  </p>
+                  <div className="bg-gray-900 rounded-lg p-3 overflow-x-auto">
+                    <pre className="text-xs text-gray-100"><code>{`{
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "model": "gpt-3.5-turbo",
+  "choices": [...],
+  "usage": {...},
+  "x-promptrouter": {
+    "routing": {
+      "provider": "openai",
+      "reason": "Cost-optimized: 86% cheaper..."
+    },
+    "savings": {
+      "amount_saved": 0.000193,
+      "savings_percentage": 86.3
+    },
+    "was_routed": true
+  }
+}`}</code></pre>
                   </div>
                 </div>
               </div>
@@ -412,8 +537,8 @@ response = requests.post(
 )
 
 data = response.json()
-print(f"Response: {data['content']}&quot;)
-print(f"Saved: €{data['savings']['amount_saved']}&quot;)`}</code></pre>
+print(f"Response: {'{'}data['content']{'}'}")
+print(f"Saved: €{'{'}data['savings']['amount_saved']{'}'}")`}</code></pre>
                   </div>
                 </div>
 

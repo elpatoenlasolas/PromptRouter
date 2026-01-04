@@ -130,45 +130,49 @@ async def get_user_from_clerk(
     Clerk sends the session token in the Authorization header as:
     Authorization: Bearer <clerk_session_token>
     
-    In development mode without auth, returns default dev user.
+    In development mode, still validates Clerk tokens if provided.
+    Only falls back to dev user if no auth header is present.
     """
-    # Development mode: skip Clerk auth
-    if os.getenv("ENVIRONMENT", "development") == "development":
-        # Check if there's an Authorization header
-        auth_header = request.headers.get("authorization")
-        
-        # If no auth header, return dev user
-        if not auth_header:
-            result = await db.execute(select(User).where(User.id == 1))
-            user = result.scalar_one_or_none()
-            
-            if not user:
-                # Create default dev user
-                user = User(
-                    id=1,
-                    clerk_user_id="dev_user_1",
-                    email="dev@promptrouter.local",
-                    tier=UserTier.FREE,
-                    monthly_token_limit=10_000,
-                )
-                db.add(user)
-                await db.commit()
-                await db.refresh(user)
-            
-            return user
-    
-    # Production: verify Clerk token
     auth_header = request.headers.get("authorization")
+    
+    # Development mode: if NO auth header, return dev user
+    # But if there IS an auth header, validate it properly
+    if os.getenv("ENVIRONMENT", "development") == "development" and not auth_header:
+        print("DEBUG: No auth header in development mode, returning dev user")
+        result = await db.execute(select(User).where(User.id == 1))
+        user = result.scalar_one_or_none()
+        
+        if not user:
+            # Create default dev user
+            print("DEBUG: Creating dev user")
+            user = User(
+                id=1,
+                clerk_user_id="dev_user_1",
+                email="dev@promptrouter.local",
+                tier=UserTier.FREE,
+                monthly_token_limit=10_000,
+            )
+            db.add(user)
+            await db.commit()
+            await db.refresh(user)
+        
+        print(f"DEBUG: Returning dev user: {user.email}")
+        return user
+    
+    # Production OR development with auth header: verify Clerk token
+    print(f"DEBUG: Auth header present: {auth_header[:50] if auth_header else 'None'}...")
     if not auth_header:
         raise HTTPException(status_code=401, detail="No authorization header")
     
     try:
         # Extract token
         token = auth_header.replace("Bearer ", "")
+        print(f"DEBUG: Extracted token (first 20 chars): {token[:20]}...")
         
         # Get Clerk's JWKS URL
         clerk_domain = os.getenv("CLERK_DOMAIN", "https://api.clerk.dev")
         jwks_url = f"{clerk_domain}/.well-known/jwks.json"
+        print(f"DEBUG: JWKS URL: {jwks_url}")
         
         # Verify token with Clerk's public keys
         jwks_client = PyJWKClient(jwks_url)
@@ -182,7 +186,10 @@ async def get_user_from_clerk(
             options={"verify_exp": True}
         )
         
+        print(f"DEBUG: Token decoded. Payload keys: {list(payload.keys())}")
         clerk_user_id = payload.get("sub")
+        print(f"DEBUG: Clerk user ID: {clerk_user_id}, Email: {payload.get('email')}")
+        
         if not clerk_user_id:
             raise HTTPException(status_code=401, detail="Invalid token: no user ID")
         
@@ -192,8 +199,11 @@ async def get_user_from_clerk(
         )
         user = result.scalar_one_or_none()
         
+        print(f"DEBUG: User found in DB: {user is not None}")
+        
         if not user:
             # Create new user from Clerk data
+            print(f"DEBUG: Creating new user for clerk_user_id: {clerk_user_id}")
             user = User(
                 clerk_user_id=clerk_user_id,
                 email=payload.get("email", f"{clerk_user_id}@clerk.user"),
@@ -203,6 +213,7 @@ async def get_user_from_clerk(
             db.add(user)
             await db.commit()
             await db.refresh(user)
+            print(f"DEBUG: User created with ID: {user.id}")
         
         return user
         

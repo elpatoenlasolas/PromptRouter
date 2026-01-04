@@ -168,13 +168,6 @@ PromptRouter/
 - Shows routing decision and savings for each prompt
 - Used in onboarding and dashboard
 
-**[app/onboarding/page.tsx](frontend/app/onboarding/page.tsx)**
-- **60-second value delivery**
-- 3-step flow:
-  1. Add API key
-  2. Run test prompt
-  3. See savings immediately
-
 **[middleware.ts](frontend/middleware.ts)**
 - Clerk authentication middleware
 - Protects `/dashboard/*` routes

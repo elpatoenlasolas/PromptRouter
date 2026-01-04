@@ -324,7 +324,7 @@ class PromptExecutionService:
         )
     
     def _find_model_by_name(self, model_name: str, available_providers: list[str]) -> Optional:
-        \"\"\"Find a model by name from available providers\"\"\"
+        """Find a model by name from available providers"""
         # Search through all models from available providers
         all_models = []
         for provider in available_providers:

@@ -58,8 +58,16 @@ async def create_chat_completion(
     ```
     """
     try:
-        from app.services.execution import PromptExecutionService
+        # Enforce usage limits before execution
+        from app.services.usage_limits import UsageLimitService
+        usage_service = UsageLimitService(db)
         
+        # Estimate tokens from messages
+        total_chars = sum(len(msg.content) for msg in request.messages)
+        estimated_tokens = (total_chars + (request.max_tokens or 1000)) // 4
+        await usage_service.enforce_usage_limit(current_user.id, estimated_tokens)
+        
+        from app.services.execution import PromptExecutionService
         service = PromptExecutionService(db)
         response = await service.execute_chat(current_user.id, request)
         return response

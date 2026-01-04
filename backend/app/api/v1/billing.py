@@ -56,7 +56,7 @@ async def create_checkout_session(
         raise HTTPException(status_code=400, detail="Invalid tier. Must be 'starter' or 'pro'")
     
     # Check if user is already on this tier or higher
-    tier_hierarchy = {'free': 0, 'starter': 1, 'pro': 2}
+    tier_hierarchy = {'free': 0, 'starter': 1, 'pro': 2, 'elite': 3}
     current_tier_level = tier_hierarchy.get(current_user.tier.value, 0)
     requested_tier_level = tier_hierarchy.get(request.tier, 0)
     

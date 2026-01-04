@@ -465,7 +465,7 @@ print(response.choices[0].message.content)
 
 # Check your savings
 savings = response.x_promptrouter.savings
-print(f"Saved: $${'{'}savings['amount_saved']:.4f${'}'}")`}
+print(f"Saved: ${'{'}savings['amount_saved']:.4f{'}'}")`}
               />
             </div>
 

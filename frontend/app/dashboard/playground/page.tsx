@@ -223,25 +223,39 @@ export default function PlaygroundPage() {
           {/* Right: Results */}
           <div className="bg-white dark:bg-dark-surface p-5 rounded-lg border border-green-300">
             {(() => {
-              // Costos realistas basados en usar GPT-4 vs PromptRouter
-              let avgTokensPerPrompt = 0;
-              let gpt4CostPer1K = 0.03; // €0.03 por 1K tokens (GPT-4)
-              let geminiCostPer1K = 0.0002; // €0.0002 por 1K tokens (Gemini Flash)
+              // Precios REALES del backend (euros per 1K tokens)
+              // GPT-4: Input €0.03, Output €0.06
+              // Gemini 2.5 Flash: Input €0.000075, Output €0.0003
+              
+              let avgInputTokens = 0;
+              let avgOutputTokens = 0;
               
               if (workloadMix === 'current') {
-                // Simple tasks: ~300 tokens promedio
-                avgTokensPerPrompt = 300;
+                // Simple tasks: queries cortos, respuestas breves
+                avgInputTokens = 50;   // ~200 caracteres
+                avgOutputTokens = 150; // ~600 caracteres
               } else if (workloadMix === 'balanced') {
-                // Balanced mix: ~600 tokens promedio
-                avgTokensPerPrompt = 600;
+                // Balanced: mix de prompts medianos y respuestas variables
+                avgInputTokens = 200;   // ~800 caracteres
+                avgOutputTokens = 400;  // ~1600 caracteres
               } else if (workloadMix === 'heavy') {
-                // Complex tasks: ~1200 tokens promedio
-                avgTokensPerPrompt = 1200;
+                // Complex: análisis largo, generación extensa
+                avgInputTokens = 500;   // ~2000 caracteres
+                avgOutputTokens = 1000; // ~4000 caracteres
               }
               
-              // Costo por prompt
-              const costPerPromptGPT4 = (avgTokensPerPrompt / 1000) * gpt4CostPer1K;
-              const costPerPromptRouted = (avgTokensPerPrompt / 1000) * geminiCostPer1K;
+              const avgTokensPerPrompt = avgInputTokens + avgOutputTokens;
+              
+              // Costo por prompt (input + output)
+              // GPT-4
+              const costPerPromptGPT4 = 
+                (avgInputTokens / 1000) * 0.03 + 
+                (avgOutputTokens / 1000) * 0.06;
+              
+              // PromptRouter (usa principalmente Gemini Flash ~95% del tiempo)
+              const costPerPromptRouted = 
+                (avgInputTokens / 1000) * 0.000075 + 
+                (avgOutputTokens / 1000) * 0.0003;
               
               // Costos mensuales
               const monthlyCostWithout = costPerPromptGPT4 * volumeMultiplier;
@@ -258,7 +272,7 @@ export default function PlaygroundPage() {
                       <div className="group relative">
                         <Info className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-help" />
                         <div className="absolute left-0 top-6 hidden group-hover:block z-10 w-64 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg">
-                          Comparing against always using GPT-4 (€0.03/1K tokens) - the most expensive premium model
+                          Comparing GPT-4 (€0.03 input, €0.06 output per 1K) vs PromptRouter smart routing (mainly Gemini Flash at €0.000075 input, €0.0003 output per 1K)
                         </div>
                       </div>
                     </div>
@@ -269,7 +283,7 @@ export default function PlaygroundPage() {
                       <div>
                         <div className="text-gray-600 dark:text-dark-text-muted text-sm">Without optimization</div>
                         <div className="text-xs text-gray-400">
-                          Always GPT-4: {avgTokensPerPrompt} tokens × €0.03/1K
+                          Always GPT-4: {avgInputTokens}in + {avgOutputTokens}out tokens
                         </div>
                       </div>
                       <span className="font-semibold text-red-600">
@@ -281,7 +295,7 @@ export default function PlaygroundPage() {
                       <div>
                         <div className="text-gray-600 dark:text-dark-text-muted text-sm">With PromptRouter</div>
                         <div className="text-xs text-gray-400">
-                          Smart routing (99% Gemini)
+                          Smart routing (95% Gemini Flash)
                         </div>
                       </div>
                       <span className="font-semibold text-success">
@@ -321,13 +335,15 @@ export default function PlaygroundPage() {
                         <div className="group relative">
                           <Info className="w-3 h-3 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 cursor-help" />
                           <div className="absolute left-0 top-5 hidden group-hover:block z-10 w-56 p-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg shadow-lg">
-                            PromptRouter automatically selects the cheapest model that meets your quality requirements
+                            PromptRouter routes 95% of requests to Gemini Flash (cheapest) and escalates to premium models only when needed
                           </div>
                         </div>
                       </div>
-                      <div className="text-xs text-gray-700 space-y-1">
-                        <div>• {volumeMultiplier} prompts = {(volumeMultiplier / 30).toFixed(0)} prompts/day</div>
-                        <div>• ~{avgTokensPerPrompt} tokens average per prompt</div>
+                      <div className="text-xs text-gray-700 dark:text-gray-300 space-y-1">
+                        <div>• {volumeMultiplier} prompts/month = {(volumeMultiplier / 30).toFixed(0)}/day</div>
+                        <div>• ~{avgTokensPerPrompt} tokens avg ({avgInputTokens} in + {avgOutputTokens} out)</div>
+                        <div>• GPT-4: €{(costPerPromptGPT4 * 1000).toFixed(2)}/1K prompts</div>
+                        <div>• Gemini: €{(costPerPromptRouted * 1000).toFixed(3)}/1K prompts</div>
                       </div>
                     </div>
                   </div>
@@ -339,11 +355,20 @@ export default function PlaygroundPage() {
       </div>
 
       {/* Prompt Testing Section */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Input Section */}
-        <div className="space-y-6">
-          <div className="card">
-            <h2 className="text-xl font-bold mb-4 dark:text-white">Prompt Configuration</h2>
+      <div className="card bg-blue-50/50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800">
+        <div className="flex items-center mb-4">
+          <Send className="w-6 h-6 mr-2 text-blue-600 dark:text-blue-400" />
+          <h2 className="text-2xl font-bold">Testing Sandbox</h2>
+        </div>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+          Test prompts and see intelligent routing in action with real-time metrics
+        </p>
+
+        <div className="grid lg:grid-cols-2 gap-6">
+          {/* Input Section */}
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-dark-surface rounded-lg p-5 border border-blue-200 dark:border-blue-800">
+              <h3 className="text-lg font-semibold mb-4 dark:text-white">Prompt Configuration</h3>
             
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -435,7 +460,7 @@ export default function PlaygroundPage() {
           </div>
 
           {error && (
-            <div className="card bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
               <div className="flex items-start">
                 <Info className="w-5 h-5 text-red-600 dark:text-red-400 mr-2 mt-0.5" />
                 <div>
@@ -452,8 +477,8 @@ export default function PlaygroundPage() {
           {result && (
             <>
               {/* Response */}
-              <div className="card">
-                <h2 className="text-xl font-bold mb-4 dark:text-white">Response</h2>
+              <div className="bg-white dark:bg-dark-surface rounded-lg p-5 border border-blue-200 dark:border-blue-800">
+                <h3 className="text-lg font-semibold mb-4 dark:text-white">Response</h3>
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                   <p className="text-gray-900 dark:text-gray-100 whitespace-pre-wrap leading-relaxed">
                     {result.content}
@@ -462,11 +487,11 @@ export default function PlaygroundPage() {
               </div>
 
               {/* Routing Info */}
-              <div className="card">
-                <h2 className="text-xl font-bold mb-4 flex items-center dark:text-white">
-                  <Zap className="w-5 h-5 mr-2 text-gray-900 dark:text-gray-100" />
+              <div className="bg-white dark:bg-dark-surface rounded-lg p-5 border border-blue-200 dark:border-blue-800">
+                <h3 className="text-lg font-semibold mb-4 flex items-center dark:text-white">
+                  <Zap className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
                   Routing Decision
-                </h2>
+                </h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600 dark:text-dark-text-muted dark:text-gray-400">Selected Model</span>
@@ -486,8 +511,8 @@ export default function PlaygroundPage() {
               </div>
 
               {/* Metrics */}
-              <div className="card">
-                <h2 className="text-xl font-bold mb-4 dark:text-white">Metrics</h2>
+              <div className="bg-white dark:bg-dark-surface rounded-lg p-5 border border-blue-200 dark:border-blue-800">
+                <h3 className="text-lg font-semibold mb-4 dark:text-white">Metrics</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                     <div className="flex items-center mb-2">
@@ -535,9 +560,9 @@ export default function PlaygroundPage() {
               </div>
 
               {/* This Prompt's Savings */}
-              <div className="card bg-gray-100 dark:bg-gray-800 border-2 border-gray-300 dark:border-dark-border dark:border-gray-700">
-                <h3 className="font-semibold mb-3 flex items-center dark:text-white">
-                  <DollarSign className="w-5 h-5 mr-2 text-gray-900 dark:text-gray-100" />
+              <div className="bg-white dark:bg-dark-surface rounded-lg p-5 border border-blue-200 dark:border-blue-800">
+                <h3 className="text-lg font-semibold mb-3 flex items-center dark:text-white">
+                  <DollarSign className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
                   Your Prompt&apos;s Savings
                 </h3>
                 <div className="space-y-3">
@@ -612,16 +637,17 @@ export default function PlaygroundPage() {
           )}
 
           {!result && !loading && (
-            <div className="card bg-gray-50 border-2 border-dashed border-gray-300">
+            <div className="bg-white dark:bg-dark-surface rounded-lg p-5 border-2 border-dashed border-blue-300 dark:border-blue-700">
               <div className="text-center py-12">
-                <Zap className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 dark:text-dark-text-muted mb-2">No results yet</p>
-                <p className="text-sm text-gray-500">
+                <Zap className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+                <p className="text-gray-600 dark:text-gray-400 mb-2">No results yet</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500">
                   Enter a prompt and click &quot;Execute Prompt&quot; to see routing in action
                 </p>
               </div>
             </div>
           )}
+        </div>
         </div>
       </div>
     </div>
