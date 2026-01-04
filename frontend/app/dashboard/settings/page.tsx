@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Key, Trash2, Plus, Copy, Check, Eye, EyeOff } from 'lucide-react'
+import { Key, Trash2, Plus, Copy, Check, Eye, EyeOff, Code2 } from 'lucide-react'
 import type { UserConfig, APIKey } from '@/types'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { useToast } from '@/lib/toast'
 import { api } from '@/lib/api'
+import CodeSnippet from '@/components/CodeSnippet'
 
 export const dynamic = 'force-dynamic'
 
@@ -404,6 +405,124 @@ export default function SettingsPage() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* OpenAI SDK Integration Section */}
+      <div className="card">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <Code2 className="w-6 h-6 text-primary" />
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold">OpenAI SDK Integration</h2>
+            <p className="text-sm text-gray-600 dark:text-dark-text-muted">
+              Drop-in replacement for OpenAI API with automatic cost optimization
+            </p>
+          </div>
+        </div>
+
+        {tokens.length > 0 ? (
+          <div className="space-y-6">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 mt-0.5">
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-lg">💡</span>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                    Save 30-60% on AI costs instantly
+                  </h3>
+                  <p className="text-sm text-blue-800 dark:text-blue-200">
+                    Replace your OpenAI base URL and start saving. PromptRouter automatically routes to the most cost-effective model.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="font-medium text-gray-900 dark:text-dark-text mb-3">Python (OpenAI SDK)</h3>
+              <CodeSnippet
+                language="python"
+                title="Drop-in Replacement"
+                code={`from openai import OpenAI
+
+# Replace your OpenAI client with PromptRouter
+client = OpenAI(
+    base_url="${process.env.NEXT_PUBLIC_API_URL || 'https://api.promptrouter.com'}/v1",
+    api_key="${tokens[0]?.token_preview || 'pr_live_your_token_here'}"
+)
+
+# Same API - automatic cost optimization!
+response = client.chat.completions.create(
+    messages=[
+        {"role": "user", "content": "Explain quantum computing"}
+    ]
+)
+
+print(response.choices[0].message.content)
+
+# Check your savings
+savings = response.x_promptrouter.savings
+print(f"Saved: $${'{'}savings['amount_saved']:.4f${'}'}")`}
+              />
+            </div>
+
+            <div>
+              <h3 className="font-medium text-gray-900 dark:text-dark-text mb-3">JavaScript/TypeScript</h3>
+              <CodeSnippet
+                language="typescript"
+                title="Node.js"
+                code={`import OpenAI from 'openai';
+
+const client = new OpenAI({
+  baseURL: '${process.env.NEXT_PUBLIC_API_URL || 'https://api.promptrouter.com'}/v1',
+  apiKey: '${tokens[0]?.token_preview || 'pr_live_your_token_here'}'
+});
+
+const response = await client.chat.completions.create({
+  messages: [{ role: 'user', content: 'Hello!' }]
+});
+
+console.log('Savings:', response['x-promptrouter'].savings);`}
+              />
+            </div>
+
+            <div className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-dark-surface rounded-lg">
+              <div className="text-2xl">📚</div>
+              <div className="flex-1">
+                <h4 className="font-medium mb-1">Full Documentation</h4>
+                <p className="text-sm text-gray-600 dark:text-dark-text-muted mb-2">
+                  Learn about advanced features, constraints, and best practices
+                </p>
+                <a
+                  href="/docs"
+                  className="text-sm text-primary hover:underline font-medium"
+                >
+                  View OpenAI Compatibility Guide →
+                </a>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-8 px-4 bg-gray-50 dark:bg-dark-surface rounded-lg">
+            <Code2 className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+            <h3 className="font-medium text-gray-900 dark:text-dark-text mb-2">
+              Create an API token first
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-dark-text-muted mb-4">
+              You need an API token to use PromptRouter with the OpenAI SDK
+            </p>
+            <button
+              onClick={() => setShowCreateToken(true)}
+              className="btn-primary inline-flex items-center gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              Create API Token
+            </button>
+          </div>
+        )}
       </div>
 
       {/* LLM Provider API Keys */}
