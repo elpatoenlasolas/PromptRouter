@@ -38,6 +38,9 @@ out/
 .coverage
 .pytest_cache/
 coverage/
+
+# Personal settings
+TIER_CHANGE.md
 test-keys.txt
 
 # Logs
