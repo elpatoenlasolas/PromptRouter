@@ -89,6 +89,56 @@ class AnthropicAdapter(BaseLLMAdapter):
             cost=cost,
         )
     
+    async def execute_chat(
+        self,
+        messages: list[dict],
+        model: str,
+        max_tokens: int = 1000,
+        temperature: float = 0.7,
+        **kwargs
+    ) -> PromptResult:
+        """Execute chat completion with messages array"""
+        if not self._client:
+            await self.initialize()
+        
+        # Extract system message if present
+        system_message = ""
+        chat_messages = []
+        
+        for msg in messages:
+            if msg["role"] == "system":
+                system_message = msg["content"]
+            else:
+                chat_messages.append(msg)
+        
+        start_time = time.time()
+        
+        response = await self._client.messages.create(
+            model=model,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            system=system_message,
+            messages=chat_messages,
+        )
+        
+        latency_ms = int((time.time() - start_time) * 1000)
+        
+        content = response.content[0].text
+        input_tokens = response.usage.input_tokens
+        output_tokens = response.usage.output_tokens
+        total_tokens = input_tokens + output_tokens
+        cost = self.calculate_cost(input_tokens, output_tokens, model)
+        
+        return PromptResult(
+            content=content,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+            total_tokens=total_tokens,
+            latency_ms=latency_ms,
+            model_used=model,
+            cost=cost,
+        )
+    
     def get_available_models(self) -> list[ModelInfo]:
         """Get list of available Anthropic models"""
         return list(self.MODELS.values())

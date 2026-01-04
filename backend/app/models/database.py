@@ -81,6 +81,8 @@ class PromptExecution(Base):
     # Request details
     prompt_hash: Mapped[str] = mapped_column(String(64), index=True)  # SHA256 hash for caching
     prompt_length: Mapped[int] = mapped_column(Integer)  # Character count (not stored raw)
+    messages: Mapped[dict | None] = mapped_column(JSON, nullable=True)  # Chat messages array for chat completions
+    message_count: Mapped[int | None] = mapped_column(Integer, nullable=True)  # Number of messages in conversation
     
     # Routing decision
     selected_provider: Mapped[ProviderType] = mapped_column(SQLEnum(ProviderType))

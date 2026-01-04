@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.core.database import engine, Base
-from app.api.v1 import prompt, metrics, config as config_router, usage
+from app.api.v1 import prompt, metrics, config as config_router, usage, chat_completions
 from app.middleware import (
     validation_exception_handler,
     http_exception_handler,
@@ -67,6 +67,7 @@ app.add_exception_handler(Exception, general_exception_handler)
 
 # API routes
 app.include_router(prompt.router, prefix="/v1", tags=["Prompt Execution"])
+app.include_router(chat_completions.router, prefix="/v1", tags=["Chat Completions (OpenAI-Compatible)"])
 app.include_router(metrics.router, prefix="/v1", tags=["Metrics"])
 app.include_router(config_router.router, prefix="/v1", tags=["Configuration"])
 app.include_router(usage.router, prefix="/v1", tags=["Usage"])

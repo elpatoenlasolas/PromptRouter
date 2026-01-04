@@ -90,6 +90,44 @@ class OpenAIAdapter(BaseLLMAdapter):
             cost=cost,
         )
     
+    async def execute_chat(
+        self,
+        messages: list[dict],
+        model: str,
+        max_tokens: int = 1000,
+        temperature: float = 0.7,
+        **kwargs
+    ) -> PromptResult:
+        """Execute chat completion with messages array"""
+        if not self._client:
+            await self.initialize()
+        
+        start_time = time.time()
+        
+        response = await self._client.chat.completions.create(
+            model=model,
+            messages=messages,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            **kwargs
+        )
+        
+        latency_ms = int((time.time() - start_time) * 1000)
+        
+        usage = response.usage
+        content = response.choices[0].message.content
+        cost = self.calculate_cost(usage.prompt_tokens, usage.completion_tokens, model)
+        
+        return PromptResult(
+            content=content,
+            input_tokens=usage.prompt_tokens,
+            output_tokens=usage.completion_tokens,
+            total_tokens=usage.total_tokens,
+            latency_ms=latency_ms,
+            model_used=model,
+            cost=cost,
+        )
+    
     def get_available_models(self) -> list[ModelInfo]:
         """Get list of available OpenAI models"""
         return list(self.MODELS.values())

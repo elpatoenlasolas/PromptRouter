@@ -68,6 +68,30 @@ class BaseLLMAdapter(ABC):
         pass
     
     @abstractmethod
+    async def execute_chat(
+        self,
+        messages: list[dict],
+        model: str,
+        max_tokens: int = 1000,
+        temperature: float = 0.7,
+        **kwargs
+    ) -> PromptResult:
+        """
+        Execute a chat completion with message array (OpenAI-compatible)
+        
+        Args:
+            messages: List of message dicts with 'role' and 'content' keys
+            model: Model identifier
+            max_tokens: Maximum tokens to generate
+            temperature: Sampling temperature
+            **kwargs: Additional provider-specific parameters
+            
+        Returns:
+            PromptResult with content and metrics
+        """
+        pass
+    
+    @abstractmethod
     def get_available_models(self) -> list[ModelInfo]:
         """Get list of available models with pricing"""
         pass

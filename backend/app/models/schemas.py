@@ -3,7 +3,9 @@ Pydantic schemas for request/response validation
 """
 from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Literal
+import time
+import secrets
 
 
 # ============================================================================
@@ -116,3 +118,72 @@ class UserConfigResponse(BaseModel):
     api_keys: list[APIKeyResponse]
     
     model_config = ConfigDict(from_attributes=True)
+
+
+# ============================================================================
+# OpenAI-Compatible Chat Completion Schemas
+# ============================================================================
+
+class ChatMessage(BaseModel):
+    """A single message in a chat conversation"""
+    role: Literal["system", "user", "assistant"] = Field(..., description="Role of the message sender")
+    content: str = Field(..., description="Content of the message")
+
+
+class ChatCompletionRequest(BaseModel):
+    """OpenAI-compatible chat completion request"""
+    model: Optional[str] = Field(None, description="Model to use. If None, PromptRouter selects optimal model")
+    messages: list[ChatMessage] = Field(..., min_length=1, description="Array of messages")
+    temperature: Optional[float] = Field(0.7, ge=0.0, le=2.0, description="Sampling temperature")
+    max_tokens: Optional[int] = Field(1000, description="Maximum tokens to generate")
+    top_p: Optional[float] = Field(1.0, ge=0.0, le=1.0, description="Nucleus sampling parameter")
+    n: Optional[int] = Field(1, description="Number of completions to generate")
+    stream: Optional[bool] = Field(False, description="Whether to stream responses (not yet supported)")
+    stop: Optional[list[str]] = Field(None, description="Stop sequences")
+    presence_penalty: Optional[float] = Field(0.0, ge=-2.0, le=2.0, description="Presence penalty")
+    frequency_penalty: Optional[float] = Field(0.0, ge=-2.0, le=2.0, description="Frequency penalty")
+    
+    # PromptRouter-specific extensions (optional)
+    constraints: Optional[PromptConstraints] = Field(None, description="Routing constraints (PromptRouter extension)")
+
+
+class ChatCompletionMessage(BaseModel):
+    """Message in the response"""
+    role: Literal["assistant"] = Field("assistant", description="Always 'assistant' for completions")
+    content: str = Field(..., description="Generated content")
+
+
+class ChatCompletionChoice(BaseModel):
+    """A single completion choice"""
+    index: int = Field(..., description="Index of this choice")
+    message: ChatCompletionMessage = Field(..., description="The generated message")
+    finish_reason: Optional[Literal["stop", "length", "content_filter"]] = Field("stop", description="Reason for completion finish")
+
+
+class ChatCompletionUsage(BaseModel):
+    """Token usage information"""
+    prompt_tokens: int = Field(..., description="Tokens in the prompt")
+    completion_tokens: int = Field(..., description="Tokens in the completion")
+    total_tokens: int = Field(..., description="Total tokens used")
+
+
+class PromptRouterMetadata(BaseModel):
+    """PromptRouter-specific metadata (extension to OpenAI format)"""
+    routing: RoutingDecision = Field(..., description="Routing decision details")
+    savings: dict = Field(..., description="Cost savings information")
+    was_routed: bool = Field(..., description="Whether model was auto-selected by routing engine")
+
+
+class ChatCompletionResponse(BaseModel):
+    """OpenAI-compatible chat completion response with PromptRouter extensions"""
+    id: str = Field(default_factory=lambda: f"chatcmpl-{secrets.token_hex(12)}", description="Unique completion ID")
+    object: Literal["chat.completion"] = Field("chat.completion", description="Object type")
+    created: int = Field(default_factory=lambda: int(time.time()), description="Unix timestamp")
+    model: str = Field(..., description="Model used for completion")
+    choices: list[ChatCompletionChoice] = Field(..., description="List of completion choices")
+    usage: ChatCompletionUsage = Field(..., description="Token usage")
+    
+    # PromptRouter extension (custom field, ignored by standard OpenAI clients)
+    x_promptrouter: Optional[PromptRouterMetadata] = Field(None, alias="x-promptrouter", description="PromptRouter metadata")
+    
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)

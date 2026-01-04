@@ -158,6 +158,43 @@ class GoogleAdapter(BaseLLMAdapter):
         except Exception as e:
             raise ValueError(f"Failed to execute prompt with Google Gemini: {str(e)}")
     
+    async def execute_chat(
+        self,
+        messages: list[dict],
+        model: str,
+        max_tokens: int = 1000,
+        temperature: float = 0.7,
+        **kwargs
+    ) -> PromptResult:
+        """Execute chat completion with messages array"""
+        if not self._client:
+            await self.initialize()
+        
+        # Convert messages array to Google's format
+        # Google doesn't natively support message arrays, so we concatenate
+        system_message = ""
+        user_messages = []
+        
+        for msg in messages:
+            if msg["role"] == "system":
+                system_message = msg["content"]
+            elif msg["role"] in ["user", "assistant"]:
+                user_messages.append(f"{msg['role']}: {msg['content']}")
+        
+        # Combine into single prompt
+        full_prompt = "\n\n".join(user_messages)
+        if system_message:
+            full_prompt = f"{system_message}\n\n{full_prompt}"
+        
+        # Use the execute_prompt method internally
+        return await self.execute_prompt(
+            prompt=full_prompt,
+            model=model,
+            system_message=None,  # Already combined above
+            max_tokens=max_tokens,
+            temperature=temperature,
+        )
+    
     def get_available_models(self) -> list[ModelInfo]:
         """Get list of available Google models"""
         return list(self.MODELS.values())
