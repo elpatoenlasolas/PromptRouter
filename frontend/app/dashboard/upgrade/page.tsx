@@ -183,7 +183,6 @@ export default function UpgradePage() {
               <p className="text-sm text-gray-600 dark:text-dark-text-muted mb-4">For power users</p>
               <div className="mb-4">
                 <span className="text-5xl font-bold text-gray-900 dark:text-white">Custom</span>
-                <span className="text-gray-600 dark:text-dark-text-muted"> / month</span>
               </div>
               <p className="text-gray-600 dark:text-dark-text-muted text-sm">
                 For power users running large volumes who want maximum optimization.

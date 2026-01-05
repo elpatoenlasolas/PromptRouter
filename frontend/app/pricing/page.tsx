@@ -391,7 +391,6 @@ export default function PricingPage() {
                 <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">Max savings</p>
                 <div className="mb-3">
                   <span className="text-3xl font-bold text-gray-900 dark:text-white">Custom</span>
-                  <span className="text-gray-600 dark:text-gray-400 text-sm"> / mo</span>
                 </div>
                 <p className="text-gray-600 dark:text-gray-400 text-xs">
                   Power users running large volumes.
