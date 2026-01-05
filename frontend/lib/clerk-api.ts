@@ -35,8 +35,6 @@ export async function makeAuthenticatedRequest<T>(
   const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
   const token = await getToken()
   
-  console.log('🔑 Clerk token:', token ? `${token.substring(0, 20)}...` : 'NO TOKEN')
-  
   const response = await fetch(`${baseURL}${endpoint}`, {
     ...options,
     headers: {

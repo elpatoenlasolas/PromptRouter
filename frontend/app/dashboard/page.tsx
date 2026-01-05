@@ -41,11 +41,9 @@ export default function DashboardPage() {
   const fetchMetrics = async () => {
     try {
       const data = await makeAuthenticatedRequest<Metrics>('/v1/metrics', getToken)
-      console.log('📊 Metrics received:', data)
       setMetrics(data)
     } catch (error) {
-      console.error('Failed to fetch metrics:', error)
-      // Set empty metrics on error
+      console.error('Error fetching metrics:', error)
       setMetrics({
         total_requests: 0,
         total_tokens: 0,
