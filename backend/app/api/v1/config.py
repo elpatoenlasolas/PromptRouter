@@ -103,7 +103,7 @@ async def delete_api_key(
 
 @router.get("/config", response_model=UserConfigResponse)
 async def get_user_config(
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_user_from_clerk),
     db: AsyncSession = Depends(get_db),
 ):
     """
