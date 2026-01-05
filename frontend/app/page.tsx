@@ -4,15 +4,47 @@ import Link from 'next/link'
 import { ArrowRight, Zap, DollarSign, Target, Moon, Sun, LayoutDashboard, Settings, BookOpen, CreditCard } from 'lucide-react'
 import MobileNav from '@/components/dashboard/MobileNav'
 import Footer from '@/components/Footer'
-import { useUser, UserButton } from '@clerk/nextjs'
+import { useUser, UserButton, useAuth } from '@clerk/nextjs'
 import { useTheme } from '@/lib/theme'
 import { useState, useRef, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useToast } from '@/lib/toast'
+import { makeAuthenticatedRequest } from '@/lib/clerk-api'
+import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 export default function HomePage() {
-  const { isSignedIn, isLoaded } = useUser()
+  const { isSignedIn, isLoaded, user } = useUser()
+  const { getToken } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const [showMenu, setShowMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
+  const { showToast } = useToast()
+  const [loadingTier, setLoadingTier] = useState<string | null>(null)
+
+  const handleUpgrade = async (tier: 'starter' | 'pro') => {
+    if (!isLoaded) return
+    
+    if (!user) {
+      router.push('/sign-up')
+      return
+    }
+
+    setLoadingTier(tier)
+    try {
+      const data = await makeAuthenticatedRequest<{ checkout_url: string }>('/v1/create-checkout-session', getToken, {
+        method: 'POST',
+        body: JSON.stringify({ tier })
+      })
+      window.location.href = data.checkout_url
+    } catch (error) {
+      showToast(
+        error instanceof Error ? error.message : 'Failed to start checkout. Please try again.',
+        'error'
+      )
+      setLoadingTier(null)
+    }
+  }
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -285,7 +317,7 @@ export default function HomePage() {
                 </li>
               </ul>
             </div>
-            <Link href="/sign-up" className="btn-ghost w-full block text-center">
+            <Link href="/sign-up" className="btn-secondary w-full block text-center">
               Start Free
             </Link>
           </div>
@@ -317,9 +349,14 @@ export default function HomePage() {
                 </li>
               </ul>
             </div>
-            <Link href="/sign-up" className="btn-accent w-full block text-center">
-              Get Started
-            </Link>
+            <button
+              onClick={() => handleUpgrade('starter')}
+              disabled={loadingTier !== null}
+              className="btn-accent w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loadingTier === 'starter' && <LoadingSpinner size="sm" />}
+              {loadingTier === 'starter' ? 'Processing...' : (user ? 'Upgrade' : 'Get Started')}
+            </button>
           </div>
 
           <div className="card border-2 border-gray-200 dark:border-dark-border flex flex-col justify-between">
@@ -346,9 +383,14 @@ export default function HomePage() {
                 </li>
               </ul>
             </div>
-            <Link href="/sign-up" className="btn-primary w-full block text-center">
-              Get Started
-            </Link>
+            <button
+              onClick={() => handleUpgrade('pro')}
+              disabled={loadingTier !== null}
+              className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loadingTier === 'pro' && <LoadingSpinner size="sm" />}
+              {loadingTier === 'pro' ? 'Processing...' : (user ? 'Upgrade' : 'Get Started')}
+            </button>
           </div>
         </div>
       </section>

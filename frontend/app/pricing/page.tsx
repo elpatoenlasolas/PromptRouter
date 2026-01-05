@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Check, X, ArrowRight, BarChart3, Info } from 'lucide-react'
 import DashboardHeader from '@/components/dashboard/DashboardHeader'
 import Footer from '@/components/Footer'
 import { useUser, useAuth } from '@clerk/nextjs'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useToast } from '@/lib/toast'
 import { makeAuthenticatedRequest } from '@/lib/clerk-api'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
@@ -17,8 +17,19 @@ export default function PricingPage() {
   const { user, isLoaded } = useUser()
   const { getToken } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { showToast } = useToast()
   const [loadingTier, setLoadingTier] = useState<string | null>(null)
+
+  // Handle upgrade cancelled query parameter
+  useEffect(() => {
+    const upgradeCancelled = searchParams.get('upgrade')
+    if (upgradeCancelled === 'cancelled') {
+      showToast('Upgrade cancelled. You can upgrade anytime!', 'info')
+      // Clean URL
+      router.replace('/pricing')
+    }
+  }, [searchParams, router, showToast])
 
   const handleUpgrade = async (tier: 'starter' | 'pro') => {
     if (!isLoaded) return
