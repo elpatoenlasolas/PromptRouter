@@ -58,12 +58,12 @@ export default function PlaygroundPage() {
         temperature: temperature,
         ...(systemMessage.trim() && { system_message: systemMessage.trim() }),
       }
-data = await makeAuthenticatedRequest<PromptResponse>('/v1/prompt', getToken, {
+
+      const data = await makeAuthenticatedRequest<PromptResponse>('/v1/prompt', getToken, {
         method: 'POST',
         body: JSON.stringify(requestBody),
       })
       
-      const data: PromptResponse = await response.json()
       setResult(data)
     } catch (error: any) {
       console.error('Error executing prompt:', error)
