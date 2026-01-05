@@ -70,9 +70,9 @@ export default function TermsPage() {
               Our pricing tiers are:
             </p>
             <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2 ml-4">
-              <li><strong>Free:</strong> €0/month - 10,000 tokens/month</li>
-              <li><strong>Starter:</strong> €25/month - 500,000 tokens/month</li>
-              <li><strong>Pro:</strong> €59/month - 5,000,000 tokens/month</li>
+              <li><strong>Free:</strong> $0/month - 10,000 tokens/month</li>
+              <li><strong>Starter:</strong> $5/month - 500,000 tokens/month</li>
+              <li><strong>Pro:</strong> $10/month - 5,000,000 tokens/month</li>
             </ul>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mt-3">
               Payments are processed through Stripe. Subscriptions auto-renew monthly unless canceled. No refunds for partial months.

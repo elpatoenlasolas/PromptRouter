@@ -71,7 +71,7 @@ export default function UpgradePage() {
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Starter</h3>
               <p className="text-sm text-gray-600 dark:text-dark-text-muted mb-4">For indie developers</p>
               <div className="mb-4">
-                <span className="text-5xl font-bold text-gray-900 dark:text-white">€15</span>
+                <span className="text-5xl font-bold text-gray-900 dark:text-white">$5</span>
                 <span className="text-gray-600 dark:text-dark-text-muted"> / month</span>
               </div>
               <p className="text-gray-600 dark:text-dark-text-muted text-sm">
@@ -124,7 +124,7 @@ export default function UpgradePage() {
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pro</h3>
               <p className="text-sm text-gray-600 dark:text-dark-text-muted mb-4">It pays for itself</p>
               <div className="mb-4">
-                <span className="text-5xl font-bold text-gray-900 dark:text-white">€25</span>
+                <span className="text-5xl font-bold text-gray-900 dark:text-white">$10</span>
                 <span className="text-gray-600 dark:text-dark-text-muted"> / month</span>
               </div>
               <p className="text-gray-600 dark:text-dark-text-muted text-sm mb-3">

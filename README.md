@@ -232,14 +232,14 @@ print(response.choices[0].message.content)
 - All providers
 - Priority routing
 - Email support
-- **€15/month**
+- **$5/month**
 
 ### Pro Tier
 - 5,000,000 tokens/month
 - All providers
 - Custom routing rules
 - Priority support
-- **€25/month**
+- **$10/month**
 
 > 💡 **You only pay for PromptRouter's service fee.** LLM provider costs are billed directly to you through your own API keys.
 

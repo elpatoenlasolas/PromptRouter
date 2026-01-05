@@ -181,11 +181,11 @@ Redeploy backend to apply changes.
 #### B. Create Products
 1. Dashboard → Products → "+ Add Product"
 2. Create "PromptRouter Starter":
-   - Price: €15/month
+   - Price: $5/month
    - Recurring: Monthly
    - Copy the Price ID (starts with `price_`)
 3. Create "PromptRouter Pro":
-   - Price: €25/month
+   - Price: $10/month
    - Recurring: Monthly
    - Copy the Price ID
 

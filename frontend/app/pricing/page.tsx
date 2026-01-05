@@ -282,7 +282,7 @@ export default function PricingPage() {
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Starter</h3>
                 <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">For indie devs</p>
                 <div className="mb-3">
-                  <span className="text-3xl font-bold text-gray-900 dark:text-white">€15</span>
+                  <span className="text-3xl font-bold text-gray-900 dark:text-white">$5</span>
                   <span className="text-gray-600 dark:text-gray-400 text-sm"> / mo</span>
                 </div>
                 <p className="text-gray-600 dark:text-gray-400 text-xs">
@@ -336,7 +336,7 @@ export default function PricingPage() {
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Pro</h3>
                 <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">Pays for itself</p>
                 <div className="mb-3">
-                  <span className="text-3xl font-bold text-gray-900 dark:text-white">€25</span>
+                  <span className="text-3xl font-bold text-gray-900 dark:text-white">$10</span>
                   <span className="text-gray-600 dark:text-gray-400 text-sm"> / mo</span>
                 </div>
                 <p className="text-gray-600 dark:text-gray-400 text-xs mb-2">

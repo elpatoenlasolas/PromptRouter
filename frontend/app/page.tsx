@@ -296,7 +296,7 @@ export default function HomePage() {
             </div>
             <div>
               <h3 className="heading-3 mb-2">Starter</h3>
-              <p className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">€15<span className="body-large text-gray-500 dark:text-dark-text-muted">/mo</span></p>
+              <p className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">$5<span className="body-large text-gray-500 dark:text-dark-text-muted">/mo</span></p>
               <p className="text-base text-gray-600 dark:text-dark-text-muted mb-6">For indie developers</p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-start">
@@ -325,7 +325,7 @@ export default function HomePage() {
           <div className="card border-2 border-gray-200 dark:border-dark-border flex flex-col justify-between">
             <div>
               <h3 className="heading-3 mb-2">Pro</h3>
-              <p className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">€25<span className="body-large text-gray-500 dark:text-dark-text-muted">/mo</span></p>
+              <p className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">$10<span className="body-large text-gray-500 dark:text-dark-text-muted">/mo</span></p>
               <p className="text-base text-gray-600 dark:text-dark-text-muted mb-6">For power users</p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-start">
