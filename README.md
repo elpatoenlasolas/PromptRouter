@@ -7,69 +7,133 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Next.js 14](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Live](https://img.shields.io/badge/Live-prompt--router.com-brightgreen)](https://www.prompt-router.com)
 
 ---
 
 ## 🌟 What is PromptRouter?
 
-PromptRouter is an **API-first micro-SaaS** that intelligently routes each AI prompt to the optimal model based on:
+PromptRouter is a **production-ready micro-SaaS** that intelligently routes each AI prompt to the optimal model based on:
 - ✅ **Cost** (primary optimization)
 - ✅ **Latency** constraints
 - ✅ **Quality** requirements  
-- ✅ **Reliability** scores
+- ✅ **Provider availability**
 
-**Users think in euros, not tokens.** See exactly how much you save on every request.
+**Users see savings in euros, not tokens.** Track exactly how much you save on every request.
 
 ---
 
 ## 💰 Why PromptRouter?
 
-In 2026, AI API costs are rising and the number of available LLMs is exploding. Companies waste **hundreds of euros per month** manually testing and switching models.
+Companies waste **hundreds of euros per month** by always using premium models or manually switching between providers.
 
 **PromptRouter solves this by:**
-- 🎯 Routing prompts to the cheapest viable model automatically
-- 💶 Showing real-time savings vs. standard pricing (e.g., always using GPT-4)
-- 🔐 Using YOUR API keys (bring-your-own-keys) with no markup
-- ⚡ Explaining every routing decision transparently
+- 🎯 Automatically routing to the cheapest viable model
+- 💶 Showing real-time savings vs. standard pricing
+- 🔐 Using YOUR API keys (BYOK) with zero markup
+- ⚡ Transparent routing decisions
 - 🚫 No vendor lock-in
 
 ### Example Savings
 
-| Scenario | Without PromptRouter | With PromptRouter | Saved |
-|----------|---------------------|-------------------|--------|
-| 1M tokens/month | €30 (GPT-4) | €8 (Smart routing) | **€22** |
-| Customer support bot | €150/month | €45/month | **€105** |
-| Content generation | €200/month | €60/month | **€140** |
+| Scenario | Without PromptRouter | With PromptRouter | Monthly Savings |
+|----------|---------------------|-------------------|-----------------|
+| Customer support | €150 (GPT-4) | €45 (Smart routing) | **€105** |
+| Content generation | €200 (Claude) | €60 (Mixed) | **€140** |
+| Data extraction | €100 (GPT-4) | €12 (Gemini Flash) | **€88** |
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Live Demo
 
-### 1️⃣ Local Development
+**Production:** [https://www.prompt-router.com](https://www.prompt-router.com)
+
+**API Endpoint:** `https://api.prompt-router.com`
+
+---
+
+## 📚 Quick Start
+
+### 1. Sign Up
+
+Go to [prompt-router.com/sign-up](https://www.prompt-router.com/sign-up) and create a free account.
+
+### 2. Add Your API Keys
+
+In the dashboard, go to Settings and add your LLM provider API keys:
+- OpenAI
+- Anthropic (Claude)
+- Google (Gemini)
+- xAI (Grok)
+
+Keys are encrypted at rest and never logged.
+
+### 3. Get Your PromptRouter API Token
+
+In Settings → API Tokens, create a new token. You'll use this to authenticate your requests.
+
+### 4. Start Making Requests
 
 ```bash
-# Clone the repo
-cd /Users/patofunes/Desktop/Coding/PromptRouter
-
-# Start backend (FastAPI + PostgreSQL + Redis)
-cd backend
-python -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-
-# Start frontend (Next.js)
-cd ../frontend
-npm install && npm run dev
+curl -X POST https://api.prompt-router.com/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_PROMPTROUTER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messages": [
+      {"role": "user", "content": "Explain quantum computing in simple terms"}
+    ]
+  }'
 ```
 
-See [DEVELOPMENT.md](DEVELOPMENT.md) for detailed setup instructions.
+---
 
-### 2️⃣ Deploy to Production
+## 🔌 OpenAI-Compatible API
 
-- **Backend**: Deploy to Railway (PostgreSQL + Redis included)
-- **Frontend**: Deploy to Vercel
+PromptRouter is **100% compatible with the OpenAI SDK**. Just change the base URL:
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step deployment guide.
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.prompt-router.com/v1",
+    api_key="YOUR_PROMPTROUTER_TOKEN"  # Your PromptRouter token
+)
+
+response = client.chat.completions.create(
+    messages=[
+        {"role": "user", "content": "Write a haiku about AI"}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+**That's it!** PromptRouter handles model selection, cost optimization, and provider routing automatically.
+
+---
+
+## 🎨 Features
+
+### ✅ Implemented
+- [x] **Smart Routing Engine** - Cost-optimized model selection
+- [x] **OpenAI-Compatible API** - Drop-in replacement for OpenAI SDK
+- [x] **Multi-Provider Support** - OpenAI, Anthropic, Google, xAI
+- [x] **Savings Dashboard** - Real-time cost tracking and analytics
+- [x] **Encrypted Key Storage** - AES-256 encryption for API keys
+- [x] **Usage Tracking** - Token usage and request history
+- [x] **Tier-Based Limits** - Free (10K), Starter (500K), Pro (5M tokens/month)
+- [x] **Clerk Authentication** - Secure user management with OAuth
+- [x] **Webhook Integration** - Automatic user provisioning
+- [x] **Production Deployment** - Railway (backend) + Vercel (frontend)
+
+### 🚧 Roadmap
+- [ ] Custom routing rules per user
+- [ ] A/B testing between models
+- [ ] Latency-based routing
+- [ ] Streaming support
+- [ ] Function calling support
+- [ ] Stripe billing integration
+- [ ] Team workspaces
 
 ---
 
@@ -77,294 +141,240 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step deployment guide.
 
 ```
 ┌─────────────────┐
-│   Next.js App   │  ← Vercel
-│  (Dashboard UI) │
-└────────┬────────┘
-         │ HTTPS
+│   Frontend      │  Next.js 14 (Vercel)
+│   Dashboard     │  - User management (Clerk)
+└────────┬────────┘  - Analytics & metrics
+         │           - API key management
+         │
          ▼
 ┌─────────────────┐
-│  FastAPI Backend│  ← Railway
-│ (Routing Engine)│
-└────────┬────────┘
+│   API Gateway   │  FastAPI (Railway)
+│   /v1/*         │  - Authentication
+└────────┬────────┘  - Rate limiting
+         │           - Request routing
          │
     ┌────┴────┐
+    │         │
     ▼         ▼
-┌────────┐ ┌──────┐
-│ Postgres│ │Redis │
-│  (Data) │ │(Cache)│
-└─────────┘ └──────┘
-         │
-         ▼
-  ┌──────────────────────┐
-  │  LLM Provider APIs   │
-  │ OpenAI • Anthropic   │
-  │ Google • Grok        │
-  └──────────────────────┘
+┌────────┐ ┌────────┐
+│Routing │ │  Usage │  PostgreSQL (Railway)
+│Engine  │ │Tracking│  - User data
+└────┬───┘ └───┬────┘  - API keys (encrypted)
+     │         │       - Request history
+     │         │
+     ▼         ▼
+┌─────────────────┐
+│  LLM Providers  │  User's own API keys
+│  - OpenAI       │  - No markup
+│  - Anthropic    │  - Direct billing
+│  - Google       │  - Full control
+│  - xAI          │
+└─────────────────┘
 ```
-
-### Tech Stack
-
-**Backend:**
-- FastAPI (Python 3.11+)
-- PostgreSQL (user data, executions, costs)
-- Redis (caching, rate limiting)
-- Provider adapters (OpenAI, Anthropic, Google, Grok)
-
-**Frontend:**
-- Next.js 14 (App Router)
-- Tailwind CSS
-- Recharts (data visualization)
-- Clerk (authentication)
-
-**Deployment:**
-- Railway (backend + databases)
-- Vercel (frontend)
 
 ---
 
-## 📖 Key Features
+## 🛠️ Tech Stack
 
-### ✅ MVP (Ready Now)
+### Backend
+- **FastAPI** - Modern Python web framework
+- **PostgreSQL** - User data, encrypted keys, analytics
+- **SQLAlchemy** - Async ORM
+- **Cryptography** - Fernet encryption for API keys
+- **Railway** - Production hosting
 
-- [x] Multi-provider routing (OpenAI, Anthropic, Google, Grok)
-- [x] Cost optimization algorithm
-- [x] Real-time savings dashboard
-- [x] Secure API key storage (encrypted)
-- [x] Latency & quality constraints
-- [x] Routing decision explanations
-- [x] Usage tracking & limits
-- [x] API-first design
+### Frontend
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling
+- **Clerk** - Authentication and user management
+- **Vercel** - Production hosting
 
-### 🚧 Coming Soon
+### Infrastructure
+- **Railway** - Backend + PostgreSQL database
+- **Vercel** - Frontend deployment
+- **Clerk** - User authentication + OAuth
+- **GitHub** - CI/CD integration
 
-- [ ] Stripe billing integration
-- [ ] Advanced analytics (cost per endpoint, A/B testing)
-- [ ] Custom routing rules
-- [ ] Prompt caching
-- [ ] Team collaboration
-- [ ] Webhook notifications
+---
+
+## 📖 Documentation
+
+- **[Getting Started](GETTING_STARTED.md)** - Detailed setup guide
+- **[API Reference](https://www.prompt-router.com/docs)** - Complete API documentation
+- **[Development Guide](DEVELOPMENT.md)** - Local development setup
+- **[Production Deployment](PRODUCTION_DEPLOYMENT.md)** - Deploy to production
+- **[Testing Guide](TESTING_GUIDE.md)** - Running tests
+
+---
+
+## 🔒 Security
+
+- **Encrypted API Keys** - All LLM provider keys encrypted with Fernet (AES-256)
+- **No Key Logging** - API keys never appear in logs or responses
+- **HTTPS Only** - All communication over TLS
+- **Clerk Auth** - Industry-standard OAuth with GitHub, Google, etc.
+- **Environment Isolation** - Separate dev/prod databases and keys
+- **Rate Limiting** - Tier-based request limits
 
 ---
 
 ## 💳 Pricing
 
-| Tier | Price | Token Limit | Features |
-|------|-------|-------------|----------|
-| **Free** | €0/month | 10K tokens | Basic routing, 1 API key |
-| **Starter** | €15/month | 1M tokens | All providers, priority support |
-| **Pro** | €25/month | 5M tokens | Advanced analytics, teams |
+### Free Tier
+- 10,000 tokens/month
+- All providers
+- Dashboard access
+- **€0/month**
 
-**Save more than the subscription cost or get a refund.**
+### Starter Tier
+- 500,000 tokens/month
+- All providers
+- Priority routing
+- Email support
+- **€15/month**
 
----
-
-## 🎯 Product Principles
-
-1. **Users think in euros, not tokens**
-2. **Savings-first UX** - Every view shows how much you saved
-3. **Bring-your-own-API-keys** - No markup, no lock-in
-4. **Explain every decision** - Transparent routing logic
-5. **Neutral infrastructure** - No provider preference
-
----
-
-## 📊 North Star Metric
-
-**Total euros saved by users** 
-
-This aligns our success with customer value.
-
----
-
-## 🛣️ Roadmap
-
-### Phase 1: MVP (30 days) ✅
-- Core routing engine
-- Basic dashboard
-- Authentication & billing setup
-- Deploy to production
-
-### Phase 2: Differentiation (60 days)
-- Advanced analytics
-- Prompt caching
+### Pro Tier
+- 5,000,000 tokens/month
+- All providers
 - Custom routing rules
-- Team features
+- Priority support
+- **€25/month**
 
-### Phase 3: Moat (90 days)
-- ML-based model selection
-- Cost prediction
-- Auto-scaling suggestions
-- Enterprise features
+> 💡 **You only pay for PromptRouter's service fee.** LLM provider costs are billed directly to you through your own API keys.
 
 ---
 
-## 🧪 Example Usage
+## 🚀 Deployment
 
-### Via Dashboard
-1. Sign up at https://promptrouter.vercel.app
-2. Add your LLM provider API keys (OpenAI, Anthropic, etc.) in Settings
-3. Create a PromptRouter API token in Settings → API Tokens
-4. Run a test prompt
-5. See immediate savings!
+### Production URLs
+- **Frontend:** https://www.prompt-router.com
+- **API:** https://api.prompt-router.com
+- **Docs:** https://www.prompt-router.com/docs
 
-### Via API
+### Environment Variables
 
-First, create an API token in your dashboard (Settings → API Tokens). Then:
-
+**Backend (Railway):**
 ```bash
-curl -X POST https://prompt-router.com/v1/prompt \
-  -H "Authorization: Bearer pr_live_YOUR_TOKEN_HERE" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "Write a short poem about AI",
-    "max_tokens": 100,
-    "constraints": {
-      "max_latency_ms": 2000,
-      "min_quality_tier": "standard"
-    }
-  }'
+DATABASE_URL=postgresql://...
+ENCRYPTION_KEY=<44-char-fernet-key>
+API_SECRET_KEY=<random-secret>
+CLERK_SECRET_KEY=sk_live_...
+CLERK_DOMAIN=clerk.prompt-router.com
+CLERK_WEBHOOK_SECRET=whsec_...
+ENVIRONMENT=production
 ```
 
-Response:
-```json
-{
-  "response": "In circuits bright and code so clean...",
-  "model": "claude-3-haiku-20240307",
-  "provider": "anthropic",
-  "cost": 0.0023,
-  "saved": 0.0177,
-  "routing_reason": "Cheapest option (87% cheaper than GPT-4) | standard quality | ~650ms latency | €0.0012 avg/1K tokens",
-  "latency_ms": 650
-}
+**Frontend (Vercel):**
+```bash
+NEXT_PUBLIC_API_URL=https://api.prompt-router.com
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_...
+CLERK_SECRET_KEY=sk_live_...
+CLERK_DOMAIN=https://clerk.prompt-router.com
 ```
 
-📚 **Full Documentation**: See [API_TOKENS.md](API_TOKENS.md) for complete API token documentation.
+---
+
+## 🧪 Local Development
+
+### Prerequisites
+- Python 3.11+
+- Node.js 18+
+- PostgreSQL 13+
+- Docker (optional, for databases)
+
+### Setup
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/elpatoenlasolas/PromptRouter.git
+cd PromptRouter
+```
+
+2. **Start databases (with Docker)**
+```bash
+docker-compose up -d
+```
+
+3. **Setup backend**
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env
+# Edit .env with your local config
+uvicorn app.main:app --reload --port 8000
+```
+
+4. **Setup frontend**
+```bash
+cd frontend
+npm install
+cp .env.local.example .env.local
+# Edit .env.local with your local config
+npm run dev
+```
+
+5. **Access the app**
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8000
+- API Docs: http://localhost:8000/docs
+
+---
+
+## 📊 Monitoring
+
+### Health Checks
+- Backend: `GET https://api.prompt-router.com/health`
+- Database: Automatic via Railway
+
+### Logs
+- Backend: Railway dashboard → Deployments → Logs
+- Frontend: Vercel dashboard → Deployments → Functions
+
+### Metrics
+Dashboard shows:
+- Total requests
+- Total tokens used
+- Total spend vs. estimated spend without routing
+- Total savings
+- Average latency
+- Error rate
+- Recent requests with routing decisions
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions are welcome! Please:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ---
 
-## 📄 License
+## 📝 License
 
-MIT License - see [LICENSE](LICENSE) for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## 🙋 Support
 
-- **Documentation**: [docs.promptrouter.com](https://docs.promptrouter.com)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/promptrouter/issues)
-- **Email**: support@promptrouter.com
+- **Documentation:** [prompt-router.com/docs](https://www.prompt-router.com/docs)
+- **Email:** contact@promptrouter.com
+- **Issues:** [GitHub Issues](https://github.com/elpatoenlasolas/PromptRouter/issues)
 
 ---
 
-## 🌟 Star Us!
+## 🎯 Built With
 
-If PromptRouter saves you money, give us a star ⭐️
+Made with ❤️ by developers who were tired of overpaying for AI APIs.
 
----
+**Stop guessing. Start saving.**
 
-**Built with ❤️ for developers who care about AI costs**
-
-A webapp + API that automatically routes every AI prompt to the cheapest model that meets your quality and speed requirements.
-
-## Value Proposition
-
-In 2026, AI API costs are rising and the number of available LLMs is exploding. Companies and power-users waste hundreds of euros per month manually testing and switching models without knowing which one is cheapest, fast enough, or good enough for each task.
-
-**PromptRouter saves you money** by intelligently routing each prompt to the optimal AI model based on cost, latency, reliability, and quality constraints.
-
-## North Star Metric
-
-**Total euros saved by users**
-
-## Tech Stack
-
-### Frontend
-- Next.js 14+ (App Router)
-- Tailwind CSS
-- Recharts (savings visualization)
-- Clerk (authentication)
-- Deployed on Vercel
-
-### Backend
-- FastAPI (Python 3.11+)
-- PostgreSQL (Railway)
-- Redis (caching)
-- Deployed on Railway
-
-## Architecture
-
-```
-┌─────────────────┐
-│   Next.js App   │  (Vercel)
-│   Dashboard     │
-└────────┬────────┘
-         │
-         │ HTTPS
-         ▼
-┌─────────────────┐
-│  FastAPI Gateway│  (Railway)
-│  /v1/prompt     │
-└────────┬────────┘
-         │
-    ┌────┴─────┬──────────┬─────────┐
-    ▼          ▼          ▼         ▼
-┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐
-│ OpenAI │ │Anthropic│ │ Google │ │  Grok  │
-└────────┘ └────────┘ └────────┘ └────────┘
-```
-
-## Product Principles
-
-1. **Users think in euros, not tokens**
-2. **Savings-first UX** — Dashboard shows money saved
-3. **Bring-your-own-API-keys** — We route, you own the data
-4. **Neutral infrastructure** — No vendor lock-in
-5. **Immediate value** — See savings after first prompt
-
-## Project Structure
-
-```
-PromptRouter/
-├── backend/           # FastAPI application
-│   ├── app/
-│   │   ├── adapters/  # LLM provider adapters
-│   │   ├── api/       # API routes
-│   │   ├── core/      # Routing engine
-│   │   ├── models/    # Database models
-│   │   └── services/  # Business logic
-│   ├── tests/
-│   └── requirements.txt
-│
-├── frontend/          # Next.js application
-│   ├── app/           # App router pages
-│   ├── components/    # React components
-│   ├── lib/           # Utilities
-│   └── public/
-│
-├── shared/            # Shared types/schemas
-└── docker-compose.yml # Local development
-```
-
-## Getting Started
-
-See `/backend/README.md` and `/frontend/README.md` for setup instructions.
-
-## Business Model
-
-| Tier | Price | Limit |
-|------|-------|-------|
-| Free | €0 | 10K tokens/month |
-| Starter | €15/month | 500K tokens/month |
-| Pro | €25/month | 5M tokens/month |
-
-Users save more than the subscription cost through intelligent routing.
-
-## License
-
-Proprietary
+[Get Started →](https://www.prompt-router.com/sign-up)
