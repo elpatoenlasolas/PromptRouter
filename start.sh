@@ -1,12 +1,8 @@
 #!/bin/bash
 set -e
 
-echo "Starting PromptRouter API..."
+# Use Railway's PORT if available, otherwise default to 8000
+PORT=${PORT:-8000}
 
-# Run database migrations
-echo "Running database migrations..."
-alembic upgrade head || echo "Migrations not configured or already applied"
-
-# Start the application
-echo "Starting uvicorn server..."
-exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
+echo "Starting application on port $PORT..."
+exec uvicorn app.main:app --host 0.0.0.0 --port "$PORT"
