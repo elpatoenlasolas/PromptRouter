@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useAuth } from '@clerk/nextjs'
 import { CheckCircle, XCircle, Clock } from 'lucide-react'
+import { makeAuthenticatedRequest } from '@/lib/clerk-api'
 
 interface Request {
   id: number
@@ -17,6 +19,7 @@ interface Request {
 }
 
 export default function RecentRequests() {
+  const { getToken } = useAuth()
   const [requests, setRequests] = useState<Request[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -26,11 +29,7 @@ export default function RecentRequests() {
 
   const fetchRequests = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/requests?limit=5`)
-      if (!response.ok) {
-        throw new Error('Failed to fetch requests')
-      }
-      const data = await response.json()
+      const data = await makeAuthenticatedRequest<{ requests: Request[] }>('/v1/requests?limit=5', getToken)
       setRequests(data.requests || [])
     } catch (error) {
       console.error('Failed to fetch requests:', error)

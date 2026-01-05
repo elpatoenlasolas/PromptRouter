@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useAuth } from '@clerk/nextjs'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { makeAuthenticatedRequest } from '@/lib/clerk-api'
 
 interface Request {
   id: number
@@ -46,6 +48,7 @@ const CustomTooltip = ({ active, payload }: any) => {
 }
 
 export default function SavingsChart() {
+  const { getToken } = useAuth()
   const [chartData, setChartData] = useState<ChartDataPoint[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -55,10 +58,7 @@ export default function SavingsChart() {
 
   const fetchAndProcessData = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/requests?limit=100`)
-      if (!response.ok) throw new Error('Failed to fetch requests')
-      
-      const data = await response.json()
+      const data = await makeAuthenticatedRequest<{ requests: Request[] }>('/v1/requests?limit=100', getToken)
       const requests: Request[] = data.requests || []
 
       if (requests.length === 0) {
