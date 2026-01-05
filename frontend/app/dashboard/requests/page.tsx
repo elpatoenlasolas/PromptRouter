@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import { CheckCircle, XCircle, Clock, Search, Filter } from 'lucide-react'
 import Link from 'next/link'
+import { useAuth } from '@clerk/nextjs'
+import { makeAuthenticatedRequest } from '@/lib/clerk-api'
 
 export const dynamic = 'force-dynamic'
 
@@ -25,6 +27,7 @@ export default function RequestsPage() {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterProvider, setFilterProvider] = useState<string>('all')
+  const { getToken } = useAuth()
 
   useEffect(() => {
     fetchRequests()
@@ -32,11 +35,7 @@ export default function RequestsPage() {
 
   const fetchRequests = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/requests?limit=100`)
-      if (!response.ok) {
-        throw new Error('Failed to fetch requests')
-      }
-      const data = await response.json()
+      const data = await makeAuthenticatedRequest<{ requests: Request[] }>('/v1/requests?limit=100', getToken)
       setRequests(data.requests || [])
     } catch (error) {
       console.error('Failed to fetch requests:', error)

@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react'
 import { Key, Trash2, Plus, Copy, Check, Eye, EyeOff, Code2 } from 'lucide-react'
 import type { UserConfig, APIKey } from '@/types'
 import { useRouter } from 'next/navigation'
-import { useUser } from '@clerk/nextjs'
+import { useAuth } from '@clerk/nextjs'
 import { useToast } from '@/lib/toast'
-import { api } from '@/lib/api'
+import { makeAuthenticatedRequest } from '@/lib/clerk-api'
 import CodeSnippet from '@/components/CodeSnippet'
 
 export const dynamic = 'force-dynamic'
@@ -35,7 +35,7 @@ export default function SettingsPage() {
   const [copiedToken, setCopiedToken] = useState(false)
 
   const router = useRouter()
-  const { user } = useUser()
+  const { getToken } = useAuth()
   const { showToast } = useToast()
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function SettingsPage() {
 
   const fetchConfig = async () => {
     try {
-      const data = await api.get<UserConfig>('/v1/config')
+      const data = await makeAuthenticatedRequest<UserConfig>('/v1/config', getToken)
       setConfig(data)
     } catch (error) {
       showToast('Failed to fetch config', 'error')
@@ -63,7 +63,7 @@ export default function SettingsPage() {
 
   const fetchTokens = async () => {
     try {
-      const data = await api.get<{ tokens: APIToken[] }>('/v1/tokens')
+      const data = await makeAuthenticatedRequest<{ tokens: APIToken[] }>('/v1/tokens', getToken)
       setTokens(data.tokens || [])
     } catch (error) {
       setTokens([])
@@ -73,7 +73,10 @@ export default function SettingsPage() {
   const handleCreateToken = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const data = await api.post<{ token: string }>('/v1/tokens', { name: newTokenName })
+      const data = await makeAuthenticatedRequest<{ token: string }>('/v1/tokens', getToken, {
+        method: 'POST',
+        body: JSON.stringify({ name: newTokenName })
+      })
       setCreatedToken(data.token)
       setNewTokenName('')
       await fetchTokens()
@@ -87,7 +90,7 @@ export default function SettingsPage() {
     if (!confirm('Are you sure you want to revoke this token? This cannot be undone.')) return
 
     try {
-      await api.delete(`/v1/tokens/${tokenId}`)
+      await makeAuthenticatedRequest(`/v1/tokens/${tokenId}`, getToken, { method: 'DELETE' })
       await fetchTokens()
       showToast('Token revoked successfully', 'success')
     } catch (error) {
@@ -105,9 +108,12 @@ export default function SettingsPage() {
   const handleAddKey = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await api.post('/v1/api-keys', {
-        provider: newKey.provider,
-        api_key: newKey.key,
+      await makeAuthenticatedRequest('/v1/api-keys', getToken, {
+        method: 'POST',
+        body: JSON.stringify({
+          provider: newKey.provider,
+          api_key: newKey.key,
+        })
       })
       
       setShowAddKey(false)
@@ -123,7 +129,7 @@ export default function SettingsPage() {
     if (!confirm('Are you sure you want to delete this API key?')) return
 
     try {
-      await api.delete(`/v1/api-keys/${keyId}`)
+      await makeAuthenticatedRequest(`/v1/api-keys/${keyId}`, getToken, { method: 'DELETE' })
       await fetchConfig()
       showToast('API key deleted successfully', 'success')
     } catch (error) {
