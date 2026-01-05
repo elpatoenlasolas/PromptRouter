@@ -98,7 +98,7 @@ export default function DashboardPage() {
               
               <div className="grid md:grid-cols-4 gap-6">
                 {/* Total Saved */}
-                <div className="card bg-gradient-to-br from-primary to-accent text-white">
+                <div className="card hover:shadow-lg transition-shadow bg-gradient-to-br from-primary to-accent text-white">
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-gray-50 text-sm mb-1">Total Saved</p>
@@ -142,7 +142,7 @@ export default function DashboardPage() {
                 </Link>
 
                 {/* Average Latency */}
-                <div className="card">
+                <div className="card hover:shadow-lg transition-shadow">
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-gray-600 dark:text-dark-text-muted dark:text-gray-400 text-sm mb-1">Avg Latency</p>
