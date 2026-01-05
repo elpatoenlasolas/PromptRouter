@@ -67,7 +67,12 @@ export default function PlaygroundPage() {
       setResult(data)
     } catch (error: any) {
       console.error('Error executing prompt:', error)
-      setError(error.message || 'Failed to execute prompt. Make sure you have API keys configured.')
+      // Handle 429 (rate limit) errors specially
+      if (error.message && error.message.includes('429')) {
+        setError('Monthly token limit exceeded. Please upgrade your plan or wait until next month to continue.')
+      } else {
+        setError(error.message || 'Failed to execute prompt. Make sure you have API keys configured.')
+      }
     } finally {
       setLoading(false)
     }

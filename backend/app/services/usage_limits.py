@@ -78,12 +78,7 @@ class UsageLimitService:
         if not is_within_limit:
             raise HTTPException(
                 status_code=429,
-                detail={
-                    "error": "Monthly token limit exceeded",
-                    "tokens_used": tokens_used,
-                    "tokens_remaining": tokens_remaining,
-                    "message": "Upgrade your plan to continue using PromptRouter",
-                }
+                detail=f"Monthly token limit exceeded. You've used {tokens_used:,} of your {tokens_used + tokens_remaining:,} tokens. Upgrade your plan to continue using PromptRouter."
             )
     
     async def get_usage_stats(self, user_id: int) -> dict:
