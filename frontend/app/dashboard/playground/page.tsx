@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { Send, Loader, Zap, TrendingDown, Clock, DollarSign, Info } from 'lucide-react'
 import type { PromptRequest } from '@/types'
+import { useAuth } from '@clerk/nextjs'
+import { makeAuthenticatedRequest } from '@/lib/clerk-api'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,6 +32,7 @@ interface PromptResponse {
 }
 
 export default function PlaygroundPage() {
+  const { getToken } = useAuth()
   const [prompt, setPrompt] = useState('Write a short haiku about artificial intelligence')
   const [systemMessage, setSystemMessage] = useState('')
   const [maxTokens, setMaxTokens] = useState(500)
@@ -55,27 +58,11 @@ export default function PlaygroundPage() {
         temperature: temperature,
         ...(systemMessage.trim() && { system_message: systemMessage.trim() }),
       }
-
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/prompt`, {
+data = await makeAuthenticatedRequest<PromptResponse>('/v1/prompt', getToken, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody),
       })
-
-      if (!response.ok) {
-        let errorMessage = `HTTP ${response.status}`
-        try {
-          const errorData = await response.json()
-          errorMessage = errorData.detail || errorMessage
-          console.error('API Error:', errorData)
-        } catch (e) {
-          const text = await response.text().catch(() => 'Unknown error')
-          errorMessage = text || errorMessage
-          console.error('API Error (text):', text)
-        }
-        throw new Error(errorMessage)
-      }
-
+      
       const data: PromptResponse = await response.json()
       setResult(data)
     } catch (error: any) {
