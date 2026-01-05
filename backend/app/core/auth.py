@@ -168,9 +168,13 @@ async def get_user_from_clerk(
         token = auth_header.replace("Bearer ", "")
         print(f"DEBUG: Extracted token (first 20 chars): {token[:20]}...")
         
-        # Get Clerk's JWKS URL
-        clerk_domain = os.getenv("CLERK_DOMAIN", "https://api.clerk.dev")
-        jwks_url = f"{clerk_domain}/.well-known/jwks.json"
+        # First decode without verification to get the issuer
+        unverified_payload = jwt.decode(token, options={"verify_signature": False})
+        issuer = unverified_payload.get("iss", os.getenv("CLERK_DOMAIN", "https://clerk.prompt-router.com"))
+        print(f"DEBUG: Token issuer: {issuer}")
+        
+        # Get Clerk's JWKS URL from the issuer
+        jwks_url = f"{issuer}/.well-known/jwks.json"
         print(f"DEBUG: JWKS URL: {jwks_url}")
         
         # Verify token with Clerk's public keys
@@ -187,7 +191,7 @@ async def get_user_from_clerk(
         
         print(f"DEBUG: Token decoded. Payload keys: {list(payload.keys())}")
         clerk_user_id = payload.get("sub")
-        print(f"DEBUG: Clerk user ID: {clerk_user_id}, Email: {payload.get('email')}")
+        print(f"DEBUG: Clerk user ID: {clerk_user_id}")
         
         if not clerk_user_id:
             raise HTTPException(status_code=401, detail="Invalid token: no user ID")
