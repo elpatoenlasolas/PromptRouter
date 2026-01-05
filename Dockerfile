@@ -17,8 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application from backend directory
 COPY backend/ .
 
-# Copy start script
-COPY start.sh /app/start.sh
+# start.sh is already copied with backend/ above
 RUN chmod +x /app/start.sh
 
 # Expose port
