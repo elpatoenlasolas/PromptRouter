@@ -81,14 +81,14 @@ async def add_api_key(
 @router.delete("/api-keys/{key_id}")
 async def delete_api_key(
     key_id: int,
-    user_id: int = 1,  # TODO: Extract from auth token
+    current_user: User = Depends(get_user_from_clerk),
     db: AsyncSession = Depends(get_db),
 ):
     """Deactivate an API key"""
     result = await db.execute(
         select(UserAPIKey)
         .where(UserAPIKey.id == key_id)
-        .where(UserAPIKey.user_id == user_id)
+        .where(UserAPIKey.user_id == current_user.id)
     )
     api_key = result.scalar_one_or_none()
     
