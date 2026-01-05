@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { CheckCircle, XCircle, Clock, Search, Filter } from 'lucide-react'
-import Link from 'next/link'
 import { useAuth } from '@clerk/nextjs'
 import { makeAuthenticatedRequest } from '@/lib/clerk-api'
 
@@ -167,7 +166,7 @@ export default function RequestsPage() {
               placeholder="Search by model, provider, or reason..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+              className="w-full text-gray-800 pl-10 pr-4 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
             />
           </div>
           <div className="relative">
@@ -214,7 +213,7 @@ export default function RequestsPage() {
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-dark-border">
                 {filteredRequests.map((req) => (
-                  <tr key={req.id} className="text-sm hover:bg-gray-50 transition-colors">
+                  <tr key={req.id} className="text-sm hover:bg-gray-50 transition-colors dark:hover:bg-gray-600 dark:hover:text-white">
                     <td className="py-3">
                       {req.success ? (
                         <CheckCircle className="w-5 h-5 text-success" />
@@ -246,7 +245,7 @@ export default function RequestsPage() {
                         {req.latency_ms}ms
                       </div>
                     </td>
-                    <td className="py-3 text-gray-900 dark:text-white font-medium">€{req.cost.toFixed(4)}</td>
+                    <td className="py-3 text-gray-900 dark:text-white font-medium dark:text-dark-text-muted">€{req.cost.toFixed(4)}</td>
                     <td className="py-3">
                       {req.saved > 0 ? (
                         <span className="text-success font-medium">+€{req.saved.toFixed(4)}</span>
@@ -254,10 +253,10 @@ export default function RequestsPage() {
                         <span className="text-gray-400">-</span>
                       )}
                     </td>
-                    <td className="py-3 text-gray-600 max-w-xs truncate" title={req.routing_reason}>
+                    <td className="py-3 text-gray-600 max-w-xs truncate dark:text-dark-text-muted" title={req.routing_reason}>
                       {req.routing_reason || '-'}
                     </td>
-                    <td className="py-3 text-gray-500">{formatTimestamp(req.timestamp)}</td>
+                    <td className="py-3 text-gray-500 dark:text-dark-text-muted">{formatTimestamp(req.timestamp)}</td>
                   </tr>
                 ))}
               </tbody>

@@ -4,7 +4,7 @@ Prompt execution API endpoint
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
-from app.core.auth import get_current_user
+from app.core.auth import get_user_from_clerk
 from app.models.database import User
 from app.models.schemas import PromptRequest, PromptResponse
 # Import heavy execution service lazily inside the endpoint to avoid importing
@@ -17,7 +17,7 @@ router = APIRouter()
 @router.post("/prompt", response_model=PromptResponse)
 async def execute_prompt(
     request: PromptRequest,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_user_from_clerk),
     db: AsyncSession = Depends(get_db),
 ):
     """
@@ -28,7 +28,7 @@ async def execute_prompt(
     2. Routes the prompt to the selected provider
     3. Returns the response with routing details and savings information
     
-    Requires authentication via API token in Authorization header.
+    Requires authentication via Clerk token in Authorization header.
     """
     try:
         print(f"DEBUG: Received prompt request from user {current_user.id}")
