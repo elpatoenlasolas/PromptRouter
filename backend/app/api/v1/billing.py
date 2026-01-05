@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from pydantic import BaseModel
 from app.core.database import get_db
-from app.core.auth import get_current_user
+from app.core.auth import get_user_from_clerk
 from app.models.database import User, UserTier
 from app.config import get_settings
 import stripe
@@ -35,7 +35,7 @@ class CheckoutResponse(BaseModel):
 @router.post("/create-checkout-session", response_model=CheckoutResponse)
 async def create_checkout_session(
     request: CreateCheckoutRequest,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_user_from_clerk),
     db: AsyncSession = Depends(get_db)
 ):
     """
