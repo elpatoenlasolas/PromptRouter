@@ -112,18 +112,16 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Total Spend */}
-                <Link href="/dashboard/usage" className="card hover:shadow-lg transition-shadow cursor-pointer">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-gray-600 dark:text-dark-text-muted dark:text-gray-400 text-sm mb-1">Your Spend</p>
-                      <p className="text-3xl font-bold text-gray-900 dark:text-white">€{metrics?.total_spend.toFixed(2) || '0.00'}</p>
-                      <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
-                        vs €{metrics?.estimated_spend_without_routing.toFixed(2) || '0.00'} without routing
-                      </p>
-                    </div>
-                    <DollarSign className="w-8 h-8 text-success dark:text-success" />
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-gray-600 dark:text-dark-text-muted dark:text-gray-400 text-sm mb-1">Your Spend</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">€{metrics?.total_spend.toFixed(2) || '0.00'}</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
+                      vs €{metrics?.estimated_spend_without_routing.toFixed(2) || '0.00'} without routing
+                    </p>
                   </div>
-                </Link>
+                  <DollarSign className="w-8 h-8 text-success dark:text-success" />
+                </div>
 
                 {/* Total Requests */}
                 <Link href="/dashboard/requests" className="card hover:shadow-lg transition-shadow cursor-pointer">

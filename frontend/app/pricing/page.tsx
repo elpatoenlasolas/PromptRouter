@@ -5,16 +5,17 @@ import Link from 'next/link'
 import { Check, X, ArrowRight, BarChart3, Info } from 'lucide-react'
 import DashboardHeader from '@/components/dashboard/DashboardHeader'
 import Footer from '@/components/Footer'
-import { useUser } from '@clerk/nextjs'
+import { useUser, useAuth } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/lib/toast'
-import { api } from '@/lib/api'
+import { makeAuthenticatedRequest } from '@/lib/clerk-api'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 export const dynamic = 'force-dynamic'
 
 export default function PricingPage() {
   const { user, isLoaded } = useUser()
+  const { getToken } = useAuth()
   const router = useRouter()
   const { showToast } = useToast()
   const [loadingTier, setLoadingTier] = useState<string | null>(null)
@@ -29,7 +30,10 @@ export default function PricingPage() {
 
     setLoadingTier(tier)
     try {
-      const data = await api.post<{ checkout_url: string }>('/v1/create-checkout-session', { tier })
+      const data = await makeAuthenticatedRequest<{ checkout_url: string }>('/v1/create-checkout-session', getToken, {
+        method: 'POST',
+        body: JSON.stringify({ tier })
+      })
       window.location.href = data.checkout_url
     } catch (error) {
       showToast(
