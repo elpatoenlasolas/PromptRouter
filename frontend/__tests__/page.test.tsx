@@ -1,5 +1,24 @@
 import { render, screen } from '@testing-library/react'
 import HomePage from '@/app/page'
+import { ThemeProvider } from '@/lib/theme'
+
+// Mock ThemeProvider
+jest.mock('@/lib/theme', () => ({
+  ThemeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  useTheme: jest.fn(() => ({
+    theme: 'light',
+    toggleTheme: jest.fn(),
+  })),
+}))
+
+// Mock toast hook
+jest.mock('@/lib/toast', () => ({
+  useToast: jest.fn(() => ({
+    showToast: jest.fn(),
+    toasts: [],
+    removeToast: jest.fn(),
+  })),
+}))
 
 // Mock Clerk hooks
 jest.mock('@clerk/nextjs', () => ({
@@ -8,17 +27,31 @@ jest.mock('@clerk/nextjs', () => ({
     isLoaded: true,
     isSignedIn: false,
   })),
+  useAuth: jest.fn(() => ({
+    isLoaded: true,
+    isSignedIn: false,
+  })),
+  UserButton: () => <div data-testid="user-button">User Button</div>,
 }))
 
 describe('HomePage', () => {
   it('renders the hero section', () => {
-    render(<HomePage />)
+    render(
+      <ThemeProvider>
+        <HomePage />
+      </ThemeProvider>
+    )
     
-    expect(screen.getByText('PromptRouter')).toBeInTheDocument()
+    const promptRouterElements = screen.getAllByText('PromptRouter')
+    expect(promptRouterElements.length).toBeGreaterThan(0)
   })
 
   it('renders pricing link in navigation', () => {
-    render(<HomePage />)
+    render(
+      <ThemeProvider>
+        <HomePage />
+      </ThemeProvider>
+    )
     
     const pricingLinks = screen.getAllByText(/pricing/i)
     expect(pricingLinks.length).toBeGreaterThan(0)
@@ -32,7 +65,11 @@ describe('HomePage', () => {
       isSignedIn: false,
     })
 
-    render(<HomePage />)
+    render(
+      <ThemeProvider>
+        <HomePage />
+      </ThemeProvider>
+    )
     
     // These might be in navigation
     const signInElements = screen.queryAllByText(/sign in/i)
@@ -52,14 +89,22 @@ describe('HomePage', () => {
       isSignedIn: true,
     })
 
-    render(<HomePage />)
+    render(
+      <ThemeProvider>
+        <HomePage />
+      </ThemeProvider>
+    )
     
     const dashboardLinks = screen.queryAllByText(/dashboard/i)
     expect(dashboardLinks.length).toBeGreaterThan(0)
   })
 
   it('renders feature sections with icons', () => {
-    render(<HomePage />)
+    render(
+      <ThemeProvider>
+        <HomePage />
+      </ThemeProvider>
+    )
     
     // The page should have multiple sections with content
     const images = screen.getAllByRole('img')
@@ -74,9 +119,14 @@ describe('HomePage', () => {
       isSignedIn: false,
     })
 
-    render(<HomePage />)
+    render(
+      <ThemeProvider>
+        <HomePage />
+      </ThemeProvider>
+    )
     
     // Should still render the page
-    expect(screen.getByText('PromptRouter')).toBeInTheDocument()
+    const promptRouterElements = screen.getAllByText('PromptRouter')
+    expect(promptRouterElements.length).toBeGreaterThan(0)
   })
 })
