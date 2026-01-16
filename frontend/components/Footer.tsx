@@ -51,9 +51,9 @@ export default function Footer() {
             <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Resources</h3>
             <ul className="space-y-3">
               <li>
-                <a href="http://localhost:3000/docs#api-reference" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 dark:text-dark-text-muted hover:text-primary dark:hover:text-primary transition-colors">
+                <Link href="/docs#api-reference" className="text-sm text-gray-600 dark:text-dark-text-muted hover:text-primary dark:hover:text-primary transition-colors">
                   API Reference
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="mailto:support@promptrouter.com" className="text-sm text-gray-600 dark:text-dark-text-muted hover:text-primary dark:hover:text-primary transition-colors">
