@@ -207,11 +207,13 @@ export default function DocsPage() {
                 <div>
                   <h3 className="text-lg sm:text-xl font-semibold mb-3">2. Make Your First Request</h3>
                   <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
-                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`curl -X POST https://api.prompt-router.com/v1/prompt \\
+                    <pre className="text-xs sm:text-sm text-gray-100"><code>{`curl -X POST https://api.prompt-router.com/v1/chat/completions \\
   -H "Authorization: Bearer YOUR_API_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
-    &quot;prompt&quot;: "Write a haiku about coding",
+    "messages": [
+      {"role": "user", "content": "Write a haiku about coding"}
+    ],
     &quot;max_tokens&quot;: 100
   }'`}</code></pre>
                   </div>
@@ -221,25 +223,35 @@ export default function DocsPage() {
                   <h3 className="text-lg sm:text-xl font-semibold mb-3">3. Get the Response</h3>
                   <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
                     <pre className="text-xs sm:text-sm text-gray-100"><code>{`{
-  &quot;content&quot;: "Code flows like water\\nBugs hide in silent shadows\\nDebug brings the light",
-  "routing": {
-    "provider": "anthropic",
-    &quot;model&quot;: "claude-3-haiku-20240307",
-    "reason": "Cheapest option for simple creative task",
-    "estimated_cost": 0.00025,
-    "estimated_latency_ms": 450
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "model": "claude-3-haiku-20240307",
+  "choices": [{
+    "index": 0,
+    "message": {
+      "role": "assistant",
+      "content": "Code flows like water\\nBugs hide in silent shadows\\nDebug brings the light"
+    },
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "prompt_tokens": 45,
+    "completion_tokens": 48,
+    "total_tokens": 93
   },
-  "metrics": {
-    "input_tokens": 45,
-    "output_tokens": 48,
-    "total_tokens": 93,
-    "latency_ms": 423
-  },
-  "savings": {
-    "actual_cost": 0.00025,
-    "alternative_cost": 0.00279,
-    "amount_saved": 0.00254,
-    "savings_percentage": 91
+  "x-promptrouter": {
+    "routing": {
+      "provider": "anthropic",
+      "model": "claude-3-haiku-20240307",
+      "reason": "Cheapest option for simple creative task",
+      "estimated_cost": 0.00025
+    },
+    "savings": {
+      "actual_cost": 0.00025,
+      "alternative_cost": 0.00279,
+      "amount_saved": 0.00254,
+      "savings_percentage": 91
+    }
   }
 }`}</code></pre>
                   </div>
@@ -410,52 +422,58 @@ console.log('Savings:', response['x-promptrouter'].savings);`}</code></pre>
               <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">API Reference</h2>
               
               <div className="space-y-8">
-                {/* Execute Prompt */}
+                {/* Chat Completions */}
                 <div>
                   <div className="flex flex-col sm:flex-row sm:items-center mb-4 gap-2 sm:gap-0">
                     <span className="bg-success text-white px-3 py-1 rounded text-sm font-mono mr-3 w-fit">POST</span>
-                    <code className="text-sm sm:text-base md:text-lg font-mono break-all">/v1/prompt</code>
+                    <code className="text-sm sm:text-base md:text-lg font-mono break-all">/v1/chat/completions</code>
                   </div>
-                  <p className="text-gray-700 dark:text-dark-text mb-4">Execute a prompt through intelligent routing</p>
+                  <p className="text-gray-700 dark:text-dark-text mb-4">Execute a chat completion through intelligent routing (OpenAI-compatible)</p>
                   
                   <h4 className="font-semibold mb-2">Request Body</h4>
                   <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0 mb-4">
                     <pre className="text-xs sm:text-sm text-gray-100"><code>{`{
-  &quot;prompt&quot;: "string (required)",
-  &quot;max_tokens&quot;: 1000,
-  &quot;temperature&quot;: 0.7,
-  "system_message": "string (optional)",
-  "constraints": {
-    "min_quality_tier": "basic" | "standard" | "premium",
-    "max_latency_ms": 2000,
-    "max_cost_per_1k_tokens": 0.01,
-    "preferred_providers": ["openai", "anthropic"]
-  }
+  "messages": [
+    {"role": "system", "content": "string (optional)"},
+    {"role": "user", "content": "string (required)"}
+  ],
+  "model": "string (optional - omit for auto-routing)",
+  "max_tokens": 1000,
+  "temperature": 0.7
 }`}</code></pre>
                   </div>
 
                   <h4 className="font-semibold mb-2">Response</h4>
                   <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
                     <pre className="text-xs sm:text-sm text-gray-100"><code>{`{
-  &quot;content&quot;: "string",
-  "routing": {
-    "provider": "string",
-    &quot;model&quot;: "string",
-    "reason": "string",
-    "estimated_cost": 0.00025,
-    "estimated_latency_ms": 450
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "model": "gpt-3.5-turbo",
+  "choices": [{
+    "index": 0,
+    "message": {
+      "role": "assistant",
+      "content": "string"
+    },
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "prompt_tokens": 45,
+    "completion_tokens": 48,
+    "total_tokens": 93
   },
-  "metrics": {
-    "input_tokens": 45,
-    "output_tokens": 48,
-    "total_tokens": 93,
-    "latency_ms": 423
-  },
-  "savings": {
-    "actual_cost": 0.00025,
-    "alternative_cost": 0.00279,
-    "amount_saved": 0.00254,
-    "savings_percentage": 91
+  "x-promptrouter": {
+    "routing": {
+      "provider": "openai",
+      "model": "gpt-3.5-turbo",
+      "reason": "Cost optimized"
+    },
+    "savings": {
+      "actual_cost": 0.00025,
+      "alternative_cost": 0.00279,
+      "amount_saved": 0.00254,
+      "savings_percentage": 91
+    }
   }
 }`}</code></pre>
                   </div>
@@ -500,21 +518,23 @@ console.log('Savings:', response['x-promptrouter'].savings);`}</code></pre>
                   <h3 className="text-lg sm:text-xl font-semibold mb-3">JavaScript / TypeScript</h3>
                   <div className="bg-gray-900 rounded-lg p-3 sm:p-4 overflow-x-auto -mx-4 sm:mx-0">
                     <pre className="text-xs sm:text-sm text-gray-100"><code>{`// Using fetch
-const response = await fetch('https://api.prompt-router.com/v1/prompt', {
+const response = await fetch('https://api.prompt-router.com/v1/chat/completions', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_TOKEN',
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    prompt: 'Explain quantum computing in simple terms',
+    messages: [
+      { role: 'user', content: 'Explain quantum computing in simple terms' }
+    ],
     max_tokens: 500
   })
 });
 
 const data = await response.json();
-console.log('Response:', data.content);
-console.log('Saved:', data.savings.amount_saved, 'EUR');`}</code></pre>
+console.log('Response:', data.choices[0].message.content);
+console.log('Saved:', data['x-promptrouter'].savings.amount_saved, 'EUR');`}</code></pre>
                   </div>
                 </div>
 
@@ -525,20 +545,22 @@ console.log('Saved:', data.savings.amount_saved, 'EUR');`}</code></pre>
                     <pre className="text-xs sm:text-sm text-gray-100"><code>{`import requests
 
 response = requests.post(
-    'https://api.prompt-router.com/v1/prompt',
+    'https://api.prompt-router.com/v1/chat/completions',
     headers={
         'Authorization': 'Bearer YOUR_API_TOKEN',
         'Content-Type': 'application/json'
     },
     json={
-        'prompt': 'Explain quantum computing in simple terms',
+        'messages': [
+            {'role': 'user', 'content': 'Explain quantum computing in simple terms'}
+        ],
         'max_tokens': 500
     }
 )
 
 data = response.json()
-print(f"Response: {'{'}data['content']{'}'}")
-print(f"Saved: €{'{'}data['savings']['amount_saved']{'}'}")`}</code></pre>
+print(f"Response: {'{'}data['choices'][0]['message']['content']{'}'}")
+print(f"Saved: €{'{'}data['x-promptrouter']['savings']['amount_saved']{'}'}")`}</code></pre>
                   </div>
                 </div>
 
@@ -549,9 +571,11 @@ print(f"Saved: €{'{'}data['savings']['amount_saved']{'}'}")`}</code></pre>
                     <pre className="text-xs sm:text-sm text-gray-100"><code>{`const axios = require('axios');
 
 const response = await axios.post(
-  'https://api.prompt-router.com/v1/prompt',
+  'https://api.prompt-router.com/v1/chat/completions',
   {
-    prompt: 'Explain quantum computing in simple terms',
+    messages: [
+      { role: 'user', content: 'Explain quantum computing in simple terms' }
+    ],
     max_tokens: 500
   },
   {
@@ -562,8 +586,8 @@ const response = await axios.post(
   }
 );
 
-console.log('Response:', response.data.content);
-console.log('Saved:', response.data.savings.amount_saved, 'EUR');`}</code></pre>
+console.log('Response:', response.data.choices[0].message.content);
+console.log('Saved:', response.data['x-promptrouter'].savings.amount_saved, 'EUR');`}</code></pre>
                   </div>
                 </div>
               </div>
