@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { X, Menu } from 'lucide-react'
 import { 
@@ -24,6 +25,7 @@ const dashboardNavigation = [
 const publicNavigation = [
   { name: 'Pricing', href: '/pricing' },
   { name: 'Docs', href: '/docs' },
+  { name: 'Blog', href: '/blog' },
   { name: 'Sign In', href: '/sign-in' },
   { name: 'Sign Up', href: '/sign-up' },
 ]
@@ -88,14 +90,18 @@ export default function MobileNav({ publicOnly }: { publicOnly?: boolean }) {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
           <Link href="/" className="flex items-center gap-2">
-            <img 
+            <Image 
               src="/images/logo.svg" 
               alt="PromptRouter" 
+              width={28}
+              height={28}
               className="h-7 w-auto dark:hidden"
             />
-            <img 
+            <Image 
               src="/images/logo-white.svg" 
               alt="PromptRouter" 
+              width={28}
+              height={28}
               className="h-7 w-auto hidden dark:block"
             />
           </Link>

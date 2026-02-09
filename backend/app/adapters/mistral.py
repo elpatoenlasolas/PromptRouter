@@ -1,5 +1,6 @@
 """
-OpenAI adapter
+Mistral AI adapter
+Mistral API is similar to OpenAI's API format.
 """
 import time
 from openai import AsyncOpenAI
@@ -7,63 +8,67 @@ from app.adapters.base import BaseLLMAdapter, ModelInfo, PromptResult
 from typing import Optional
 
 
-class OpenAIAdapter(BaseLLMAdapter):
-    """Adapter for OpenAI API"""
+class MistralAdapter(BaseLLMAdapter):
+    """Adapter for Mistral AI API"""
     
-    # Model pricing (euros per 1K tokens) - Updated January 2026
-    # Source: https://openai.com/pricing
+    # Model pricing (euros per 1K tokens) - January 2026
+    # Source: https://mistral.ai/pricing/
     MODELS = {
-        "gpt-4o-mini": ModelInfo(
-            name="gpt-4o-mini",
-            provider="openai",
-            input_price_per_1k=0.00015,   # $0.15 per 1M tokens
-            output_price_per_1k=0.0006,   # $0.60 per 1M tokens
+        "mistral-small-latest": ModelInfo(
+            name="mistral-small-latest",
+            provider="mistral",
+            input_price_per_1k=0.0001,    # $0.1 per 1M tokens
+            output_price_per_1k=0.0003,   # $0.3 per 1M tokens
+            avg_latency_ms=400,
+            quality_tier="basic",
+            max_tokens=32000,
+        ),
+        "mistral-medium-latest": ModelInfo(
+            name="mistral-medium-latest",
+            provider="mistral",
+            input_price_per_1k=0.00027,   # $0.27 per 1M tokens
+            output_price_per_1k=0.00081,  # $0.81 per 1M tokens
+            avg_latency_ms=600,
+            quality_tier="standard",
+            max_tokens=32000,
+        ),
+        "mistral-large-latest": ModelInfo(
+            name="mistral-large-latest",
+            provider="mistral",
+            input_price_per_1k=0.002,     # $2 per 1M tokens
+            output_price_per_1k=0.006,    # $6 per 1M tokens
+            avg_latency_ms=1000,
+            quality_tier="premium",
+            max_tokens=128000,
+        ),
+        "codestral-latest": ModelInfo(
+            name="codestral-latest",
+            provider="mistral",
+            input_price_per_1k=0.0003,    # $0.3 per 1M tokens
+            output_price_per_1k=0.0009,   # $0.9 per 1M tokens
             avg_latency_ms=500,
             quality_tier="standard",
-            max_tokens=128000,
+            max_tokens=32000,
         ),
-        "gpt-4o": ModelInfo(
-            name="gpt-4o",
-            provider="openai",
-            input_price_per_1k=0.0025,    # $2.50 per 1M tokens
-            output_price_per_1k=0.01,     # $10.00 per 1M tokens
-            avg_latency_ms=800,
+        "pixtral-large-latest": ModelInfo(
+            name="pixtral-large-latest",
+            provider="mistral",
+            input_price_per_1k=0.002,     # $2 per 1M tokens
+            output_price_per_1k=0.006,    # $6 per 1M tokens
+            avg_latency_ms=1200,
             quality_tier="premium",
             max_tokens=128000,
-        ),
-        "gpt-4-turbo": ModelInfo(
-            name="gpt-4-turbo",
-            provider="openai",
-            input_price_per_1k=0.01,      # $10.00 per 1M tokens
-            output_price_per_1k=0.03,     # $30.00 per 1M tokens
-            avg_latency_ms=1500,
-            quality_tier="premium",
-            max_tokens=128000,
-        ),
-        "gpt-3.5-turbo": ModelInfo(
-            name="gpt-3.5-turbo",
-            provider="openai",
-            input_price_per_1k=0.0005,    # $0.50 per 1M tokens
-            output_price_per_1k=0.0015,   # $1.50 per 1M tokens
-            avg_latency_ms=600,
-            quality_tier="basic",
-            max_tokens=16385,
-        ),
-        # Legacy model for backwards compatibility
-        "gpt-4": ModelInfo(
-            name="gpt-4",
-            provider="openai",
-            input_price_per_1k=0.03,
-            output_price_per_1k=0.06,
-            avg_latency_ms=2000,
-            quality_tier="premium",
-            max_tokens=8192,
         ),
     }
     
+    BASE_URL = "https://api.mistral.ai/v1"
+    
     async def initialize(self):
-        """Initialize OpenAI client"""
-        self._client = AsyncOpenAI(api_key=self.api_key)
+        """Initialize Mistral client (OpenAI-compatible)"""
+        self._client = AsyncOpenAI(
+            api_key=self.api_key,
+            base_url=self.BASE_URL,
+        )
     
     async def execute_prompt(
         self,
@@ -73,7 +78,7 @@ class OpenAIAdapter(BaseLLMAdapter):
         max_tokens: int = 1000,
         temperature: float = 0.7,
     ) -> PromptResult:
-        """Execute prompt using OpenAI API"""
+        """Execute prompt using Mistral API"""
         if not self._client:
             await self.initialize()
         
@@ -93,11 +98,8 @@ class OpenAIAdapter(BaseLLMAdapter):
         
         latency_ms = int((time.time() - start_time) * 1000)
         
-        # Extract metrics
         usage = response.usage
         content = response.choices[0].message.content
-        
-        # Calculate cost
         cost = self.calculate_cost(usage.prompt_tokens, usage.completion_tokens, model)
         
         return PromptResult(
@@ -149,14 +151,15 @@ class OpenAIAdapter(BaseLLMAdapter):
         )
     
     def get_available_models(self) -> list[ModelInfo]:
-        """Get list of available OpenAI models"""
+        """Get list of available Mistral models"""
         return list(self.MODELS.values())
     
     def calculate_cost(self, input_tokens: int, output_tokens: int, model: str) -> float:
         """Calculate cost in euros"""
         model_info = self.MODELS.get(model)
         if not model_info:
-            raise ValueError(f"Unknown model: {model}")
+            # Fallback to mistral-small pricing
+            model_info = self.MODELS["mistral-small-latest"]
         
         input_cost = (input_tokens / 1000) * model_info.input_price_per_1k
         output_cost = (output_tokens / 1000) * model_info.output_price_per_1k

@@ -562,6 +562,8 @@ console.log('Savings:', response['x-promptrouter'].savings);`}
                   <option value="openai">OpenAI</option>
                   <option value="anthropic">Anthropic</option>
                   <option value="google">Google</option>
+                  <option value="deepseek">DeepSeek</option>
+                  <option value="mistral">Mistral</option>
                   <option value="grok">Grok</option>
                 </select>
               </div>
@@ -574,8 +576,10 @@ console.log('Savings:', response['x-promptrouter'].savings);`}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg"
                   placeholder={
                     newKey.provider === 'openai' ? 'sk-...' :
-                    newKey.provider === 'anthropic' ? 'api-...' :
+                    newKey.provider === 'anthropic' ? 'sk-ant-...' :
                     newKey.provider === 'google' ? 'AIza...' :
+                    newKey.provider === 'deepseek' ? 'sk-...' :
+                    newKey.provider === 'mistral' ? 'api-...' :
                     'xai-...'
                   }
                   required

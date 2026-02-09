@@ -2,8 +2,9 @@
 
 import { UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useRef, useEffect } from 'react'
-import { LayoutDashboard, Settings, BarChart3, CreditCard, User, BookOpen, X, Moon, Sun } from 'lucide-react'
+import { LayoutDashboard, Settings, BarChart3, CreditCard, User, BookOpen, Newspaper, X, Moon, Sun } from 'lucide-react'
 import MobileNav from './MobileNav'
 import { useTheme } from '@/lib/theme'
 
@@ -29,6 +30,7 @@ export default function DashboardHeader() {
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Settings', href: '/dashboard/settings', icon: Settings },
     { name: 'Docs', href: '/docs', icon: BookOpen },
+    { name: 'Blog', href: '/blog', icon: Newspaper },
     { name: 'Pricing', href: '/pricing', icon: CreditCard },
   ]
 
@@ -39,14 +41,18 @@ export default function DashboardHeader() {
           <div className="flex items-center gap-3">
             <MobileNav />
             <Link href="/dashboard" className="flex items-center gap-2">
-              <img 
+              <Image 
                 src="/images/logo.svg" 
                 alt="PromptRouter" 
+                width={32}
+                height={32}
                 className="h-8 w-auto dark:hidden"
               />
-              <img 
+              <Image 
                 src="/images/logo-white.svg" 
                 alt="PromptRouter" 
+                width={32}
+                height={32}
                 className="h-8 w-auto hidden dark:block"
               />
               <span className="hidden sm:block text-2xl font-bold italic text-gray-900 dark:text-white">PromptRouter</span>

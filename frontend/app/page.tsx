@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Zap, DollarSign, Target, Moon, Sun, LayoutDashboard, Settings, BookOpen, CreditCard } from 'lucide-react'
+import Image from 'next/image'
+import { ArrowRight, Zap, DollarSign, Target, Moon, Sun, LayoutDashboard, Settings, BookOpen, CreditCard, Newspaper } from 'lucide-react'
 import MobileNav from '@/components/dashboard/MobileNav'
 import Footer from '@/components/Footer'
 import { useUser, UserButton, useAuth } from '@clerk/nextjs'
@@ -63,6 +64,7 @@ export default function HomePage() {
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Settings', href: '/dashboard/settings', icon: Settings },
     { name: 'Docs', href: '/docs', icon: BookOpen },
+    { name: 'Blog', href: '/blog', icon: Newspaper },
     { name: 'Pricing', href: '/pricing', icon: CreditCard },
   ]
   
@@ -75,18 +77,22 @@ export default function HomePage() {
             <div className="flex items-center gap-3">
               <MobileNav publicOnly />
               <Link href="/" className="hidden sm:flex items-center gap-2">
-                <img 
+                <Image 
                   src="/images/logo-white.svg" 
                   alt="PromptRouter" 
+                  width={32}
+                  height={32}
                   className="h-8 w-auto"
                 />
                 <span className="text-2xl font-bold">PromptRouter</span>
               </Link>
             </div>
             <Link href="/" className="sm:hidden">
-              <img 
+              <Image 
                 src="/images/logo-white.svg" 
                 alt="PromptRouter" 
+                width={32}
+                height={32}
                 className="h-8 w-auto"
               />
             </Link>
@@ -249,10 +255,15 @@ export default function HomePage() {
           
           {/* Flowchart */}
           <div className="card shadow-xl mb-12 max-w-5xl mx-auto">
-            <img 
+            <Image 
               src="/flowchart-promptrouter.png" 
               alt="PromptRouter Implementation Flow - 5 steps from API key setup to cost savings tracking"
+              width={1460}
+              height={646}
               className="w-full h-auto rounded-lg"
+              priority={false}
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1024px"
             />
           </div>
 

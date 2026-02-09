@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Code, BookOpen, Zap, Lock, ArrowRight, CheckCircle, Terminal } from 'lucide-react'
 import DashboardHeader from '@/components/dashboard/DashboardHeader'
 
@@ -167,10 +168,14 @@ export default function DocsPage() {
                 PromptRouter automatically routes your prompts to the most cost-effective AI model while maintaining quality. Here&apos;s the complete flow:
               </p>
               <div className="bg-primary/5 rounded-xl p-4 sm:p-6 mb-6 -mx-4 sm:mx-0">
-                <img 
+                <Image 
                   src="/flowchart-promptrouter.png" 
                   alt="PromptRouter Implementation Flow - Complete 5-step process"
+                  width={1460}
+                  height={646}
                   className="w-full h-auto rounded-lg shadow-lg"
+                  loading="lazy"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1024px"
                 />
               </div>
               <div className="bg-success/5 border border-success/20 rounded-lg p-4">

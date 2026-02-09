@@ -8,6 +8,8 @@ from app.adapters.openai import OpenAIAdapter
 from app.adapters.anthropic import AnthropicAdapter
 from app.adapters.google import GoogleAdapter
 from app.adapters.grok import GrokAdapter
+from app.adapters.deepseek import DeepSeekAdapter
+from app.adapters.mistral import MistralAdapter
 from app.models.database import PromptExecution, User, UserAPIKey, ProviderType
 from app.models.schemas import (
     PromptRequest, PromptResponse, RoutingDecision,
@@ -114,13 +116,14 @@ class PromptExecutionService:
             # Wrap other exceptions
             raise ValueError(f"Unexpected error during prompt execution: {str(e)}")
         
-        # Calculate savings
+        # Calculate savings (compare against most expensive model user has access to)
         alternative_cost = self.routing_engine.get_cheapest_alternative_cost(
             input_tokens=result.input_tokens,
             output_tokens=result.output_tokens,
             exclude_model=selected_model.name,
+            available_providers=available_providers,
         )
-        savings = alternative_cost - result.cost
+        savings = max(0, alternative_cost - result.cost)  # Never negative
         
         # Save execution record
         prompt_hash = hashlib.sha256(request.prompt.encode()).hexdigest()
@@ -177,11 +180,13 @@ class PromptExecutionService:
             "anthropic": AnthropicAdapter,
             "google": GoogleAdapter,
             "grok": GrokAdapter,
+            "deepseek": DeepSeekAdapter,
+            "mistral": MistralAdapter,
         }
         
         adapter_class = adapters.get(provider)
         if not adapter_class:
-            raise ValueError(f"Unknown provider: {provider}")
+            raise ValueError(f"Unknown provider: {provider}. Supported: {list(adapters.keys())}")
         
         return adapter_class(api_key)
     
@@ -253,13 +258,14 @@ class PromptExecutionService:
             temperature=request.temperature or 0.7,
         )
         
-        # Calculate savings
+        # Calculate savings (compare against most expensive model user has access to)
         alternative_cost = self.routing_engine.get_cheapest_alternative_cost(
             input_tokens=result.input_tokens,
             output_tokens=result.output_tokens,
             exclude_model=selected_model.name,
+            available_providers=available_providers,
         )
-        savings = alternative_cost - result.cost
+        savings = max(0, alternative_cost - result.cost)  # Never negative
         
         # Save execution record
         # Create a hash of all messages

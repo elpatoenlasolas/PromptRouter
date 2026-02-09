@@ -49,6 +49,10 @@ export default function RootLayout({
     <ClerkProvider publishableKey={publishableKey || ''}>
       <html lang="en" suppressHydrationWarning className={inter.variable}>
         <head>
+          {/* Preconnect hints for faster resource loading */}
+          <link rel="preconnect" href="https://clerk.prompt-router.com" />
+          <link rel="dns-prefetch" href="https://clerk.prompt-router.com" />
+          <link rel="preconnect" href="https://www.googletagmanager.com" />
           <script
             async
             src="https://www.googletagmanager.com/gtag/js?id=G-DGMNL50F7M"

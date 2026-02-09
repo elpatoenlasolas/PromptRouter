@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Check, X, ArrowRight, BarChart3, Info } from 'lucide-react'
 import DashboardHeader from '@/components/dashboard/DashboardHeader'
 import Footer from '@/components/Footer'
@@ -136,10 +137,14 @@ export default function PricingPage() {
           
           {/* Flowchart Image */}
           <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-xl dark:shadow-gray-950 p-8 mb-12">
-            <img 
+            <Image 
               src="/flowchart-promptrouter.png" 
               alt="PromptRouter Implementation Flow - 5 steps from API key setup to cost savings tracking"
+              width={1460}
+              height={646}
               className="w-full h-auto rounded-lg"
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1024px"
             />
             <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
               Replace one API endpoint and start saving immediately

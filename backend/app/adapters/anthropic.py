@@ -10,14 +10,44 @@ from typing import Optional
 class AnthropicAdapter(BaseLLMAdapter):
     """Adapter for Anthropic Claude API"""
     
+    # Model pricing (euros per 1K tokens) - Updated January 2026
+    # Source: https://anthropic.com/pricing
     MODELS = {
+        "claude-3-5-haiku": ModelInfo(
+            name="claude-3-5-haiku-20241022",
+            provider="anthropic",
+            input_price_per_1k=0.0008,    # $0.80 per 1M tokens
+            output_price_per_1k=0.004,    # $4.00 per 1M tokens
+            avg_latency_ms=400,
+            quality_tier="standard",
+            max_tokens=8192,
+        ),
+        "claude-3-5-sonnet": ModelInfo(
+            name="claude-3-5-sonnet-20241022",
+            provider="anthropic",
+            input_price_per_1k=0.003,     # $3.00 per 1M tokens
+            output_price_per_1k=0.015,    # $15.00 per 1M tokens
+            avg_latency_ms=800,
+            quality_tier="premium",
+            max_tokens=8192,
+        ),
+        "claude-3-opus": ModelInfo(
+            name="claude-3-opus-20240229",
+            provider="anthropic",
+            input_price_per_1k=0.015,     # $15.00 per 1M tokens
+            output_price_per_1k=0.075,    # $75.00 per 1M tokens
+            avg_latency_ms=2500,
+            quality_tier="premium",
+            max_tokens=4096,
+        ),
+        # Legacy models for backwards compatibility
         "claude-3-haiku": ModelInfo(
             name="claude-3-haiku-20240307",
             provider="anthropic",
             input_price_per_1k=0.00025,
             output_price_per_1k=0.00125,
             avg_latency_ms=600,
-            quality_tier="standard",
+            quality_tier="basic",
             max_tokens=4096,
         ),
         "claude-3-sonnet": ModelInfo(
@@ -26,16 +56,7 @@ class AnthropicAdapter(BaseLLMAdapter):
             input_price_per_1k=0.003,
             output_price_per_1k=0.015,
             avg_latency_ms=1200,
-            quality_tier="premium",
-            max_tokens=4096,
-        ),
-        "claude-3-opus": ModelInfo(
-            name="claude-3-opus-20240229",
-            provider="anthropic",
-            input_price_per_1k=0.015,
-            output_price_per_1k=0.075,
-            avg_latency_ms=2500,
-            quality_tier="premium",
+            quality_tier="standard",
             max_tokens=4096,
         ),
     }

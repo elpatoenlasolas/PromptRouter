@@ -14,6 +14,8 @@ from app.adapters.openai import OpenAIAdapter
 from app.adapters.anthropic import AnthropicAdapter
 from app.adapters.google import GoogleAdapter
 from app.adapters.grok import GrokAdapter
+from app.adapters.deepseek import DeepSeekAdapter
+from app.adapters.mistral import MistralAdapter
 from app.models.schemas import PromptConstraints
 
 
@@ -54,7 +56,9 @@ class RoutingEngine:
             OpenAIAdapter("dummy").get_available_models() +
             AnthropicAdapter("dummy").get_available_models() +
             GoogleAdapter("dummy").get_available_models() +
-            GrokAdapter("dummy").get_available_models()
+            GrokAdapter("dummy").get_available_models() +
+            DeepSeekAdapter("dummy").get_available_models() +
+            MistralAdapter("dummy").get_available_models()
         )
     
     def select_model(
@@ -325,47 +329,70 @@ class RoutingEngine:
         input_tokens: int,
         output_tokens: int,
         exclude_model: str,
-        baseline_model_name: Optional[str] = None,
+        available_providers: list[str] | None = None,
+        baseline_model_name: str | None = None,
     ) -> float:
         """
-        Calculate what this prompt would have cost with a baseline model.
+        Calculate what this prompt would have cost with a premium baseline model.
         
-        CRITICAL IMPROVEMENTS:
-        1. Baseline is configurable (not always GPT-4)
-        2. Falls back gracefully if baseline doesn't exist
-        3. Returns 0.0 for edge cases (safer than wrong number)
+        STRATEGY: Compare against the most expensive model the user has access to.
+        This gives honest savings calculations - we compare to what they COULD have used.
         
         Args:
             input_tokens: Number of input tokens
             output_tokens: Number of output tokens
             exclude_model: The model actually used (for comparison)
-            baseline_model_name: Model to compare against (default: gpt-4)
+            available_providers: List of providers user has access to (for realistic comparison)
+            baseline_model_name: Optional specific model to compare against
             
         Returns:
-            Cost in euros, or 0.0 if baseline not found
+            Cost in euros, or 0.0 if no valid baseline found
         """
-        baseline_name = baseline_model_name or "gpt-4"
+        # Filter to models user actually has access to
+        available_models = self.all_models
+        if available_providers:
+            available_models = [m for m in self.all_models if m.provider in available_providers]
+        
+        if not available_models:
+            return 0.0
         
         # Find baseline model
-        baseline_model = next(
-            (m for m in self.all_models if m.name == baseline_name), 
-            None
-        )
+        baseline_model = None
         
-        # Fallback: if baseline doesn't exist, try to find most expensive model
+        if baseline_model_name:
+            # User specified a baseline
+            baseline_model = next(
+                (m for m in available_models if m.name == baseline_model_name), 
+                None
+            )
+        
         if not baseline_model:
-            try:
+            # Find the most expensive premium model available to the user
+            # This gives the most honest comparison
+            premium_models = [m for m in available_models if m.quality_tier == "premium"]
+            if premium_models:
                 baseline_model = max(
-                    self.all_models, 
+                    premium_models, 
                     key=lambda m: m.input_price_per_1k + m.output_price_per_1k
                 )
-            except ValueError:
-                # No models at all - return 0.0 safely
-                return 0.0
+            else:
+                # No premium models? Use most expensive model available
+                baseline_model = max(
+                    available_models, 
+                    key=lambda m: m.input_price_per_1k + m.output_price_per_1k
+                )
         
         # Edge case: baseline is the same as selected model (no savings)
         if baseline_model.name == exclude_model:
-            return 0.0
+            # Try to find second most expensive
+            other_models = [m for m in available_models if m.name != exclude_model]
+            if other_models:
+                baseline_model = max(
+                    other_models, 
+                    key=lambda m: m.input_price_per_1k + m.output_price_per_1k
+                )
+            else:
+                return 0.0
         
         # Calculate baseline cost
         input_cost = (input_tokens / 1000) * baseline_model.input_price_per_1k

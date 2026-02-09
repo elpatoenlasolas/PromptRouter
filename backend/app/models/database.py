@@ -22,6 +22,8 @@ class ProviderType(str, enum.Enum):
     ANTHROPIC = "anthropic"
     GOOGLE = "google"
     GROK = "grok"
+    DEEPSEEK = "deepseek"
+    MISTRAL = "mistral"
 
 
 class User(Base):
