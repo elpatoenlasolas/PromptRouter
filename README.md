@@ -4,6 +4,8 @@
 
 > Stop overpaying for AI. Automatically route every prompt to the cheapest model that meets your quality and speed requirements.
 
+NOTE: The models mentioned in the repo and/or the app may be outdated, as it has not been maintained for months. Please review the latest info in models before creating any API Keys.
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Next.js 14](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
@@ -38,9 +40,9 @@ Companies waste **hundreds of euros per month** by always using premium models o
 
 | Scenario | Without PromptRouter | With PromptRouter | Monthly Savings |
 |----------|---------------------|-------------------|-----------------|
-| Customer support | €150 (GPT-4) | €45 (Smart routing) | **€105** |
+| Customer support | €150 (GPT-5) | €45 (Smart routing) | **€105** |
 | Content generation | €200 (Claude) | €60 (Mixed) | **€140** |
-| Data extraction | €100 (GPT-4) | €12 (Gemini Flash) | **€88** |
+| Data extraction | €100 (GPT-5) | €12 (Gemini Flash) | **€88** |
 
 ---
 
